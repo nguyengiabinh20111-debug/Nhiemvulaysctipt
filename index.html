@@ -20,34 +20,44 @@
         <h1>🔐 TẠO LINK SCRIPT</h1>
         <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
         <input type="text" id="scriptName" placeholder="📝 Tên Script (vd: Lennon, ATRAS...)">
-        <input type="text" id="origLink" placeholder="📎 Dán link script gốc vào đây">
-        <button onclick="createLink()">✨ TẠO LINK MỚI</button>
+        <input type="text" id="scriptLink" placeholder="📎 Dán link script gốc vào đây">
+        <button onclick="createLink()">✨ TẠO LINK DÙNG NGAY</button>
         <div class="result" id="resultBox">
-            <strong>✅ Link tạo thành công:</strong>
+            <strong>✅ Link tạo xong — Gửi cho mọi người thôi!</strong>
             <div class="link-out" id="newLink"></div>
-            <button onclick="copyLink()" style="background:#2563eb">📋 Sao chép</button>
+            <button onclick="copyLink()" style="background:#2563eb">📋 Sao chép link</button>
         </div>
-        <p class="note">Chỉ bạn tạo được — người khác chỉ mở link nhận thôi</p>
+        <p class="note">Người mở link hoàn thành nhiệm vụ → nhận script ngay</p>
     </div>
 
 <script>
-const PASSWORD = "dobinhl12345";
+const PASSWORD = "dobinhl12345"; // Đổi mật khẩu ở đây
+
 function createLink(){
     const pass = document.getElementById('pass').value;
     if(pass !== PASSWORD) return alert("❌ Sai mật khẩu!");
     
-    const name = document.getElementById('scriptName').value.trim() || "Script";
-    const link = document.getElementById('origLink').value.trim();
-    if(!link) return alert("❌ Dán link script vào!");
+    const name = document.getElementById('scriptName').value.trim();
+    const link = document.getElementById('scriptLink').value.trim();
     
-    const data = btoa(name + "|||" + link).replace(/=/g,"");
-    const newUrl = window.location.origin + window.location.pathname.replace("index.html","") + "go.html?id=" + data;
+    if(!name) return alert("❌ Nhập Tên Script!");
+    if(!link) return alert("❌ Dán link Script vào!");
+    
+    // Lấy đúng đường dẫn thư mục hiện tại
+    const path = window.location.pathname;
+    const folderPath = path.substring(0, path.lastIndexOf('/') + 1);
+    const base = window.location.origin + folderPath;
+    
+    // Tạo link đúng đến go.html cùng thư mục
+    const newUrl = base + "go.html?name=" + encodeURIComponent(name) + "&link=" + encodeURIComponent(link);
     
     document.getElementById('newLink').innerText = newUrl;
     document.getElementById('resultBox').style.display = "block";
 }
+
 function copyLink(){
-    navigator.clipboard.writeText(document.getElementById('newLink').innerText).then(()=>alert("✅ Đã sao chép! Gửi cho mọi người thôi!"));
+    navigator.clipboard.writeText(document.getElementById('newLink').innerText)
+        .then(()=>alert("✅ Đã sao chép! Gửi đi thôi!"));
 }
 </script>
 </body>
