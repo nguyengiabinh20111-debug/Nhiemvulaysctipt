@@ -9,14 +9,21 @@
         .box{max-width:550px;margin:0 auto;background:#fff;padding:30px;border-radius:16px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
         h1{color:#ff4444;text-align:center;margin-bottom:25px;font-size:22px}
         
+        .pass-wrap{position:relative;margin:8px 0}
+        input, textarea{width:100%;padding:14px;padding-right:45px;border:1px solid #ddd;border-radius:10px;font-size:15px}
+        .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:20px;cursor:pointer;padding:0}
+        
+        .check-row{display:flex;align-items:center;gap:8px;margin:10px 0 15px;cursor:pointer}
+        .check-row input{width:auto;margin:0}
+        .check-row label{font-size:14px;color:#555;cursor:pointer}
+        
         .tab-wrap{display:flex;margin-bottom:20px;border-bottom:2px solid #eee}
         .tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:bold;color:#888}
         .tab.active{color:#ff4444;border-bottom:2px solid #ff4444}
         .tab-content{display:none}
         .tab-content.active{display:block}
         
-        input, textarea{width:100%;padding:14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
-        textarea{min-height:180px;resize:vertical;font-family:monospace;font-size:13px;line-height:1.5}
+        textarea{min-height:180px;resize:vertical;font-family:monospace;font-size:13px;line-height:1.5;padding-right:14px}
         button{width:100%;padding:14px;background:#ff4444;color:#fff;font-weight:bold;border:none;border-radius:10px;font-size:16px;cursor:pointer;margin-top:10px}
         .result{margin-top:20px;padding:20px;background:#d4edda;border-radius:10px;display:none}
         .link-out{background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;word-break:break-all;font-size:13px}
@@ -27,22 +34,27 @@
     <div class="box">
         <h1>🔐 TẠO LINK SCRIPT</h1>
 
-        <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
+        <div class="pass-wrap">
+            <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
+            <button type="button" class="eye-btn" onclick="togglePass()">👁️</button>
+        </div>
+
+        <div class="check-row" onclick="toggleSave()">
+            <input type="checkbox" id="savePass">
+            <label for="savePass">💾 Lưu mật khẩu cho lần sau</label>
+        </div>
+
         <input type="text" id="scriptName" placeholder="📝 Tên Script (vd: ATRAS | GIABÌNH)">
 
-        <!-- Chọn cách nhập -->
         <div class="tab-wrap">
             <div class="tab active" onclick="switchTab(1)">📋 Dán Script</div>
             <div class="tab" onclick="switchTab(2)">🔗 Dán Link</div>
         </div>
 
-        <!-- Cách 1: Dán thẳng nội dung script -->
         <div class="tab-content active" id="tab1">
-            <textarea id="scriptContent" placeholder="📝 Dán toàn bộ code/script Lua vào đây...&#10;&#10;Ví dụ:&#10;loadstring(game:HttpGet('link'))()&#10;..."></textarea>
-            <p style="font-size:12px;color:#666;margin:5px 0 15px">✅ Hệ thống sẽ tự tạo trang lấy script riêng cho bạn</p>
+            <textarea id="scriptContent" placeholder="📝 Dán toàn bộ code/script Lua vào đây..."></textarea>
         </div>
 
-        <!-- Cách 2: Dán link như cũ -->
         <div class="tab-content" id="tab2">
             <input type="text" id="scriptLink" placeholder="📎 Dán link script gốc / Passfy vào đây">
         </div>
@@ -52,19 +64,50 @@
         <div class="result" id="resultBox">
             <strong>✅ Link tạo xong — Gửi cho mọi người thôi!</strong>
             <div class="link-out" id="newLink"></div>
-            <button onclick="copyLink()" style="background:#2563eb">📋 Sao chép link nhận nhiệm vụ</button>
+            <button onclick="copyLink()" style="background:#2563eb">📋 Sao chép link nhiệm vụ</button>
             <div style="margin-top:12px;padding:10px;background:#eef2ff;border-radius:8px">
-                <small style="color:#444">🔗 Trang lấy script tự tạo:</small>
+                <small style="color:#444">🔗 Trang lấy script:</small>
                 <div class="link-out" id="scriptPageLink" style="margin:5px 0"></div>
             </div>
         </div>
 
-        <p class="note">Người mở link → hoàn thành nhiệm vụ → nhận script ngay<br>Không cần Passfy nữa — hệ thống tự quản lý trang lấy script</p>
+        <p class="note">Người mở link → làm nhiệm vụ → nhận script ngay</p>
     </div>
 
 <script>
-const PASSWORD = "dobinhl12345"; // Đổi mật khẩu ở đây
+const PASSWORD = "dobinhl12345";
 let useContent = true;
+
+// Tự điền MK nếu đã lưu
+window.onload = function(){
+    const saved = localStorage.getItem('savedPass');
+    if(saved){
+        document.getElementById('pass').value = saved;
+        document.getElementById('savePass').checked = true;
+    }
+};
+
+function togglePass(){
+    const inp = document.getElementById('pass');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function toggleSave(){
+    const cb = document.getElementById('savePass');
+    cb.checked = !cb.checked;
+    if(cb.checked){
+        localStorage.setItem('savedPass', document.getElementById('pass').value);
+    }else{
+        localStorage.removeItem('savedPass');
+    }
+}
+
+// Tự lưu khi nhập xong
+document.getElementById('pass').addEventListener('input', function(){
+    if(document.getElementById('savePass').checked){
+        localStorage.setItem('savedPass', this.value);
+    }
+});
 
 function switchTab(n){
     useContent = (n === 1);
@@ -76,38 +119,35 @@ function createLink(){
     const pass = document.getElementById('pass').value;
     if(pass !== PASSWORD) return alert("❌ Sai mật khẩu!");
     
+    if(document.getElementById('savePass').checked){
+        localStorage.setItem('savedPass', pass);
+    }else{
+        localStorage.removeItem('savedPass');
+    }
+    
     const name = document.getElementById('scriptName').value.trim();
     if(!name) return alert("❌ Nhập Tên Script!");
 
-    let finalScriptLink = "";
     const origin = window.location.origin;
     const path = window.location.pathname;
     const folder = path.substring(0, path.lastIndexOf('/') + 1);
+    let finalScriptLink = "";
 
     if(useContent){
-        // Dán thẳng nội dung → mã hóa nhúng vào link trang lấy script
         const content = document.getElementById('scriptContent').value.trim();
         if(!content) return alert("❌ Dán nội dung Script vào!");
-        
-        // Tạo link trang hiển thị script riêng
         const encoded = btoa(unescape(encodeURIComponent(content)));
         finalScriptLink = origin + folder + "getscript.html?data=" + encoded + "&name=" + encodeURIComponent(name);
     }else{
-        // Dán link như cũ
         const link = document.getElementById('scriptLink').value.trim();
         if(!link) return alert("❌ Dán link Script vào!");
         finalScriptLink = link;
     }
 
-    // Tạo link trang nhiệm vụ
     const taskLink = origin + folder + "go.html?name=" + encodeURIComponent(name) + "&link=" + encodeURIComponent(finalScriptLink);
     
     document.getElementById('newLink').innerText = taskLink;
-    if(useContent){
-        document.getElementById('scriptPageLink').innerText = finalScriptLink;
-    }else{
-        document.getElementById('scriptPageLink').innerText = "Dùng link gốc: " + finalScriptLink;
-    }
+    document.getElementById('scriptPageLink').innerText = finalScriptLink;
     document.getElementById('resultBox').style.display = "block";
 }
 
