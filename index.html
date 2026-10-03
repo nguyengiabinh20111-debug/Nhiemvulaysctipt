@@ -19,6 +19,7 @@
     <div class="box">
         <h1>🔐 TẠO LINK SCRIPT</h1>
         <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
+        <input type="text" id="scriptName" placeholder="📝 Tên Script (vd: Lennon, ATRAS...)">
         <input type="text" id="origLink" placeholder="📎 Dán link script gốc vào đây">
         <button onclick="createLink()">✨ TẠO LINK MỚI</button>
         <div class="result" id="resultBox">
@@ -30,14 +31,18 @@
     </div>
 
 <script>
-const PASSWORD = "dobinhl12345"; // ĐỔI MẬT KHẨU Ở ĐÂY
+const PASSWORD = "dobinhl12345";
 function createLink(){
     const pass = document.getElementById('pass').value;
     if(pass !== PASSWORD) return alert("❌ Sai mật khẩu!");
-    const orig = document.getElementById('origLink').value.trim();
-    if(!orig) return alert("❌ Dán link script vào!");
-    const id = btoa(orig).replace(/=/g,"");
-    const newUrl = window.location.origin + window.location.pathname.replace("index.html","") + "go.html?id=" + id;
+    
+    const name = document.getElementById('scriptName').value.trim() || "Script";
+    const link = document.getElementById('origLink').value.trim();
+    if(!link) return alert("❌ Dán link script vào!");
+    
+    const data = btoa(name + "|||" + link).replace(/=/g,"");
+    const newUrl = window.location.origin + window.location.pathname.replace("index.html","") + "go.html?id=" + data;
+    
     document.getElementById('newLink').innerText = newUrl;
     document.getElementById('resultBox').style.display = "block";
 }
@@ -46,5 +51,4 @@ function copyLink(){
 }
 </script>
 </body>
-  </html>
-  
+</html>
