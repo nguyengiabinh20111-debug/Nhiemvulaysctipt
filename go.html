@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Script — Mở Khóa</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{background:#f5f5f7;min-height:100vh;padding:20px}
+        .container{max-width:420px;margin:0 auto}
+        .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
+        .title{text-align:center;margin-bottom:25px}
+        .title h2{font-size:20px;color:#111;margin-bottom:8px}
+        .title p{color:#666;font-size:14px}
+
+        .task-btn{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin:10px 0;border-radius:12px;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left}
+        .task-btn.discord{background:linear-gradient(90deg,#5865f2,#7289da)}
+        .task-btn.youtube{background:linear-gradient(90deg,#ff0000,#cc0000)}
+        .task-btn.tiktok{background:linear-gradient(90deg,#00f2ea,#00f7b4);color:#000}
+        .task-btn.video{background:linear-gradient(90deg,#ff4444,#e53935)}
+        .task-btn.locked{opacity:0.6;cursor:not-allowed}
+        .timer{font-size:13px;opacity:0.9;margin-left:8px}
+        .done-mark{color:#22c55e;font-weight:bold;margin-left:8px}
+
+        .progress-area{margin:25px 0;text-align:center}
+        .progress-text{font-size:15px;color:#444;margin-bottom:10px}
+        .progress-bar{height:10px;background:#eee;border-radius:5px;overflow:hidden;margin:0 20px}
+        .progress-fill{height:100%;background:#22c55e;width:0%;transition:0.4s ease;border-radius:5px}
+
+        .unlock-btn{width:100%;padding:16px;background:#ccc;color:#666;font-weight:bold;border:none;border-radius:12px;font-size:16px;cursor:not-allowed;margin-top:10px}
+        .unlock-btn.ready{background:#22c55e;color:#fff;cursor:pointer}
+        .unlock-btn a{color:#fff;text-decoration:none;display:block}
+
+        .premium{text-align:center;margin-top:25px;padding:15px;background:#fff8dc;border-radius:10px;font-size:14px}
+        .premium a{color:#ff4444;font-weight:bold;text-decoration:none}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="title">
+                <h2>📜 Script</h2>
+                <p>Hoàn thành các bước để mở khóa link</p>
+            </div>
+
+            <!-- 1️⃣ Discord — 10 GIÂY -->
+            <button class="task-btn discord" id="btn1" onclick="startTask(1, 10)">
+                <span>💬 Tham gia Discord</span>
+                <span id="t1-status" class="timer">Bắt đầu</span>
+            </button>
+
+            <!-- 2️⃣ YouTube — 20 GIÂY -->
+            <button class="task-btn youtube" id="btn2" onclick="startTask(2, 20)">
+                <span>▶ Đăng ký Kênh YouTube</span>
+                <span id="t2-status" class="timer">Bắt đầu</span>
+            </button>
+
+            <!-- 3️⃣ TikTok — 20 GIÂY -->
+            <button class="task-btn tiktok" id="btn3" onclick="startTask(3, 20)">
+                <span>🎵 Theo dõi TikTok</span>
+                <span id="t3-status" class="timer">Bắt đầu</span>
+            </button>
+
+            <!-- 4️⃣ Xem video — 2 PHÚT -->
+            <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
+                <span>📺 Xem video</span>
+                <span id="t4-status" class="timer">Bắt đầu</span>
+            </button>
+
+            <!-- Thanh tiến trình -->
+            <div class="progress-area">
+                <p class="progress-text" id="progressText">Tiến trình mở khóa: 0/4</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Nút mở khóa -->
+            <button class="unlock-btn" id="unlockBtn">
+                🔒 Đang mở khóa...
+            </button>
+        </div>
+
+        <div class="premium">
+            💎 Không muốn đợi? <a href="#">Nạp Premium 10k/2 tháng</a> lấy link trực tiếp
+        </div>
+    </div>
+
+<script>
+const done = [false, false, false, false];
+let targetLink = "";
+
+// === LINK ĐÃ ĐIỀN ĐỦ CỦA BẠN ===
+const links = {
+    discord: "https://discord.gg/uqhEpzXy9q",
+    youtube: "https://youtube.com/@binngamingg?si=DiC2PvPzceaba-yY",
+    tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553",
+    video: "https://youtu.be/zKTNXUA7lWI?si=R3BLTjKDkbMNFBq4"
+};
+
+window.onload = function(){
+    const p = new URLSearchParams(window.location.search);
+    const code = p.get("id");
+    if(code){
+        try{ targetLink = atob(code); }
+        catch(e){ alert("❌ Link không hợp lệ!"); }
+    }
+};
+
+function startTask(num, seconds){
+    if(done[num-1]) return;
+
+    // Mở tab tương ứng
+    if(num === 1) window.open(links.discord, '_blank');
+    if(num === 2) window.open(links.youtube, '_blank');
+    if(num === 3) window.open(links.tiktok, '_blank');
+    if(num === 4) window.open(links.video, '_blank');
+
+    // Khóa nút
+    document.getElementById(`btn${num}`).classList.add('locked');
+    document.getElementById(`btn${num}`).disabled = true;
+
+    let t = seconds;
+    let interval = setInterval(()=>{
+        t--;
+        let text = (t > 60) ? `${Math.floor(t/60)}p ${t%60}s` : `${t}s`;
+        document.getElementById(`t${num}-status`).innerText = text;
+        
+        if(t <= 0){
+            clearInterval(interval);
+            done[num-1] = true;
+            document.getElementById(`t${num}-status`).innerHTML = '<span class="done-mark">✅ Xong</span>';
+            updateProgress();
+        }
+    }, 1000);
+}
+
+function updateProgress(){
+    const count = done.filter(x=>x).length;
+    document.getElementById('progressText').innerText = `Tiến trình mở khóa: ${count}/4`;
+    document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
+
+    if(count === 4){
+        const btn = document.getElementById('unlockBtn');
+        btn.classList.add('ready');
+        btn.innerHTML = `<a href="${targetLink}" target="_blank">🔓 NHẬN SCRIPT NGAY</a>`;
+    }
+}
+</script>
+</body>
+</html>
