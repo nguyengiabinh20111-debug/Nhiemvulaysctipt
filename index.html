@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tạo Link Script</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{background:#f5f5f7;color:#333;min-height:100vh;padding:30px}
+        .box{max-width:500px;margin:0 auto;background:#fff;padding:30px;border-radius:16px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
+        h1{color:#ff4444;text-align:center;margin-bottom:25px;font-size:22px}
+        input{width:100%;padding:14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+        button{width:100%;padding:14px;background:#ff4444;color:#fff;font-weight:bold;border:none;border-radius:10px;font-size:16px;cursor:pointer;margin-top:10px}
+        .result{margin-top:20px;padding:20px;background:#d4edda;border-radius:10px;display:none}
+        .link-out{background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;word-break:break-all;font-size:13px}
+        .note{margin-top:15px;color:#666;font-size:13px;text-align:center}
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🔐 TẠO LINK SCRIPT</h1>
+        <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
+        <input type="text" id="origLink" placeholder="📎 Dán link script gốc vào đây">
+        <button onclick="createLink()">✨ TẠO LINK MỚI</button>
+        <div class="result" id="resultBox">
+            <strong>✅ Link tạo thành công:</strong>
+            <div class="link-out" id="newLink"></div>
+            <button onclick="copyLink()" style="background:#2563eb">📋 Sao chép</button>
+        </div>
+        <p class="note">Chỉ bạn tạo được — người khác chỉ mở link nhận thôi</p>
+    </div>
+
+<script>
+const PASSWORD = "123456"; // ĐỔI MẬT KHẨU Ở ĐÂY
+function createLink(){
+    const pass = document.getElementById('pass').value;
+    if(pass !== PASSWORD) return alert("❌ Sai mật khẩu!");
+    const orig = document.getElementById('origLink').value.trim();
+    if(!orig) return alert("❌ Dán link script vào!");
+    const id = btoa(orig).replace(/=/g,"");
+    const newUrl = window.location.origin + window.location.pathname.replace("index.html","") + "go.html?id=" + id;
+    document.getElementById('newLink').innerText = newUrl;
+    document.getElementById('resultBox').style.display = "block";
+}
+function copyLink(){
+    navigator.clipboard.writeText(document.getElementById('newLink').innerText).then(()=>alert("✅ Đã sao chép! Gửi cho mọi người thôi!"));
+}
+</script>
+</body>
+  </html>
+  
