@@ -6,52 +6,108 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
         body{background:#f5f5f7;color:#333;min-height:100vh;padding:30px}
-        .box{max-width:500px;margin:0 auto;background:#fff;padding:30px;border-radius:16px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
+        .box{max-width:550px;margin:0 auto;background:#fff;padding:30px;border-radius:16px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
         h1{color:#ff4444;text-align:center;margin-bottom:25px;font-size:22px}
-        input{width:100%;padding:14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+        
+        .tab-wrap{display:flex;margin-bottom:20px;border-bottom:2px solid #eee}
+        .tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:bold;color:#888}
+        .tab.active{color:#ff4444;border-bottom:2px solid #ff4444}
+        .tab-content{display:none}
+        .tab-content.active{display:block}
+        
+        input, textarea{width:100%;padding:14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+        textarea{min-height:180px;resize:vertical;font-family:monospace;font-size:13px;line-height:1.5}
         button{width:100%;padding:14px;background:#ff4444;color:#fff;font-weight:bold;border:none;border-radius:10px;font-size:16px;cursor:pointer;margin-top:10px}
         .result{margin-top:20px;padding:20px;background:#d4edda;border-radius:10px;display:none}
         .link-out{background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;word-break:break-all;font-size:13px}
-        .note{margin-top:15px;color:#666;font-size:13px;text-align:center}
+        .note{margin-top:15px;color:#666;font-size:13px;text-align:center;line-height:1.6}
     </style>
 </head>
 <body>
     <div class="box">
         <h1>🔐 TẠO LINK SCRIPT</h1>
+
         <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
-        <input type="text" id="scriptName" placeholder="📝 Tên Script (vd: Lennon, ATRAS...)">
-        <input type="text" id="scriptLink" placeholder="📎 Dán link script gốc vào đây">
+        <input type="text" id="scriptName" placeholder="📝 Tên Script (vd: ATRAS | GIABÌNH)">
+
+        <!-- Chọn cách nhập -->
+        <div class="tab-wrap">
+            <div class="tab active" onclick="switchTab(1)">📋 Dán Script</div>
+            <div class="tab" onclick="switchTab(2)">🔗 Dán Link</div>
+        </div>
+
+        <!-- Cách 1: Dán thẳng nội dung script -->
+        <div class="tab-content active" id="tab1">
+            <textarea id="scriptContent" placeholder="📝 Dán toàn bộ code/script Lua vào đây...&#10;&#10;Ví dụ:&#10;loadstring(game:HttpGet('link'))()&#10;..."></textarea>
+            <p style="font-size:12px;color:#666;margin:5px 0 15px">✅ Hệ thống sẽ tự tạo trang lấy script riêng cho bạn</p>
+        </div>
+
+        <!-- Cách 2: Dán link như cũ -->
+        <div class="tab-content" id="tab2">
+            <input type="text" id="scriptLink" placeholder="📎 Dán link script gốc / Passfy vào đây">
+        </div>
+
         <button onclick="createLink()">✨ TẠO LINK DÙNG NGAY</button>
+
         <div class="result" id="resultBox">
             <strong>✅ Link tạo xong — Gửi cho mọi người thôi!</strong>
             <div class="link-out" id="newLink"></div>
-            <button onclick="copyLink()" style="background:#2563eb">📋 Sao chép link</button>
+            <button onclick="copyLink()" style="background:#2563eb">📋 Sao chép link nhận nhiệm vụ</button>
+            <div style="margin-top:12px;padding:10px;background:#eef2ff;border-radius:8px">
+                <small style="color:#444">🔗 Trang lấy script tự tạo:</small>
+                <div class="link-out" id="scriptPageLink" style="margin:5px 0"></div>
+            </div>
         </div>
-        <p class="note">Người mở link hoàn thành nhiệm vụ → nhận script ngay</p>
+
+        <p class="note">Người mở link → hoàn thành nhiệm vụ → nhận script ngay<br>Không cần Passfy nữa — hệ thống tự quản lý trang lấy script</p>
     </div>
 
 <script>
 const PASSWORD = "dobinhl12345"; // Đổi mật khẩu ở đây
+let useContent = true;
+
+function switchTab(n){
+    useContent = (n === 1);
+    document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active', i+1===n));
+    document.querySelectorAll('.tab-content').forEach((t,i)=>t.classList.toggle('active', i+1===n));
+}
 
 function createLink(){
     const pass = document.getElementById('pass').value;
     if(pass !== PASSWORD) return alert("❌ Sai mật khẩu!");
     
     const name = document.getElementById('scriptName').value.trim();
-    const link = document.getElementById('scriptLink').value.trim();
-    
     if(!name) return alert("❌ Nhập Tên Script!");
-    if(!link) return alert("❌ Dán link Script vào!");
-    
-    // Lấy đúng đường dẫn thư mục hiện tại
+
+    let finalScriptLink = "";
+    const origin = window.location.origin;
     const path = window.location.pathname;
-    const folderPath = path.substring(0, path.lastIndexOf('/') + 1);
-    const base = window.location.origin + folderPath;
+    const folder = path.substring(0, path.lastIndexOf('/') + 1);
+
+    if(useContent){
+        // Dán thẳng nội dung → mã hóa nhúng vào link trang lấy script
+        const content = document.getElementById('scriptContent').value.trim();
+        if(!content) return alert("❌ Dán nội dung Script vào!");
+        
+        // Tạo link trang hiển thị script riêng
+        const encoded = btoa(unescape(encodeURIComponent(content)));
+        finalScriptLink = origin + folder + "getscript.html?data=" + encoded + "&name=" + encodeURIComponent(name);
+    }else{
+        // Dán link như cũ
+        const link = document.getElementById('scriptLink').value.trim();
+        if(!link) return alert("❌ Dán link Script vào!");
+        finalScriptLink = link;
+    }
+
+    // Tạo link trang nhiệm vụ
+    const taskLink = origin + folder + "go.html?name=" + encodeURIComponent(name) + "&link=" + encodeURIComponent(finalScriptLink);
     
-    // Tạo link đúng đến go.html cùng thư mục
-    const newUrl = base + "go.html?name=" + encodeURIComponent(name) + "&link=" + encodeURIComponent(link);
-    
-    document.getElementById('newLink').innerText = newUrl;
+    document.getElementById('newLink').innerText = taskLink;
+    if(useContent){
+        document.getElementById('scriptPageLink').innerText = finalScriptLink;
+    }else{
+        document.getElementById('scriptPageLink').innerText = "Dùng link gốc: " + finalScriptLink;
+    }
     document.getElementById('resultBox').style.display = "block";
 }
 
