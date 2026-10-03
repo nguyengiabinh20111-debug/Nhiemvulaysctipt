@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>📜 Script — Tải Về</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Arial, sans-serif}
+        body{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height:100vh;
+            padding:20px
+        }
+        .container{max-width:520px;margin:0 auto}
+        .card{background:#fff;border-radius:20px;padding:30px;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+        
+        h1{text-align:center;color:#ff4444;margin-bottom:8px;font-size:24px}
+        .sub{text-align:center;color:#666;margin-bottom:25px}
+        
+        .code-box{
+            background:#1e1e1e;color:#d4d4d4;padding:20px;border-radius:14px;
+            font-family:monospace;font-size:13px;line-height:1.6;
+            white-space:pre-wrap;word-break:break-all;max-height:400px;overflow-y:auto;margin:15px 0
+        }
+        
+        .btn-row{display:flex;gap:10px;margin-top:15px}
+        button{flex:1;padding:14px;border:none;border-radius:12px;font-weight:bold;font-size:15px;cursor:pointer;transition:0.2s}
+        .copy-btn{background:#5865f2;color:#fff}
+        .copy-btn:active{transform:scale(0.97)}
+        .done{background:#22c55e}
+        
+        .tip{margin-top:20px;padding:15px;background:#fff3cd;border-radius:10px;font-size:13px;color:#856404;line-height:1.6}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1 id="pageName">📜 Script</h1>
+            <p class="sub">✅ Hoàn thành! Sao chép & sử dụng ngay</p>
+            
+            <div class="code-box" id="scriptDisplay">Đang tải...</div>
+            
+            <div class="btn-row">
+                <button class="copy-btn" id="copyBtn" onclick="copyScript()">📋 Sao chép Script</button>
+            </div>
+            
+            <div class="tip">
+                💡 <strong>Cách dùng:</strong><br>
+                1. Mở game Blox Fruit / Roblox<br>
+                2. Mở thực thi script (executor)<br>
+                3. Dán code này vào → Chạy<br>
+                4. Chúc vui! 🎮
+            </div>
+        </div>
+    </div>
+
+<script>
+window.onload = function(){
+    const p = new URLSearchParams(window.location.search);
+    let data = p.get("data");
+    let name = p.get("name") || "Script";
+    
+    document.getElementById('pageName').innerText = "📜 " + name;
+    
+    if(!data){
+        document.getElementById('scriptDisplay').innerText = "❌ Không tìm thấy nội dung Script!\n\nVui lòng tạo lại từ trang quản lý.";
+        return;
+    }
+    
+    // Giải mã nội dung script
+    try{
+        const decoded = decodeURIComponent(escape(atob(data)));
+        document.getElementById('scriptDisplay').innerText = decoded;
+    }catch(e){
+        document.getElementById('scriptDisplay').innerText = "❌ Lỗi hiển thị nội dung!";
+    }
+};
+
+function copyScript(){
+    const text = document.getElementById('scriptDisplay').innerText;
+    navigator.clipboard.writeText(text).then(()=>{
+        const btn = document.getElementById('copyBtn');
+        btn.classList.add('done');
+        btn.innerText = "✅ Đã Sao Chép!";
+        setTimeout(()=>{
+            btn.classList.remove('done');
+            btn.innerText = "📋 Sao chép Script";
+        }, 2500);
+    });
+}
+</script>
+</body>
+</html>
