@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>📜 Script — Tải Về</title>
+    <title>📜 Script — Nhận Ngay</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Arial, sans-serif}
         body{
@@ -12,10 +12,28 @@
             padding:20px
         }
         .container{max-width:520px;margin:0 auto}
-        .card{background:#fff;border-radius:20px;padding:30px;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
         
-        h1{text-align:center;color:#ff4444;margin-bottom:8px;font-size:24px}
-        .sub{text-align:center;color:#666;margin-bottom:25px}
+        .script-header{
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            border-radius:20px;
+            padding:25px;
+            margin-bottom:20px;
+            text-align:center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+        .script-icon{font-size:40px;margin-bottom:10px}
+        .script-name{
+            font-size:26px;font-weight:800;
+            background: linear-gradient(135deg, #ff4444, #ff9900);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom:8px;
+        }
+        .script-desc{color:#666;font-size:14px;line-height:1.6}
+        
+        .card{background:#fff;border-radius:20px;padding:25px;box-shadow:0 8px 32px rgba(0,0,0,0.12);margin-bottom:20px}
         
         .code-box{
             background:#1e1e1e;color:#d4d4d4;padding:20px;border-radius:14px;
@@ -23,34 +41,41 @@
             white-space:pre-wrap;word-break:break-all;max-height:400px;overflow-y:auto;margin:15px 0
         }
         
-        .btn-row{display:flex;gap:10px;margin-top:15px}
-        button{flex:1;padding:14px;border:none;border-radius:12px;font-weight:bold;font-size:15px;cursor:pointer;transition:0.2s}
-        .copy-btn{background:#5865f2;color:#fff}
+        .copy-btn{
+            width:100%;padding:16px;background:linear-gradient(90deg,#22c55e,#4ade80);
+            color:#fff;font-weight:bold;border:none;border-radius:14px;font-size:16px;cursor:pointer;
+            transition:all 0.3s;box-shadow:0 4px 15px rgba(34,197,94,0.3)}
         .copy-btn:active{transform:scale(0.97)}
-        .done{background:#22c55e}
+        .copy-btn.done{background:linear-gradient(90deg,#2563eb,#3b82f6)}
         
-        .tip{margin-top:20px;padding:15px;background:#fff3cd;border-radius:10px;font-size:13px;color:#856404;line-height:1.6}
+        .support-box{
+            background:linear-gradient(135deg,#fff8dc,#fff3b0);
+            border-radius:20px;padding:25px;border:2px solid #ffd700;
+            box-shadow:0 4px 20px rgba(255,215,0,0.2);text-align:center;margin-top:10px
+        }
+        .support-box h3{color:#e74c3c;font-size:17px;margin-bottom:10px}
+        .support-box p{font-size:14px;line-height:1.8;color:#333}
     </style>
 </head>
 <body>
     <div class="container">
+        
+        <div class="script-header">
+            <div class="script-icon">🎉</div>
+            <h1 class="script-name" id="pageName">CHÚC MỪNG!</h1>
+            <p class="script-desc">Bạn đã hoàn thành nhiệm vụ<br>Dưới đây là script của bạn — sử dụng vui vẻ nhé!</p>
+        </div>
+
         <div class="card">
-            <h1 id="pageName">📜 Script</h1>
-            <p class="sub">✅ Hoàn thành! Sao chép & sử dụng ngay</p>
-            
             <div class="code-box" id="scriptDisplay">Đang tải...</div>
-            
-            <div class="btn-row">
-                <button class="copy-btn" id="copyBtn" onclick="copyScript()">📋 Sao chép Script</button>
-            </div>
-            
-            <div class="tip">
-                💡 <strong>Cách dùng:</strong><br>
-                1. Mở game Blox Fruit / Roblox<br>
-                2. Mở thực thi script (executor)<br>
-                3. Dán code này vào → Chạy<br>
-                4. Chúc vui! 🎮
-            </div>
+            <button class="copy-btn" id="copyBtn" onclick="copyScript()">📋 SAO CHÉP SCRIPT NGAY</button>
+        </div>
+
+        <div class="support-box">
+            <h3>💖 ỦNG HỘ MÌNH NỮA NHA!</h3>
+            <p>Cảm ơn bạn đã tin dùng ❤️</p>
+            <p>Nếu thấy hay, hãy giới thiệu cho bạn bè cùng biết<br>Đó là động lực lớn để mình tạo ra nhiều thứ tốt hơn 💪</p>
+            <p style="margin-top:10px;font-weight:bold;color:#e74c3c">Chúc bạn chơi game vui vẻ! 🎮✨</p>
         </div>
     </div>
 
@@ -60,14 +85,13 @@ window.onload = function(){
     let data = p.get("data");
     let name = p.get("name") || "Script";
     
-    document.getElementById('pageName').innerText = "📜 " + name;
+    document.getElementById('pageName').innerText = name;
     
     if(!data){
-        document.getElementById('scriptDisplay').innerText = "❌ Không tìm thấy nội dung Script!\n\nVui lòng tạo lại từ trang quản lý.";
+        document.getElementById('scriptDisplay').innerText = "❌ Không tìm thấy nội dung Script!\nVui lòng tạo lại từ trang quản lý.";
         return;
     }
     
-    // Giải mã nội dung script
     try{
         const decoded = decodeURIComponent(escape(atob(data)));
         document.getElementById('scriptDisplay').innerText = decoded;
@@ -81,11 +105,11 @@ function copyScript(){
     navigator.clipboard.writeText(text).then(()=>{
         const btn = document.getElementById('copyBtn');
         btn.classList.add('done');
-        btn.innerText = "✅ Đã Sao Chép!";
+        btn.innerText = "✅ ĐÃ SAO CHÉP THÀNH CÔNG!";
         setTimeout(()=>{
             btn.classList.remove('done');
-            btn.innerText = "📋 Sao chép Script";
-        }, 2500);
+            btn.innerText = "📋 SAO CHÉP SCRIPT NGAY";
+        }, 3000);
     });
 }
 </script>
