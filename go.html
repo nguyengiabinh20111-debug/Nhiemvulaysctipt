@@ -37,10 +37,11 @@
 
         .premium{margin-top:25px;padding:20px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700}
         .premium h3{color:#e74c3c;font-size:17px;margin-bottom:12px;text-align:center}
-        .premium p{font-size:14px;line-height:1.6;color:#333;margin:5px 0}
-        .premium .price{background:#fff;padding:10px;border-radius:8px;margin:8px 0}
-        .premium .price strong{color:#22c55e}
-        .premium .contact{margin-top:12px;padding:10px;background:#fff;border-radius:8px}
+        .premium p{font-size:14px;line-height:1.8;color:#333;margin:8px 0}
+        .premium .price{background:#fff;padding:12px;border-radius:8px;margin:10px 0;text-align:center}
+        .premium .contact{margin-top:12px;padding:12px;background:#fff;border-radius:8px}
+        .premium .heart{margin-top:15px;padding:12px;background:#fff;border-radius:8px;text-align:center;color:#e74c3c;font-weight:bold;font-style:italic}
+        .premium a{color:#5865f2;font-weight:bold;text-decoration:none}
     </style>
 </head>
 <body>
@@ -51,25 +52,21 @@
                 <p>Hoàn thành các bước để mở khóa link</p>
             </div>
 
-            <!-- 1️⃣ Discord — 20 GIÂY -->
             <button class="task-btn discord" id="btn1" onclick="startTask(1, 20)">
                 <span>💬 Tham gia Discord</span>
                 <span id="t1-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 2️⃣ YouTube — 30 GIÂY -->
             <button class="task-btn youtube" id="btn2" onclick="startTask(2, 30)">
                 <span>▶ Đăng ký Kênh YouTube</span>
                 <span id="t2-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 3️⃣ TikTok — 30 GIÂY -->
             <button class="task-btn tiktok" id="btn3" onclick="startTask(3, 30)">
                 <span>🎵 Theo dõi TikTok</span>
                 <span id="t3-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 4️⃣ Xem video — 2 PHÚT -->
             <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
                 <span>📺 Xem video 2 phút</span>
                 <span id="t4-status" class="timer">Bắt đầu</span>
@@ -96,22 +93,31 @@
             </button>
         </div>
 
-        <!-- 💎 THÔNG TIN PREMIUM ĐẦY ĐỦ -->
+        <!-- 💎 PREMIUM ĐÃ CẬP NHẬT -->
         <div class="premium">
-            <h3>💎 NẠP PREMIUM — LẤY LINK NGAY KHÔNG CẦN CHỜ</h3>
+            <h3>💎 NẠP PREMIUM — KHÔNG CẦN CHỜ ĐỢI</h3>
             
             <div class="price">
-                <p>✅ <strong>10.000đ</strong> → 2 tháng Premium (chuyển khoản)</p>
-                <p>✅ <strong>20.000đ</strong> → 2 tháng Premium (thẻ nạp game)</p>
+                <p>💸 <strong>10.000đ</strong> → 2 tháng (chuyển khoản)</p>
+                <p>💸 <strong>20.000đ</strong> → 2 tháng (thẻ nạp game)</p>
             </div>
 
+            <p>✨ <strong>Bạn sẽ nhận được:</strong></p>
+            <p>✅ Nhận link ngay lập tức, không cần làm nhiệm vụ gì cả</p>
+            <p>✅ Sử dụng tất cả script mới nhất, không giới hạn</p>
+            <p>✅ Nhận script đặc biệt chỉ dành cho Premium</p>
+            <p>✅ Được cấp role đặc biệt trên server Discord</p>
+            <p>✅ Được hỗ trợ tận tình khi gặp khó khăn</p>
+
             <div class="contact">
-                <p>📞 <strong>Liên hệ mua:</strong></p>
-                <p>• Zalo/Discord: <strong>@dobinhl12</strong></p>
-                <p>• SĐT: <strong>0383292439</strong></p>
+                <p>📞 <strong>Liên hệ mình:</strong></p>
+                <p>• Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhl12</a></p>
+                <p>• SĐT: 0383292439</p>
             </div>
-            
-            <p style="margin-top:10px;font-size:13px;color:#666;">Sau khi thanh toán bạn sẽ nhận link trực tiếp không cần làm nhiệm vụ gì cả ✅</p>
+
+            <div class="heart">
+                Cảm ơn mọi người đã ủng hộ! Mỗi đồng mọi người đóng góp chính là động lực để mình có thêm kinh phí, tạo ra nhiều thứ tốt đẹp hơn cho mọi người 💖
+            </div>
         </div>
     </div>
 
