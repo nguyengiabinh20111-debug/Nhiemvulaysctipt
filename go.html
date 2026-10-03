@@ -3,120 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <base target="_blank">
     <title>Script — Mở Khóa</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Arial, sans-serif}
-        body{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height:100vh;
-            padding:20px
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{background:#f5f5f7;min-height:100vh;padding:20px}
         .container{max-width:420px;margin:0 auto}
-        
-        .script-header{
-            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
-            border-radius:20px;
-            padding:25px;
-            margin-bottom:20px;
-            text-align:center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-            border: 2px solid rgba(255,255,255,0.8);
-        }
-        .script-icon{font-size:40px;margin-bottom:10px}
-        .script-name{
-            font-size:26px;font-weight:800;
-            background: linear-gradient(135deg, #ff4444, #ff9900);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom:8px;
-        }
-        .script-desc{color:#666;font-size:14px}
-        
-        .card{background:#fff;border-radius:20px;padding:25px;box-shadow:0 8px 32px rgba(0,0,0,0.12);margin-bottom:20px}
+        .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
+        .title{text-align:center;margin-bottom:25px}
+        .title h2{font-size:22px;color:#ff4444;margin-bottom:8px}
+        .title p{color:#666;font-size:14px}
 
-        .task-btn{
-            display:flex;align-items:center;justify-content:space-between;
-            padding:16px 20px;margin:10px 0;border-radius:14px;
-            color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-        .task-btn:active{transform:scale(0.98)}
+        .task-btn{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin:10px 0;border-radius:12px;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left}
         .task-btn.discord{background:linear-gradient(90deg,#5865f2,#7289da)}
         .task-btn.youtube{background:linear-gradient(90deg,#ff0000,#cc0000)}
         .task-btn.tiktok{background:linear-gradient(90deg,#00f2ea,#00f7b4);color:#000}
         .task-btn.video{background:linear-gradient(90deg,#ff4444,#e53935)}
         .task-btn.locked{opacity:0.6;cursor:not-allowed}
         .timer{font-size:13px;opacity:0.9;margin-left:8px}
-        .done-mark{color:#90EE90;font-weight:bold;margin-left:8px}
+        .done-mark{color:#22c55e;font-weight:bold;margin-left:8px}
 
-        .video-box{margin:15px 0;display:none;border-radius:14px;overflow:hidden;background:#000}
-        .video-box.show{display:block;animation:fadeIn 0.3s ease}
+        .video-box{margin:15px 0;display:none;border-radius:12px;overflow:hidden;background:#000}
+        .video-box.show{display:block}
         .video-box iframe{width:100%;aspect-ratio:16/9;border:none}
-        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
         .progress-area{margin:25px 0;text-align:center}
-        .progress-text{font-size:15px;color:#444;margin-bottom:10px;font-weight:600}
-        .progress-bar{height:12px;background:#eee;border-radius:10px;overflow:hidden;margin:0 20px}
-        .progress-fill{
-            height:100%;
-            background:linear-gradient(90deg,#22c55e,#4ade80);
-            width:0%;transition:0.5s ease;border-radius:10px;
-        }
+        .progress-text{font-size:15px;color:#444;margin-bottom:10px}
+        .progress-bar{height:10px;background:#eee;border-radius:5px;overflow:hidden;margin:0 20px}
+        .progress-fill{height:100%;background:#22c55e;width:0%;transition:0.4s ease;border-radius:5px}
 
-        .unlock-btn{
-            width:100%;padding:16px;background:#ccc;color:#666;
-            font-weight:bold;border:none;border-radius:14px;font-size:16px;
-            cursor:not-allowed;margin-top:10px;transition:all 0.3s;
-        }
-        .unlock-btn.ready{
-            background:linear-gradient(90deg,#22c55e,#4ade80);
-            color:#fff;cursor:pointer;box-shadow:0 4px 15px rgba(34,197,94,0.4);
-        }
+        .unlock-btn{width:100%;padding:16px;background:#ccc;color:#666;font-weight:bold;border:none;border-radius:12px;font-size:16px;cursor:not-allowed;margin-top:10px}
+        .unlock-btn.ready{background:#22c55e;color:#fff;cursor:pointer}
         .unlock-btn a{color:#fff;text-decoration:none;display:block}
 
-        .premium{
-            background:linear-gradient(135deg,#fff8dc,#fff3b0);
-            border-radius:20px;padding:25px;border:2px solid #ffd700;
-            box-shadow:0 4px 20px rgba(255,215,0,0.2);
-        }
-        .premium h3{color:#e74c3c;font-size:18px;margin-bottom:15px;text-align:center}
-        .premium p{font-size:14px;line-height:1.8;color:#333;margin:6px 0}
-        .premium .price{background:#fff;padding:15px;border-radius:12px;margin:12px 0;text-align:center}
-        .premium .contact{margin-top:15px;padding:15px;background:#fff;border-radius:12px}
-        .premium .heart{margin-top:15px;padding:15px;background:#fff;border-radius:12px;text-align:center;color:#e74c3c;font-weight:bold;font-style:italic;line-height:1.6}
+        .premium{margin-top:25px;padding:20px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700}
+        .premium h3{color:#e74c3c;font-size:17px;margin-bottom:12px;text-align:center}
+        .premium p{font-size:14px;line-height:1.8;color:#333;margin:8px 0}
+        .premium .price{background:#fff;padding:12px;border-radius:8px;margin:10px 0;text-align:center}
+        .premium .contact{margin-top:12px;padding:12px;background:#fff;border-radius:8px}
+        .premium .heart{margin-top:15px;padding:12px;background:#fff;border-radius:8px;text-align:center;color:#e74c3c;font-weight:bold;font-style:italic}
         .premium a{color:#5865f2;font-weight:bold;text-decoration:none}
     </style>
 </head>
 <body>
     <div class="container">
-        
-        <div class="script-header">
-            <div class="script-icon">📜</div>
-            <h1 class="script-name" id="scriptNameDisplay">Script</h1>
-            <p class="script-desc">Hoàn thành nhiệm vụ để nhận link</p>
-        </div>
-
         <div class="card">
-            <!-- 1️⃣ Discord — 20 GIÂY -->
-            <button class="task-btn discord" id="btn1" onclick="startTask(1, 20)">
+            <div class="title">
+                <h2 id="scriptNameDisplay">📜 Script</h2>
+                <p>Hoàn thành các bước để nhận script</p>
+            </div>
+
+            <!-- 1️⃣ Discord — Mở trang + đếm -->
+            <button class="task-btn discord" id="btn1" onclick="openAndCount('discord', 1, 20)">
                 <span>💬 Tham gia Discord</span>
                 <span id="t1-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 2️⃣ YouTube — 30 GIÂY -->
-            <button class="task-btn youtube" id="btn2" onclick="startTask(2, 30)">
+            <!-- 2️⃣ YouTube — Mở trang + đếm -->
+            <button class="task-btn youtube" id="btn2" onclick="openAndCount('youtube', 2, 30)">
                 <span>▶ Đăng ký Kênh YouTube</span>
                 <span id="t2-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 3️⃣ TikTok — 30 GIÂY -->
-            <button class="task-btn tiktok" id="btn3" onclick="startTask(3, 30)">
+            <!-- 3️⃣ TikTok — Mở trang + đếm -->
+            <button class="task-btn tiktok" id="btn3" onclick="openAndCount('tiktok', 3, 30)">
                 <span>🎵 Theo dõi TikTok</span>
                 <span id="t3-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 4️⃣ Xem video — 2 PHÚT -->
+            <!-- 4️⃣ Xem video — Chỉ hiện video + đếm -->
             <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
                 <span>📺 Xem video 2 phút</span>
                 <span id="t4-status" class="timer">Bắt đầu</span>
@@ -124,4 +79,121 @@
 
             <div class="video-box" id="videoContainer">
                 <iframe 
+                    src="https://www.youtube.com/embed/zKTNXUA7lWI?rel=0" 
+                    title="Video" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="progress-area">
+                <p class="progress-text" id="progressText">Tiến trình: 0/4</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <button class="unlock-btn" id="unlockBtn">
+                🔒 Hoàn thành để nhận
+            </button>
+        </div>
+
+        <!-- 💎 PREMIUM -->
+        <div class="premium">
+            <h3>💎 NẠP PREMIUM — NHẬN NGAY KHÔNG CẦN CHỜ</h3>
+            
+            <div class="price">
+                <p>💸 <strong>10.000đ</strong> → 2 tháng (chuyển khoản)</p>
+                <p>💸 <strong>20.000đ</strong> → 2 tháng (thẻ nạp game)</p>
+            </div>
+
+            <p>✨ <strong>Quyền lợi Premium:</strong></p>
+            <p>✅ Nhận link ngay, không cần làm nhiệm vụ</p>
+            <p>✅ Tất cả script mới nhất, không giới hạn</p>
+            <p>✅ Script đặc biệt chỉ dành Premium</p>
+            <p>✅ Được cấp role đặc biệt trên Discord</p>
+            <p>✅ Hỗ trợ tận tình mọi lúc</p>
+
+            <div class="contact">
+                <p>📞 <strong>Liên hệ:</strong></p>
+                <p>• Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhl12</a></p>
+                <p>• SĐT: 0383292439</p>
+            </div>
+
+            <div class="heart">
+                Cảm ơn mọi người đã ủng hộ! Mỗi đồng đóng góp là động lực để mình có kinh phí tạo ra nhiều thứ tốt hơn 💖
+            </div>
+        </div>
+    </div>
+
+<script>
+const done = [false, false, false, false];
+let scriptName = "Script";
+let scriptLink = "";
+
+const links = {
+    discord: "https://discord.gg/uqhEpzXy9q",
+    youtube: "https://youtube.com/@binngamingg?si=DiC2PvPzceaba-yY",
+    tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553"
+};
+
+window.onload = function(){
+    const p = new URLSearchParams(window.location.search);
+    scriptName = p.get("name") || "Script";
+    scriptLink = p.get("link") || "";
     
+    document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
+    
+    if(!scriptLink){
+        alert("⚠️ Thiếu link Script! Vui lòng tạo link từ trang index.html");
+    }
+};
+
+// Mở trang + đếm thời gian cùng lúc
+function openAndCount(type, num, seconds){
+    if(done[num-1]) return;
+    // Mở tab mới ngay lập tức
+    window.open(links[type], '_blank', 'noopener,noreferrer');
+    // Bắt đầu đếm
+    startTask(num, seconds);
+}
+
+function startTask(num, seconds){
+    if(done[num-1]) return;
+
+    if(num === 4){
+        document.getElementById('videoContainer').classList.add('show');
+    }
+
+    document.getElementById(`btn${num}`).classList.add('locked');
+    document.getElementById(`btn${num}`).disabled = true;
+
+    let t = seconds;
+    let interval = setInterval(()=>{
+        t--;
+        let text = (t > 60) ? `${Math.floor(t/60)}p ${t%60}s` : `${t}s`;
+        document.getElementById(`t${num}-status`).innerText = text;
+        
+        if(t <= 0){
+            clearInterval(interval);
+            done[num-1] = true;
+            document.getElementById(`t${num}-status`).innerHTML = '<span class="done-mark">✅ Xong</span>';
+            updateProgress();
+        }
+    }, 1000);
+}
+
+function updateProgress(){
+    const count = done.filter(x=>x).length;
+    document.getElementById('progressText').innerText = `Tiến trình: ${count}/4`;
+    document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
+
+    if(count === 4 && scriptLink){
+        const btn = document.getElementById('unlockBtn');
+        btn.classList.add('ready');
+        btn.innerHTML = `<a href="${scriptLink}" target="_blank">🔓 NHẬN ${scriptName.toUpperCase()} NGAY</a>`;
+    }
+}
+</script>
+</body>
+</html>
