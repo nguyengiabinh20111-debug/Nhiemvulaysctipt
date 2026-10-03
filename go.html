@@ -10,7 +10,7 @@
         .container{max-width:420px;margin:0 auto}
         .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
         .title{text-align:center;margin-bottom:25px}
-        .title h2{font-size:20px;color:#111;margin-bottom:8px}
+        .title h2{font-size:22px;color:#ff4444;margin-bottom:8px}
         .title p{color:#666;font-size:14px}
 
         .task-btn{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin:10px 0;border-radius:12px;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left}
@@ -22,7 +22,6 @@
         .timer{font-size:13px;opacity:0.9;margin-left:8px}
         .done-mark{color:#22c55e;font-weight:bold;margin-left:8px}
 
-        /* Khung video */
         .video-box{margin:15px 0;display:none;border-radius:12px;overflow:hidden;background:#000}
         .video-box.show{display:block}
         .video-box iframe{width:100%;aspect-ratio:16/9;border:none}
@@ -36,43 +35,46 @@
         .unlock-btn.ready{background:#22c55e;color:#fff;cursor:pointer}
         .unlock-btn a{color:#fff;text-decoration:none;display:block}
 
-        .premium{text-align:center;margin-top:25px;padding:15px;background:#fff8dc;border-radius:10px;font-size:14px}
-        .premium a{color:#ff4444;font-weight:bold;text-decoration:none}
+        .premium{margin-top:25px;padding:20px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700}
+        .premium h3{color:#e74c3c;font-size:17px;margin-bottom:12px;text-align:center}
+        .premium p{font-size:14px;line-height:1.6;color:#333;margin:5px 0}
+        .premium .price{background:#fff;padding:10px;border-radius:8px;margin:8px 0}
+        .premium .price strong{color:#22c55e}
+        .premium .contact{margin-top:12px;padding:10px;background:#fff;border-radius:8px}
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
             <div class="title">
-                <h2>📜 Script</h2>
+                <h2 id="scriptNameDisplay">📜 Script</h2>
                 <p>Hoàn thành các bước để mở khóa link</p>
             </div>
 
-            <!-- 1️⃣ Discord — 10 GIÂY -->
-            <button class="task-btn discord" id="btn1" onclick="startTask(1, 10)">
+            <!-- 1️⃣ Discord — 20 GIÂY -->
+            <button class="task-btn discord" id="btn1" onclick="startTask(1, 20)">
                 <span>💬 Tham gia Discord</span>
                 <span id="t1-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 2️⃣ YouTube — 20 GIÂY -->
-            <button class="task-btn youtube" id="btn2" onclick="startTask(2, 20)">
+            <!-- 2️⃣ YouTube — 30 GIÂY -->
+            <button class="task-btn youtube" id="btn2" onclick="startTask(2, 30)">
                 <span>▶ Đăng ký Kênh YouTube</span>
                 <span id="t2-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 3️⃣ TikTok — 20 GIÂY -->
-            <button class="task-btn tiktok" id="btn3" onclick="startTask(3, 20)">
+            <!-- 3️⃣ TikTok — 30 GIÂY -->
+            <button class="task-btn tiktok" id="btn3" onclick="startTask(3, 30)">
                 <span>🎵 Theo dõi TikTok</span>
                 <span id="t3-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 4️⃣ Xem video — 2 PHÚT + HIỆN VIDEO NGAY TRANG -->
+            <!-- 4️⃣ Xem video — 2 PHÚT -->
             <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
                 <span>📺 Xem video 2 phút</span>
                 <span id="t4-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- KHUNG VIDEO HIỆN RA KHI BẤM NÚT -->
             <div class="video-box" id="videoContainer">
                 <iframe 
                     src="https://www.youtube.com/embed/zKTNXUA7lWI?rel=0" 
@@ -82,7 +84,6 @@
                 </iframe>
             </div>
 
-            <!-- Thanh tiến trình -->
             <div class="progress-area">
                 <p class="progress-text" id="progressText">Tiến trình mở khóa: 0/4</p>
                 <div class="progress-bar">
@@ -90,20 +91,34 @@
                 </div>
             </div>
 
-            <!-- Nút mở khóa -->
             <button class="unlock-btn" id="unlockBtn">
                 🔒 NHẬN SCRIPT NGAY
             </button>
         </div>
 
+        <!-- 💎 THÔNG TIN PREMIUM ĐẦY ĐỦ -->
         <div class="premium">
-            💎 Không muốn đợi? <a href="#">Nạp Premium 10k/2 tháng</a> lấy link trực tiếp
+            <h3>💎 NẠP PREMIUM — LẤY LINK NGAY KHÔNG CẦN CHỜ</h3>
+            
+            <div class="price">
+                <p>✅ <strong>10.000đ</strong> → 2 tháng Premium (chuyển khoản)</p>
+                <p>✅ <strong>20.000đ</strong> → 2 tháng Premium (thẻ nạp game)</p>
+            </div>
+
+            <div class="contact">
+                <p>📞 <strong>Liên hệ mua:</strong></p>
+                <p>• Zalo/Discord: <strong>@dobinhl12</strong></p>
+                <p>• SĐT: <strong>0383292439</strong></p>
+            </div>
+            
+            <p style="margin-top:10px;font-size:13px;color:#666;">Sau khi thanh toán bạn sẽ nhận link trực tiếp không cần làm nhiệm vụ gì cả ✅</p>
         </div>
     </div>
 
 <script>
 const done = [false, false, false, false];
 let targetLink = "";
+let scriptName = "Script";
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
@@ -115,7 +130,13 @@ window.onload = function(){
     const p = new URLSearchParams(window.location.search);
     const code = p.get("id");
     if(code){
-        try{ targetLink = atob(code); }
+        try{
+            const decoded = atob(code);
+            const parts = decoded.split("|||");
+            scriptName = parts[0] || "Script";
+            targetLink = parts[1];
+            document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
+        }
         catch(e){ alert("❌ Link không hợp lệ!"); }
     }
 };
@@ -123,17 +144,11 @@ window.onload = function(){
 function startTask(num, seconds){
     if(done[num-1]) return;
 
-    // Mở tab cho Discord/YouTube/TikTok
     if(num === 1) window.open(links.discord, '_blank');
     if(num === 2) window.open(links.youtube, '_blank');
     if(num === 3) window.open(links.tiktok, '_blank');
-    
-    // Riêng nhiệm vụ 4: HIỆN VIDEO NGAY TRÊN TRANG
-    if(num === 4){
-        document.getElementById('videoContainer').classList.add('show');
-    }
+    if(num === 4) document.getElementById('videoContainer').classList.add('show');
 
-    // Khóa nút sau khi bấm
     document.getElementById(`btn${num}`).classList.add('locked');
     document.getElementById(`btn${num}`).disabled = true;
 
@@ -160,7 +175,7 @@ function updateProgress(){
     if(count === 4){
         const btn = document.getElementById('unlockBtn');
         btn.classList.add('ready');
-        btn.innerHTML = `<a href="${targetLink}" target="_blank">🔓 NHẬN SCRIPT NGAY</a>`;
+        btn.innerHTML = `<a href="${targetLink}" target="_blank">🔓 NHẬN ${scriptName.toUpperCase()} NGAY</a>`;
     }
 }
 </script>
