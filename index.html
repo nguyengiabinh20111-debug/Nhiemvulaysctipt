@@ -88,7 +88,8 @@
 
 <script>
 const PASSWORD = "dobinhl12345";
-const BASE_URL = window.location.origin + window.location.pathname.replace('index.html','go.html');
+// ✅ ĐÃ SỬA ĐƯỜNG DẪN CHÍNH XÁC CÓ go.html
+const BASE_URL = "https://nguyengiabinh20111-debug.github.io/Nhiemvulaysctipt/go.html";
 
 function switchTab(mode){
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -113,17 +114,14 @@ function taoLink(){
             alert("⚠️ Chưa dán nội dung script!");
             return;
         }
-        // Mã hóa Base64 → gọn link
-        const encoded = btoa(unescape(encodeURIComponent(scriptText)));
-        // ✅ ĐÚNG THỨ TỰ: name TRƯỚC, s SAU
-        finalLink = `${BASE_URL}?name=${name}&s=${encoded}`;
+        const encodedScript = btoa(unescape(encodeURIComponent(scriptText)));
+        finalLink = `${BASE_URL}?name=${name}&s=${encodedScript}`;
     } else {
         const link = document.getElementById('directLink').value.trim();
         if(!link){
             alert("⚠️ Chưa nhập link!");
             return;
         }
-        // ✅ ĐÚNG THỨ TỰ: name TRƯỚC, link SAU
         finalLink = `${BASE_URL}?name=${name}&link=${encodeURIComponent(link)}`;
     }
 
