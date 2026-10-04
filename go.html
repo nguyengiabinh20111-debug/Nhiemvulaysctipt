@@ -10,7 +10,7 @@
         body{background:#f5f5f7;min-height:100vh;padding:20px;padding-top:70px}
         .container{max-width:420px;margin:0 auto}
 
-        /* ========== NÚT MENU 3 GẠCH ========== */
+        /* NÚT MENU 3 GẠCH */
         .menu-toggle{
             position:fixed;top:15px;left:15px;z-index:100;
             width:45px;height:45px;border-radius:12px;background:#fff;
@@ -19,7 +19,7 @@
         }
         .menu-toggle:active{transform:scale(0.95)}
 
-        /* ========== MENU BÊN TRÁI ========== */
+        /* MENU BÊN TRÁI */
         .menu-overlay{
             position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:150;display:none;
         }
@@ -47,7 +47,7 @@
         }
         .side-menu .hint{font-size:12px;color:#888;margin-top:12px}
 
-        /* ========== NỘI DUNG CHÍNH ========== */
+        /* NỘI DUNG CHÍNH */
         .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
         .title{text-align:center;margin-bottom:25px}
         .title h2{font-size:22px;color:#ff4444;margin-bottom:8px}
@@ -73,7 +73,7 @@
 
         .unlock-btn{width:100%;padding:16px;background:#ccc;color:#666;font-weight:bold;border:none;border-radius:12px;font-size:16px;cursor:not-allowed;margin-top:10px}
         .unlock-btn.ready{background:#22c55e;color:#fff;cursor:pointer}
-        .unlock-btn a{color:#fff;text-decoration:none;display:block}
+        .unlock-btn:active{transform:scale(0.98)}
 
         .premium{margin-top:25px;padding:20px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700}
         .premium h3{color:#e74c3c;font-size:17px;margin-bottom:12px;text-align:center}
@@ -123,7 +123,7 @@
                 <span id="t3-status" class="timer">Bắt đầu</span>
             </button>
 
-            <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
+            <button class="task-btn video" id="btn4" onclick="startTask(4, 20)">
                 <span>📺 Xem video 2 phút</span>
                 <span id="t4-status" class="timer">Bắt đầu</span>
             </button>
@@ -144,7 +144,8 @@
                 </div>
             </div>
 
-            <button class="unlock-btn" id="unlockBtn">
+            <!-- NÚT NHẬN SCRIPT — ĐÃ SỬA GỌN HÀNH ĐỘNG -->
+            <button class="unlock-btn" id="unlockBtn" onclick="nhanScript()">
                 🔒 Hoàn thành để nhận
             </button>
         </div>
@@ -181,7 +182,7 @@ const ADMIN_PASS = "dobinhl12345";
 const done = [false, false, false, false];
 let scriptName = "Script";
 let scriptLink = "";
-let directScriptContent = null; // Dùng khi dán thẳng script
+let directScriptHtml = ""; // Nội dung script nếu dán thẳng
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
@@ -206,25 +207,19 @@ function checkPassword(){
         return;
     }
     closeMenu();
-    goToScript(); // Nhảy thẳng trang script
+    moDenScript(); // Vào ngay
 }
 
-function goToScript(){
+// === MỞ TRANG SCRIPT — DÙNG CHUNG CHO CẢ 2 TRƯỜNG HỢP ===
+function moDenScript(){
     if(scriptLink){
         window.open(scriptLink, '_blank', 'noopener,noreferrer');
         setTimeout(() => { window.location.href = scriptLink; }, 150);
-    } else if(directScriptContent){
-        // Hiển thị nội dung script trực tiếp
-        const page = "data:text/html;charset=utf-8," + encodeURIComponent(
-            `<html><body style="background:#1a1a1a;color:#fff;padding:20px;white-space:pre-wrap;font-family:monospace;font-size:13px">` +
-            `<h3 style="color:#ffd700;margin:0 0 15px 0">📜 ${scriptName}</h3><br>` +
-            directScriptContent.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
-            `</body></html>`
-        );
-        window.open(page, '_blank', 'noopener,noreferrer');
-        setTimeout(() => { window.location.href = page; }, 150);
+    } else if(directScriptHtml){
+        window.open(directScriptHtml, '_blank', 'noopener,noreferrer');
+        setTimeout(() => { window.location.href = directScriptHtml; }, 150);
     } else {
-        alert("⚠️ Chưa có link/script! Tạo lại từ trang index.html");
+        alert("⚠️ Chưa có script! Tạo lại từ trang index.html");
     }
 }
 
@@ -236,7 +231,13 @@ window.onload = function(){
     // Trường hợp dán thẳng script qua Base64
     if(!scriptLink && p.get("s")){
         try {
-            directScriptContent = decodeURIComponent(escape(atob(p.get("s"))));
+            const decoded = decodeURIComponent(escape(atob(p.get("s"))));
+            directScriptHtml = "data:text/html;charset=utf-8," + encodeURIComponent(
+                `<html><body style="background:#1a1a1a;color:#fff;padding:20px;white-space:pre-wrap;font-family:monospace;font-size:13px">` +
+                `<h3 style="color:#ffd700;margin:0 0 15px 0">📜 ${scriptName}</h3><br>` +
+                decoded.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
+                `</body></html>`
+            );
         } catch(e) {
             console.error("Lỗi giải mã:", e);
         }
@@ -244,7 +245,7 @@ window.onload = function(){
     
     document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
     
-    if(!scriptLink && !directScriptContent){
+    if(!scriptLink && !directScriptHtml){
         alert("⚠️ Thiếu link/Script! Tạo lại từ trang index.html");
     }
 };
@@ -257,11 +258,8 @@ function openAndCount(type, num, seconds){
 
 function startTask(num, seconds){
     if(done[num-1]) return;
-
-    if(num === 4){
-        document.getElementById('videoContainer').classList.add('show');
-    }
-
+    if(num === 4) document.getElementById('videoContainer').classList.add('show');
+    
     document.getElementById(`btn${num}`).classList.add('locked');
     document.getElementById(`btn${num}`).disabled = true;
 
@@ -270,7 +268,6 @@ function startTask(num, seconds){
         t--;
         let text = (t > 60) ? `${Math.floor(t/60)}p ${t%60}s` : `${t}s`;
         document.getElementById(`t${num}-status`).innerText = text;
-        
         if(t <= 0){
             clearInterval(interval);
             done[num-1] = true;
@@ -285,11 +282,24 @@ function updateProgress(){
     document.getElementById('progressText').innerText = `Tiến trình: ${count}/4`;
     document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
 
-    if(count === 4 && (scriptLink || directScriptContent)){
+    if(count === 4 && (scriptLink || directScriptHtml)){
         const btn = document.getElementById('unlockBtn');
         btn.classList.add('ready');
-        btn.innerHTML = `<a href="javascript:goToScript()">🔓 NHẬN ${scriptName.toUpperCase()} NGAY</a>`;
+        btn.innerText = `🔓 NHẬN ${scriptName.toUpperCase()} NGAY`;
     }
+}
+
+// === NÚT BẤM NHẬN SCRIPT ===
+function nhanScript(){
+    if(!scriptLink && !directScriptHtml){
+        alert("⚠️ Chưa có script! Tạo lại từ trang index.html");
+        return;
+    }
+    if(done.filter(x=>x).length < 4){
+        alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
+        return;
+    }
+    moDenScript(); // Mở thẳng không qua thẻ <a>
 }
 </script>
 </body>
