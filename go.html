@@ -315,36 +315,42 @@ function incrementDone(){
     }
 }
 
-// === PHẦN NÀY MỚI CẬP NHẬT ===
+// === ĐÃ SỬA PHẦN ĐỌC LINK — ĐỦ 2 TRƯỜNG HỢP ===
 window.onload = function(){
     const p = new URLSearchParams(window.location.search);
     scriptName = p.get("name") || "Script";
     scriptLink = p.get("link") || "";
     
-    // Trường hợp dán thẳng script → hiển thị nội dung
+    // TRƯỜNG HỢP 1: Dán thẳng script → giải mã Base64
     if(!scriptLink && p.get("s")){
         try {
-            const decoded = decodeURIComponent(escape(atob(p.get("s"))));
-            // Tạo trang hiển thị script
+            const base64Text = p.get("s");
+            // Giải mã đúng chuẩn
+            const decoded = decodeURIComponent(escape(atob(base64Text)));
+            // Tạo trang hiển thị script ngay
             scriptLink = "data:text/html;charset=utf-8," + encodeURIComponent(
                 `<html><body style="background:#1a1a1a;color:#fff;padding:20px;white-space:pre-wrap;font-family:monospace;font-size:13px">` +
                 `<h3 style="color:#ffd700;margin:0 0 15px 0">📜 ${scriptName}</h3><br>` +
-                decoded.replace(/</g,'&lt;').replace(/>/g,'&gt;') +
+                decoded.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
                 `</body></html>`
             );
+            sanSangNhan = true; // ✅ Đánh dấu đã có link
         } catch(e) {
-            console.error("Lỗi giải mã:", e);
+            console.error("Lỗi giải mã Base64:", e);
         }
+    }
+    
+    // TRƯỜNG HỢP 2: Dán link trực tiếp
+    if(scriptLink){
+        sanSangNhan = true; // ✅ Đánh dấu đã có link
     }
     
     document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
     
-    if(!scriptLink){
+    // Cập nhật trạng thái nút
+    if(!sanSangNhan){
         document.getElementById('unlockBtn').classList.add('error');
         document.getElementById('unlockBtn').innerText = "❌ THIẾU LINK → TẠO LẠI TỪ INDEX.HTML";
-        sanSangNhan = false;
-    } else {
-        sanSangNhan = true;
     }
     
     loadStats();
@@ -386,8 +392,7 @@ function capNhatTienTrinh(){
     document.getElementById('progressText').innerText = `Tiến trình: ${count}/4`;
     document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
 
-    if(count === 4 && scriptLink){
-        sanSangNhan = true;
+    if(count === 4 && sanSangNhan){
         const btn = document.getElementById('unlockBtn');
         btn.classList.remove('error');
         btn.classList.add('ready');
@@ -397,11 +402,11 @@ function capNhatTienTrinh(){
 
 function nhanScript(){
     if(!sanSangNhan){
-        alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
+        alert("⚠️ Chưa có link script! Tạo lại từ trang quản lý.");
         return;
     }
-    if(!scriptLink){
-        alert("❌ Thiếu link Script! Tạo lại từ trang index.html");
+    if(done.filter(x=>x).length < 4){
+        alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
         return;
     }
     
@@ -410,5 +415,4 @@ function nhanScript(){
 }
 </script>
 </body>
-    </html>
-    
+</html>
