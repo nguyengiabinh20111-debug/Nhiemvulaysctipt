@@ -9,9 +9,42 @@
         body{
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height:100vh;
-            padding:20px
+            padding:20px;padding-top:70px;
         }
         .container{max-width:420px;margin:0 auto}
+
+        /* === NÚT MENU 3 GẠCH === */
+        .menu-btn{
+            position:fixed;top:15px;left:15px;z-index:100;
+            width:45px;height:45px;border-radius:12px;background:rgba(255,255,255,0.95);
+            border:none;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.15);
+        }
+        .menu-btn:active{transform:scale(0.95)}
+
+        /* === MENU ẨN HIỆN === */
+        .side-menu{
+            position:fixed;top:0;left:0;width:280px;height:100%;background:#fff;z-index:200;
+            box-shadow:2px 0 20px rgba(0,0,0,0.2);padding:80px 25px 30px;transform:translateX(-100%);
+            transition:transform 0.3s ease;
+        }
+        .side-menu.open{transform:translateX(0)}
+        .menu-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:150;display:none;
+        }
+        .menu-overlay.show{display:block}
+
+        .side-menu h3{font-size:18px;color:#333;margin-bottom:25px}
+        .side-menu input{
+            width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;font-size:15px;margin-bottom:12px;
+        }
+        .side-menu button{
+            width:100%;padding:14px;background:#5865f2;color:#fff;font-weight:bold;border:none;
+            border-radius:10px;font-size:15px;cursor:pointer;
+        }
+        .close-menu{
+            position:absolute;top:20px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:#888;
+        }
         
         .script-header{
             background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
@@ -94,11 +127,25 @@
         .premium .contact{margin-top:15px;padding:15px;background:#fff;border-radius:12px}
         .premium .heart{margin-top:15px;padding:15px;background:#fff;border-radius:12px;text-align:center;color:#e74c3c;font-weight:bold;font-style:italic;line-height:1.6}
         .premium a{color:#5865f2;font-weight:bold;text-decoration:none}
-        
-        .debug-box{margin-top:15px;padding:12px;background:#f0f0f0;border-radius:10px;font-size:11px;color:#555;word-break:break-all;display:none}
     </style>
 </head>
 <body>
+
+    <!-- NÚT 3 GẠCH -->
+    <button class="menu-btn" onclick="moMenu()">☰</button>
+
+    <!-- MENU NỀN ĐEN KHI MỞ -->
+    <div class="menu-overlay" id="menuOverlay" onclick="dongMenu()"></div>
+
+    <!-- MENU BÊN TRÁI -->
+    <div class="side-menu" id="sideMenu">
+        <button class="close-menu" onclick="dongMenu()">✕</button>
+        <h3>🔐 Truy cập trực tiếp</h3>
+        <input type="password" id="adminPass" placeholder="Nhập mật khẩu quản lý">
+        <button onclick="vaoTrucTiep()">✅ Vào lấy script ngay</button>
+        <p style="margin-top:15px;font-size:12px;color:#888">Chỉ dành cho quản lý</p>
+    </div>
+
     <div class="container">
         
         <div class="script-header">
@@ -155,11 +202,9 @@
                 </div>
             </div>
 
-            <button class="unlock-btn" id="unlockBtn" onclick="goGetScript()">
+            <button class="unlock-btn" id="unlockBtn" onclick="nhanScript()">
                 🔒 Hoàn thành để nhận
             </button>
-            
-            <div class="debug-box" id="debugInfo"></div>
         </div>
 
         <div class="premium">
@@ -190,10 +235,11 @@
     </div>
 
 <script>
+const PASSWORD = "dobinhl12345";
 const done = [false, false, false, false];
 let scriptName = "";
 let scriptLink = "";
-let canUnlock = false;
+let sanSangNhan = false;
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
@@ -203,6 +249,31 @@ const links = {
 
 const STORAGE_KEY_VISIT = "stat_visit_";
 const STORAGE_KEY_DONE = "stat_done_";
+
+function moMenu(){
+    document.getElementById('sideMenu').classList.add('open');
+    document.getElementById('menuOverlay').classList.add('show');
+}
+function dongMenu(){
+    document.getElementById('sideMenu').classList.remove('open');
+    document.getElementById('menuOverlay').classList.remove('show');
+}
+
+function vaoTrucTiep(){
+    const mk = document.getElementById('adminPass').value;
+    if(mk !== PASSWORD){
+        alert("❌ Sai mật khẩu!");
+        return;
+    }
+    if(!scriptLink){
+        alert("❌ Chưa có link script! Tạo lại từ trang quản lý.");
+        return;
+    }
+    dongMenu();
+    // Vào thẳng không cần làm nhiệm vụ
+    window.open(scriptLink, '_blank', 'noopener,noreferrer');
+    setTimeout(()=>window.location.href=scriptLink, 100);
+}
 
 function getScriptId(){
     const p = new URLSearchParams(window.location.search);
@@ -245,11 +316,10 @@ window.onload = function(){
     
     document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
     
-    // Kiểm tra ngay khi tải trang
     if(!scriptLink){
         document.getElementById('unlockBtn').classList.add('error');
-        document.getElementById('unlockBtn').innerText = "❌ THIẾU LINK — TẠO LẠI TỪ INDEX.HTML";
-        canUnlock = false;
+        document.getElementById('unlockBtn').innerText = "❌ THIẾU LINK → TẠO LẠI TỪ INDEX.HTML";
+        sanSangNhan = false;
     }
     
     loadStats();
@@ -281,18 +351,18 @@ function startTask(num, seconds){
             clearInterval(interval);
             done[num-1] = true;
             document.getElementById(`t${num}-status`).innerHTML = '<span class="done-mark">✅ Xong</span>';
-            updateProgress();
+            capNhatTienTrinh();
         }
     }, 1000);
 }
 
-function updateProgress(){
+function capNhatTienTrinh(){
     const count = done.filter(x=>x).length;
     document.getElementById('progressText').innerText = `Tiến trình: ${count}/4`;
     document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
 
     if(count === 4 && scriptLink){
-        canUnlock = true;
+        sanSangNhan = true;
         const btn = document.getElementById('unlockBtn');
         btn.classList.remove('error');
         btn.classList.add('ready');
@@ -300,8 +370,8 @@ function updateProgress(){
     }
 }
 
-function goGetScript(){
-    if(!canUnlock){
+function nhanScript(){
+    if(!sanSangNhan){
         alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
         return;
     }
@@ -309,13 +379,10 @@ function goGetScript(){
         alert("❌ Thiếu link Script! Tạo lại từ trang index.html");
         return;
     }
-    // Mở trang script — mạnh mẽ nhất
+    
     incrementDone();
     window.open(scriptLink, '_blank', 'noopener,noreferrer');
-    // Phòng trường hợp bị chặn
-    setTimeout(()=>{
-        window.location.href = scriptLink;
-    }, 300);
+    setTimeout(()=>window.location.href=scriptLink, 100);
 }
 </script>
 </body>
