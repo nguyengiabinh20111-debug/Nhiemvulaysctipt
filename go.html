@@ -7,8 +7,47 @@
     <title>Script — Mở Khóa</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-        body{background:#f5f5f7;min-height:100vh;padding:20px}
+        body{background:#f5f5f7;min-height:100vh;padding:20px;padding-top:70px}
         .container{max-width:420px;margin:0 auto}
+
+        /* ========== NÚT MENU 3 GẠCH ========== */
+        .menu-toggle{
+            position:fixed;top:15px;left:15px;z-index:100;
+            width:45px;height:45px;border-radius:12px;background:#fff;
+            border:none;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+        .menu-toggle:active{transform:scale(0.95)}
+
+        /* ========== MENU BÊN TRÁI ========== */
+        .menu-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:150;display:none;
+        }
+        .menu-overlay.show{display:block}
+
+        .side-menu{
+            position:fixed;top:0;left:0;width:290px;height:100%;background:#fff;z-index:200;
+            box-shadow:2px 0 20px rgba(0,0,0,0.15);padding:70px 25px 30px;
+            transform:translateX(-100%);transition:transform 0.3s ease;
+        }
+        .side-menu.open{transform:translateX(0)}
+
+        .side-menu .close-btn{
+            position:absolute;top:20px;right:20px;background:none;border:none;
+            font-size:22px;cursor:pointer;color:#888;
+        }
+        .side-menu h3{font-size:18px;color:#333;margin-bottom:20px}
+        .side-menu input{
+            width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;
+            font-size:15px;margin-bottom:12px;
+        }
+        .side-menu button{
+            width:100%;padding:14px;background:#5865f2;color:#fff;
+            font-weight:bold;border:none;border-radius:10px;font-size:15px;cursor:pointer;
+        }
+        .side-menu .hint{font-size:12px;color:#888;margin-top:12px}
+
+        /* ========== NỘI DUNG CHÍNH ========== */
         .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
         .title{text-align:center;margin-bottom:25px}
         .title h2{font-size:22px;color:#ff4444;margin-bottom:8px}
@@ -46,6 +85,22 @@
     </style>
 </head>
 <body>
+
+    <!-- NÚT MENU 3 GẠCH -->
+    <button class="menu-toggle" onclick="openMenu()">☰</button>
+
+    <!-- NỀN ĐEN MỞ MENU -->
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+    <!-- MENU BÊN TRÁI -->
+    <div class="side-menu" id="sideMenu">
+        <button class="close-btn" onclick="closeMenu()">✕</button>
+        <h3>🔐 Truy cập trực tiếp</h3>
+        <input type="password" id="adminPassword" placeholder="Nhập mật khẩu quản lý">
+        <button onclick="checkPassword()">✅ Vào lấy script ngay</button>
+        <p class="hint">Chỉ dành cho quản lý</p>
+    </div>
+
     <div class="container">
         <div class="card">
             <div class="title">
@@ -53,25 +108,21 @@
                 <p>Hoàn thành các bước để nhận script</p>
             </div>
 
-            <!-- 1️⃣ Discord — Mở trang + đếm -->
             <button class="task-btn discord" id="btn1" onclick="openAndCount('discord', 1, 20)">
                 <span>💬 Tham gia Discord</span>
                 <span id="t1-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 2️⃣ YouTube — Mở trang + đếm -->
             <button class="task-btn youtube" id="btn2" onclick="openAndCount('youtube', 2, 30)">
                 <span>▶ Đăng ký Kênh YouTube</span>
                 <span id="t2-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 3️⃣ TikTok — Mở trang + đếm -->
             <button class="task-btn tiktok" id="btn3" onclick="openAndCount('tiktok', 3, 30)">
                 <span>🎵 Theo dõi TikTok</span>
                 <span id="t3-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 4️⃣ Xem video — Chỉ hiện video + đếm -->
             <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
                 <span>📺 Xem video 2 phút</span>
                 <span id="t4-status" class="timer">Bắt đầu</span>
@@ -98,7 +149,6 @@
             </button>
         </div>
 
-        <!-- 💎 PREMIUM -->
         <div class="premium">
             <h3>💎 NẠP PREMIUM — NHẬN NGAY KHÔNG CẦN CHỜ</h3>
             
@@ -127,9 +177,11 @@
     </div>
 
 <script>
+const ADMIN_PASS = "dobinhl12345";
 const done = [false, false, false, false];
 let scriptName = "Script";
 let scriptLink = "";
+let directScriptContent = null; // Dùng khi dán thẳng script
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
@@ -137,24 +189,69 @@ const links = {
     tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553"
 };
 
+// === MENU ===
+function openMenu(){
+    document.getElementById('sideMenu').classList.add('open');
+    document.getElementById('menuOverlay').classList.add('show');
+}
+function closeMenu(){
+    document.getElementById('sideMenu').classList.remove('open');
+    document.getElementById('menuOverlay').classList.remove('show');
+}
+
+function checkPassword(){
+    const input = document.getElementById('adminPassword').value;
+    if(input !== ADMIN_PASS){
+        alert("❌ Sai mật khẩu!");
+        return;
+    }
+    closeMenu();
+    goToScript(); // Nhảy thẳng trang script
+}
+
+function goToScript(){
+    if(scriptLink){
+        window.open(scriptLink, '_blank', 'noopener,noreferrer');
+        setTimeout(() => { window.location.href = scriptLink; }, 150);
+    } else if(directScriptContent){
+        // Hiển thị nội dung script trực tiếp
+        const page = "data:text/html;charset=utf-8," + encodeURIComponent(
+            `<html><body style="background:#1a1a1a;color:#fff;padding:20px;white-space:pre-wrap;font-family:monospace;font-size:13px">` +
+            `<h3 style="color:#ffd700;margin:0 0 15px 0">📜 ${scriptName}</h3><br>` +
+            directScriptContent.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
+            `</body></html>`
+        );
+        window.open(page, '_blank', 'noopener,noreferrer');
+        setTimeout(() => { window.location.href = page; }, 150);
+    } else {
+        alert("⚠️ Chưa có link/script! Tạo lại từ trang index.html");
+    }
+}
+
 window.onload = function(){
     const p = new URLSearchParams(window.location.search);
     scriptName = p.get("name") || "Script";
     scriptLink = p.get("link") || "";
     
+    // Trường hợp dán thẳng script qua Base64
+    if(!scriptLink && p.get("s")){
+        try {
+            directScriptContent = decodeURIComponent(escape(atob(p.get("s"))));
+        } catch(e) {
+            console.error("Lỗi giải mã:", e);
+        }
+    }
+    
     document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
     
-    if(!scriptLink){
-        alert("⚠️ Thiếu link Script! Vui lòng tạo link từ trang index.html");
+    if(!scriptLink && !directScriptContent){
+        alert("⚠️ Thiếu link/Script! Tạo lại từ trang index.html");
     }
 };
 
-// Mở trang + đếm thời gian cùng lúc
 function openAndCount(type, num, seconds){
     if(done[num-1]) return;
-    // Mở tab mới ngay lập tức
     window.open(links[type], '_blank', 'noopener,noreferrer');
-    // Bắt đầu đếm
     startTask(num, seconds);
 }
 
@@ -188,10 +285,10 @@ function updateProgress(){
     document.getElementById('progressText').innerText = `Tiến trình: ${count}/4`;
     document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
 
-    if(count === 4 && scriptLink){
+    if(count === 4 && (scriptLink || directScriptContent)){
         const btn = document.getElementById('unlockBtn');
         btn.classList.add('ready');
-        btn.innerHTML = `<a href="${scriptLink}" target="_blank">🔓 NHẬN ${scriptName.toUpperCase()} NGAY</a>`;
+        btn.innerHTML = `<a href="javascript:goToScript()">🔓 NHẬN ${scriptName.toUpperCase()} NGAY</a>`;
     }
 }
 </script>
