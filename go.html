@@ -47,7 +47,6 @@
         }
         .btn-direct{background:#22c55e;color:#fff}
         .btn-auto{background:#5865f2;color:#fff}
-        .side-menu .hint{font-size:12px;color:#888;margin-top:12px}
 
         /* NỘI DUNG CHÍNH */
         .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
@@ -94,7 +93,7 @@
     <!-- NỀN ĐEN MỞ MENU -->
     <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
-    <!-- MENU BÊN TRÁI → 2 NÚT RIÊNG -->
+    <!-- MENU BÊN TRÁI → ĐÃ BỎ DÒNG MẬT KHẨU -->
     <div class="side-menu" id="sideMenu">
         <button class="close-btn" onclick="closeMenu()">✕</button>
         <h3>🔐 Truy cập quản lý</h3>
@@ -102,8 +101,6 @@
         
         <button class="btn-direct" onclick="vaoThang()">⚡ Vào thẳng lấy script</button>
         <button class="btn-auto" onclick="hoanThanhTuDong()">✅ Tự hoàn thành nhiệm vụ</button>
-        
-        <p class="hint">Mật khẩu: dobinhl12345</p>
     </div>
 
     <div class="container">
@@ -212,10 +209,10 @@ function vaoThang(){
         return;
     }
     closeMenu();
-    moDenScript(); // Mở ngay script
+    moDenScript();
 }
 
-// === NÚT 2: TỰ HOÀN THÀNH NHIỆM VỤ → BẠN TỰ BẤM NHẬN ===
+// === NÚT 2: TỰ HOÀN THÀNH NHIỆM VỤ ===
 function hoanThanhTuDong(){
     const mk = document.getElementById('adminPassword').value;
     if(mk !== ADMIN_PASS){
@@ -224,10 +221,8 @@ function hoanThanhTuDong(){
     }
     closeMenu();
 
-    // Đánh dấu đủ 4 nhiệm vụ ngay lập tức
     for(let i=0; i<4; i++) done[i] = true;
     
-    // Cập nhật giao diện tất cả ✅
     for(let i=1; i<=4; i++){
         document.getElementById(`btn${i}`).classList.add('locked');
         document.getElementById(`btn${i}`).disabled = true;
@@ -235,7 +230,6 @@ function hoanThanhTuDong(){
     }
     document.getElementById('videoContainer').classList.add('show');
     
-    // Cập nhật thanh tiến trình & nút chuyển xanh
     updateProgress();
     
     alert("✅ Đã hoàn thành tất cả nhiệm vụ!\nBây giờ bấm nút xanh để nhận script nhé 😉");
