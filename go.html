@@ -48,6 +48,14 @@
         .btn-direct{background:#22c55e;color:#fff}
         .btn-auto{background:#5865f2;color:#fff}
 
+        /* === HỘP ĐỀM SỐ NGƯỜI — Ở NGOÀI MÀN HÌNH CHÍNH === */
+        .counter-box{
+            background:linear-gradient(135deg,#e8f0ff,#d4e2ff);
+            border-radius:12px;padding:15px;text-align:center;margin-bottom:20px
+        }
+        .counter-num{font-size:28px;font-weight:bold;color:#5865f2}
+        .counter-text{font-size:13px;color:#555;margin-top:4px}
+
         /* NỘI DUNG CHÍNH */
         .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
         .title{text-align:center;margin-bottom:25px}
@@ -93,7 +101,7 @@
     <!-- NỀN ĐEN MỞ MENU -->
     <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
-    <!-- MENU BÊN TRÁI → ĐÃ BỎ DÒNG MẬT KHẨU -->
+    <!-- MENU BÊN TRÁI → BỎ ĐỀM RA NGOÀI -->
     <div class="side-menu" id="sideMenu">
         <button class="close-btn" onclick="closeMenu()">✕</button>
         <h3>🔐 Truy cập quản lý</h3>
@@ -104,6 +112,12 @@
     </div>
 
     <div class="container">
+        <!-- === HỘP ĐỀM SỐ NGƯỜI — Ở NGOÀI MÀN HÌNH CHÍNH === -->
+        <div class="counter-box">
+            <div class="counter-num" id="userCounter">0</div>
+            <div class="counter-text">người đã nhận script thành công ✅</div>
+        </div>
+
         <div class="card">
             <div class="title">
                 <h2 id="scriptNameDisplay">📜 Script</h2>
@@ -146,6 +160,7 @@
                 </div>
             </div>
 
+            <!-- CHỈ TĂNG ĐỀM KHI BẤM NÚT NÀY SAU KHI ĐỦ 4/4 -->
             <button class="unlock-btn" id="unlockBtn" onclick="nhanScript()">
                 🔒 Hoàn thành để nhận
             </button>
@@ -184,12 +199,25 @@ const done = [false, false, false, false];
 let scriptName = "Script";
 let scriptLink = "";
 let directScriptHtml = "";
+let daNhan = false; // Đánh dấu đã nhận rồi không tăng lại
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
     youtube: "https://youtube.com/@binngamingg?si=DiC2PvPzceaba-yY",
     tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553"
 };
+
+// === ĐỀM SỐ NGƯỜI ===
+function getCounter(){
+    return parseInt(localStorage.getItem('userCounter') || '0');
+}
+function setCounter(val){
+    localStorage.setItem('userCounter', val);
+    document.getElementById('userCounter').innerText = val;
+}
+function tangMotNguoi(){
+    setCounter(getCounter() + 1);
+}
 
 // === MENU ===
 function openMenu(){
@@ -201,7 +229,7 @@ function closeMenu(){
     document.getElementById('menuOverlay').classList.remove('show');
 }
 
-// === NÚT 1: VÀO THẲNG SCRIPT ===
+// === NÚT 1: VÀO THẲNG — KHÔNG TĂNG ĐỀM ===
 function vaoThang(){
     const mk = document.getElementById('adminPassword').value;
     if(mk !== ADMIN_PASS){
@@ -212,7 +240,7 @@ function vaoThang(){
     moDenScript();
 }
 
-// === NÚT 2: TỰ HOÀN THÀNH NHIỆM VỤ ===
+// === NÚT 2: TỰ HOÀN THÀNH — KHÔNG TĂNG ĐỀM NGAY ===
 function hoanThanhTuDong(){
     const mk = document.getElementById('adminPassword').value;
     if(mk !== ADMIN_PASS){
@@ -221,6 +249,7 @@ function hoanThanhTuDong(){
     }
     closeMenu();
 
+    // Chỉ đánh dấu xong, KHÔNG tăng đếm
     for(let i=0; i<4; i++) done[i] = true;
     
     for(let i=1; i<=4; i++){
@@ -249,6 +278,9 @@ function moDenScript(){
 }
 
 window.onload = function(){
+    // Hiển thị số người ra ngoài màn hình chính
+    document.getElementById('userCounter').innerText = getCounter();
+
     const p = new URLSearchParams(window.location.search);
     scriptName = p.get("name") || "Script";
     scriptLink = p.get("link") || "";
@@ -307,6 +339,7 @@ function updateProgress(){
     }
 }
 
+// === CHỈ TĂNG ĐỀM KHI BẤM NÚT NÀY ===
 function nhanScript(){
     if(!scriptLink && !directScriptHtml){
         alert("⚠️ Chưa có script! Tạo lại từ trang index.html");
@@ -316,6 +349,15 @@ function nhanScript(){
         alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
         return;
     }
+    if(daNhan){
+        // Đã nhận rồi → chỉ mở script không tăng lại
+        moDenScript();
+        return;
+    }
+    
+    // LẦN ĐẦU BẤM → TĂNG ĐỀM + MỞ SCRIPT
+    daNhan = true;
+    tangMotNguoi(); // ✅ Tăng số người ngay khi bấm nhận
     moDenScript();
 }
 </script>
