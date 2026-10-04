@@ -26,7 +26,7 @@
         .menu-overlay.show{display:block}
 
         .side-menu{
-            position:fixed;top:0;left:0;width:290px;height:100%;background:#fff;z-index:200;
+            position:fixed;top:0;left:0;width:300px;height:100%;background:#fff;z-index:200;
             box-shadow:2px 0 20px rgba(0,0,0,0.15);padding:70px 25px 30px;
             transform:translateX(-100%);transition:transform 0.3s ease;
         }
@@ -39,12 +39,14 @@
         .side-menu h3{font-size:18px;color:#333;margin-bottom:20px}
         .side-menu input{
             width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;
-            font-size:15px;margin-bottom:12px;
+            font-size:15px;margin-bottom:15px;
         }
         .side-menu button{
-            width:100%;padding:14px;background:#5865f2;color:#fff;
-            font-weight:bold;border:none;border-radius:10px;font-size:15px;cursor:pointer;
+            width:100%;padding:13px;border:none;border-radius:10px;font-size:15px;cursor:pointer;
+            font-weight:bold;margin:6px 0
         }
+        .btn-direct{background:#22c55e;color:#fff}
+        .btn-auto{background:#5865f2;color:#fff}
         .side-menu .hint{font-size:12px;color:#888;margin-top:12px}
 
         /* NỘI DUNG CHÍNH */
@@ -92,13 +94,16 @@
     <!-- NỀN ĐEN MỞ MENU -->
     <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
-    <!-- MENU BÊN TRÁI -->
+    <!-- MENU BÊN TRÁI → 2 NÚT RIÊNG -->
     <div class="side-menu" id="sideMenu">
         <button class="close-btn" onclick="closeMenu()">✕</button>
-        <h3>🔐 Truy cập trực tiếp</h3>
-        <input type="password" id="adminPassword" placeholder="Nhập mật khẩu quản lý">
-        <button onclick="checkPassword()">✅ Vào lấy script ngay</button>
-        <p class="hint">Chỉ dành cho quản lý</p>
+        <h3>🔐 Truy cập quản lý</h3>
+        <input type="password" id="adminPassword" placeholder="Nhập mật khẩu">
+        
+        <button class="btn-direct" onclick="vaoThang()">⚡ Vào thẳng lấy script</button>
+        <button class="btn-auto" onclick="hoanThanhTuDong()">✅ Tự hoàn thành nhiệm vụ</button>
+        
+        <p class="hint">Mật khẩu: dobinhl12345</p>
     </div>
 
     <div class="container">
@@ -123,7 +128,7 @@
                 <span id="t3-status" class="timer">Bắt đầu</span>
             </button>
 
-            <button class="task-btn video" id="btn4" onclick="startTask(4, 20)">
+            <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
                 <span>📺 Xem video 2 phút</span>
                 <span id="t4-status" class="timer">Bắt đầu</span>
             </button>
@@ -144,7 +149,6 @@
                 </div>
             </div>
 
-            <!-- NÚT NHẬN SCRIPT — ĐÃ SỬA GỌN HÀNH ĐỘNG -->
             <button class="unlock-btn" id="unlockBtn" onclick="nhanScript()">
                 🔒 Hoàn thành để nhận
             </button>
@@ -182,7 +186,7 @@ const ADMIN_PASS = "dobinhl12345";
 const done = [false, false, false, false];
 let scriptName = "Script";
 let scriptLink = "";
-let directScriptHtml = ""; // Nội dung script nếu dán thẳng
+let directScriptHtml = "";
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
@@ -200,17 +204,44 @@ function closeMenu(){
     document.getElementById('menuOverlay').classList.remove('show');
 }
 
-function checkPassword(){
-    const input = document.getElementById('adminPassword').value;
-    if(input !== ADMIN_PASS){
+// === NÚT 1: VÀO THẲNG SCRIPT ===
+function vaoThang(){
+    const mk = document.getElementById('adminPassword').value;
+    if(mk !== ADMIN_PASS){
         alert("❌ Sai mật khẩu!");
         return;
     }
     closeMenu();
-    moDenScript(); // Vào ngay
+    moDenScript(); // Mở ngay script
 }
 
-// === MỞ TRANG SCRIPT — DÙNG CHUNG CHO CẢ 2 TRƯỜNG HỢP ===
+// === NÚT 2: TỰ HOÀN THÀNH NHIỆM VỤ → BẠN TỰ BẤM NHẬN ===
+function hoanThanhTuDong(){
+    const mk = document.getElementById('adminPassword').value;
+    if(mk !== ADMIN_PASS){
+        alert("❌ Sai mật khẩu!");
+        return;
+    }
+    closeMenu();
+
+    // Đánh dấu đủ 4 nhiệm vụ ngay lập tức
+    for(let i=0; i<4; i++) done[i] = true;
+    
+    // Cập nhật giao diện tất cả ✅
+    for(let i=1; i<=4; i++){
+        document.getElementById(`btn${i}`).classList.add('locked');
+        document.getElementById(`btn${i}`).disabled = true;
+        document.getElementById(`t${i}-status`).innerHTML = '<span class="done-mark">✅ Xong</span>';
+    }
+    document.getElementById('videoContainer').classList.add('show');
+    
+    // Cập nhật thanh tiến trình & nút chuyển xanh
+    updateProgress();
+    
+    alert("✅ Đã hoàn thành tất cả nhiệm vụ!\nBây giờ bấm nút xanh để nhận script nhé 😉");
+}
+
+// === MỞ SCRIPT ===
 function moDenScript(){
     if(scriptLink){
         window.open(scriptLink, '_blank', 'noopener,noreferrer');
@@ -228,7 +259,6 @@ window.onload = function(){
     scriptName = p.get("name") || "Script";
     scriptLink = p.get("link") || "";
     
-    // Trường hợp dán thẳng script qua Base64
     if(!scriptLink && p.get("s")){
         try {
             const decoded = decodeURIComponent(escape(atob(p.get("s"))));
@@ -238,16 +268,10 @@ window.onload = function(){
                 decoded.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
                 `</body></html>`
             );
-        } catch(e) {
-            console.error("Lỗi giải mã:", e);
-        }
+        } catch(e) {}
     }
     
     document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
-    
-    if(!scriptLink && !directScriptHtml){
-        alert("⚠️ Thiếu link/Script! Tạo lại từ trang index.html");
-    }
 };
 
 function openAndCount(type, num, seconds){
@@ -289,7 +313,6 @@ function updateProgress(){
     }
 }
 
-// === NÚT BẤM NHẬN SCRIPT ===
 function nhanScript(){
     if(!scriptLink && !directScriptHtml){
         alert("⚠️ Chưa có script! Tạo lại từ trang index.html");
@@ -299,7 +322,7 @@ function nhanScript(){
         alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
         return;
     }
-    moDenScript(); // Mở thẳng không qua thẻ <a>
+    moDenScript();
 }
 </script>
 </body>
