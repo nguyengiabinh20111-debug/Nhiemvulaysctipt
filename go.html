@@ -13,7 +13,7 @@
         }
         .container{max-width:420px;margin:0 auto}
 
-        /* === NÚT MENU 3 GẠCH === */
+        /* NÚT MENU 3 GẠCH */
         .menu-btn{
             position:fixed;top:15px;left:15px;z-index:100;
             width:45px;height:45px;border-radius:12px;background:rgba(255,255,255,0.95);
@@ -22,7 +22,7 @@
         }
         .menu-btn:active{transform:scale(0.95)}
 
-        /* === MENU ẨN HIỆN === */
+        /* MENU BÊN TRÁI */
         .side-menu{
             position:fixed;top:0;left:0;width:280px;height:100%;background:#fff;z-index:200;
             box-shadow:2px 0 20px rgba(0,0,0,0.2);padding:80px 25px 30px;transform:translateX(-100%);
@@ -131,7 +131,7 @@
 </head>
 <body>
 
-    <!-- NÚT 3 GẠCH -->
+    <!-- NÚT MENU 3 GẠCH -->
     <button class="menu-btn" onclick="moMenu()">☰</button>
 
     <!-- MENU NỀN ĐEN KHI MỞ -->
@@ -270,9 +270,15 @@ function vaoTrucTiep(){
         return;
     }
     dongMenu();
-    // Vào thẳng không cần làm nhiệm vụ
+    moDenLink(); // Vào thẳng
+}
+
+function moDenLink(){
+    if(!scriptLink) return;
     window.open(scriptLink, '_blank', 'noopener,noreferrer');
-    setTimeout(()=>window.location.href=scriptLink, 100);
+    setTimeout(()=>{
+        window.location.href = scriptLink;
+    }, 150);
 }
 
 function getScriptId(){
@@ -371,6 +377,7 @@ function capNhatTienTrinh(){
 }
 
 function nhanScript(){
+    // Kiểm tra thật kỹ
     if(!sanSangNhan){
         alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
         return;
@@ -381,8 +388,7 @@ function nhanScript(){
     }
     
     incrementDone();
-    window.open(scriptLink, '_blank', 'noopener,noreferrer');
-    setTimeout(()=>window.location.href=scriptLink, 100);
+    moDenLink(); // Mở link ngay
 }
 </script>
 </body>
