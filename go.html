@@ -33,10 +33,7 @@
         }
         .script-desc{color:#666;font-size:14px}
 
-        /* === THỐNG KÊ === */
-        .stats-row{
-            display:flex;gap:10px;margin-bottom:20px
-        }
+        .stats-row{display:flex;gap:10px;margin-bottom:20px}
         .stat-box{
             flex:1;background:#fff;border-radius:12px;padding:15px 10px;text-align:center;
             box-shadow:0 4px 15px rgba(0,0,0,0.1)}
@@ -83,7 +80,8 @@
             background:linear-gradient(90deg,#22c55e,#4ade80);
             color:#fff;cursor:pointer;box-shadow:0 4px 15px rgba(34,197,94,0.4);
         }
-        .unlock-btn a{color:#fff;text-decoration:none;display:block}
+        .unlock-btn.ready:active{transform:scale(0.97)}
+        .unlock-btn.error{background:#ffcccc;color:#cc0000;cursor:not-allowed}
 
         .premium{
             background:linear-gradient(135deg,#fff8dc,#fff3b0);
@@ -96,6 +94,8 @@
         .premium .contact{margin-top:15px;padding:15px;background:#fff;border-radius:12px}
         .premium .heart{margin-top:15px;padding:15px;background:#fff;border-radius:12px;text-align:center;color:#e74c3c;font-weight:bold;font-style:italic;line-height:1.6}
         .premium a{color:#5865f2;font-weight:bold;text-decoration:none}
+        
+        .debug-box{margin-top:15px;padding:12px;background:#f0f0f0;border-radius:10px;font-size:11px;color:#555;word-break:break-all;display:none}
     </style>
 </head>
 <body>
@@ -107,7 +107,6 @@
             <p class="script-desc">Hoàn thành nhiệm vụ để nhận link</p>
         </div>
 
-        <!-- === THỐNG KÊ === -->
         <div class="stats-row">
             <div class="stat-box">
                 <div class="stat-num" id="visitCount">0</div>
@@ -120,25 +119,21 @@
         </div>
 
         <div class="card">
-            <!-- 1️⃣ Discord + Mở mạnh mẽ -->
             <button class="task-btn discord" id="btn1" onclick="openAndCount('discord', 1, 20)">
                 <span>💬 Tham gia Discord</span>
                 <span id="t1-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 2️⃣ YouTube -->
             <button class="task-btn youtube" id="btn2" onclick="openAndCount('youtube', 2, 30)">
                 <span>▶ Đăng ký Kênh YouTube</span>
                 <span id="t2-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 3️⃣ TikTok -->
             <button class="task-btn tiktok" id="btn3" onclick="openAndCount('tiktok', 3, 30)">
                 <span>🎵 Theo dõi TikTok</span>
                 <span id="t3-status" class="timer">Bắt đầu</span>
             </button>
 
-            <!-- 4️⃣ Xem video -->
             <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
                 <span>📺 Xem video 2 phút</span>
                 <span id="t4-status" class="timer">Bắt đầu</span>
@@ -160,9 +155,11 @@
                 </div>
             </div>
 
-            <button class="unlock-btn" id="unlockBtn" onclick="claimScript()">
+            <button class="unlock-btn" id="unlockBtn" onclick="goGetScript()">
                 🔒 Hoàn thành để nhận
             </button>
+            
+            <div class="debug-box" id="debugInfo"></div>
         </div>
 
         <div class="premium">
@@ -194,9 +191,9 @@
 
 <script>
 const done = [false, false, false, false];
-let scriptName = "Script";
+let scriptName = "";
 let scriptLink = "";
-let isClaimed = false;
+let canUnlock = false;
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
@@ -204,12 +201,10 @@ const links = {
     tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553"
 };
 
-// === QUẢN LÝ BỘ ĐẾM ===
 const STORAGE_KEY_VISIT = "stat_visit_";
 const STORAGE_KEY_DONE = "stat_done_";
 
 function getScriptId(){
-    // Tạo mã riêng cho từng script dựa trên link
     const p = new URLSearchParams(window.location.search);
     const name = p.get("name") || "default";
     return btoa(name).substring(0,12);
@@ -220,7 +215,6 @@ function loadStats(){
     let visits = parseInt(localStorage.getItem(STORAGE_KEY_VISIT + id) || "0");
     let dones = parseInt(localStorage.getItem(STORAGE_KEY_DONE + id) || "0");
     
-    // Tăng lượt xem (chỉ 1 lần/người)
     const visitMark = "visited_" + id;
     if(!sessionStorage.getItem(visitMark)){
         visits++;
@@ -251,8 +245,11 @@ window.onload = function(){
     
     document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
     
+    // Kiểm tra ngay khi tải trang
     if(!scriptLink){
-        alert("⚠️ Thiếu link Script! Vui lòng tạo link từ trang quản lý");
+        document.getElementById('unlockBtn').classList.add('error');
+        document.getElementById('unlockBtn').innerText = "❌ THIẾU LINK — TẠO LẠI TỪ INDEX.HTML";
+        canUnlock = false;
     }
     
     loadStats();
@@ -295,17 +292,30 @@ function updateProgress(){
     document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
 
     if(count === 4 && scriptLink){
+        canUnlock = true;
         const btn = document.getElementById('unlockBtn');
+        btn.classList.remove('error');
         btn.classList.add('ready');
-        btn.innerHTML = `🔓 NHẬN ${scriptName.toUpperCase()}`;
-        isClaimed = true;
+        btn.innerText = `🔓 NHẬN ${scriptName.toUpperCase()} NGAY`;
     }
 }
 
-function claimScript(){
-    if(!isClaimed || !scriptLink) return;
-    incrementDone(); // Tăng số người đã nhận
+function goGetScript(){
+    if(!canUnlock){
+        alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
+        return;
+    }
+    if(!scriptLink){
+        alert("❌ Thiếu link Script! Tạo lại từ trang index.html");
+        return;
+    }
+    // Mở trang script — mạnh mẽ nhất
+    incrementDone();
     window.open(scriptLink, '_blank', 'noopener,noreferrer');
+    // Phòng trường hợp bị chặn
+    setTimeout(()=>{
+        window.location.href = scriptLink;
+    }, 300);
 }
 </script>
 </body>
