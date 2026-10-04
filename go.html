@@ -13,7 +13,6 @@
         }
         .container{max-width:420px;margin:0 auto}
 
-        /* NÚT MENU 3 GẠCH */
         .menu-btn{
             position:fixed;top:15px;left:15px;z-index:100;
             width:45px;height:45px;border-radius:12px;background:rgba(255,255,255,0.95);
@@ -22,7 +21,6 @@
         }
         .menu-btn:active{transform:scale(0.95)}
 
-        /* MENU BÊN TRÁI */
         .side-menu{
             position:fixed;top:0;left:0;width:280px;height:100%;background:#fff;z-index:200;
             box-shadow:2px 0 20px rgba(0,0,0,0.2);padding:80px 25px 30px;transform:translateX(-100%);
@@ -131,13 +129,9 @@
 </head>
 <body>
 
-    <!-- NÚT MENU 3 GẠCH -->
     <button class="menu-btn" onclick="moMenu()">☰</button>
-
-    <!-- MENU NỀN ĐEN KHI MỞ -->
     <div class="menu-overlay" id="menuOverlay" onclick="dongMenu()"></div>
-
-    <!-- MENU BÊN TRÁI -->
+    
     <div class="side-menu" id="sideMenu">
         <button class="close-menu" onclick="dongMenu()">✕</button>
         <h3>🔐 Truy cập trực tiếp</h3>
@@ -147,7 +141,6 @@
     </div>
 
     <div class="container">
-        
         <div class="script-header">
             <div class="script-icon">📜</div>
             <h1 class="script-name" id="scriptNameDisplay">Script</h1>
@@ -209,25 +202,20 @@
 
         <div class="premium">
             <h3>💎 NẠP PREMIUM — NHẬN NGAY KHÔNG CẦN CHỜ</h3>
-            
             <div class="price">
                 <p>💸 <strong>10.000đ</strong> → 2 tháng (chuyển khoản)</p>
                 <p>💸 <strong>20.000đ</strong> → 2 tháng (thẻ nạp game)</p>
             </div>
-
-            <p>✨ <strong>Quyền lợi Premium:</strong></p>
             <p>✅ Nhận link ngay, không cần làm nhiệm vụ</p>
             <p>✅ Tất cả script mới nhất, không giới hạn</p>
             <p>✅ Script đặc biệt chỉ dành Premium</p>
             <p>✅ Được cấp role đặc biệt trên Discord</p>
             <p>✅ Hỗ trợ tận tình mọi lúc</p>
-
             <div class="contact">
-                <p>📞 <strong>Liên hệ:</strong></p>
+                <p>📞 Liên hệ:</p>
                 <p>• Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhl12</a></p>
                 <p>• SĐT: 0383292439</p>
             </div>
-
             <div class="heart">
                 💖 Cảm ơn mọi người đã ủng hộ! Mỗi đồng đóng góp là động lực để mình có kinh phí tạo ra nhiều thứ tốt hơn 💖
             </div>
@@ -238,8 +226,8 @@
 const PASSWORD = "dobinhl12345";
 const done = [false, false, false, false];
 let scriptName = "";
-let scriptLink = "";
-let sanSangNhan = false;
+let finalScriptUrl = "";
+let isReady = false;
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
@@ -265,7 +253,7 @@ function vaoTrucTiep(){
         alert("❌ Sai mật khẩu!");
         return;
     }
-    if(!scriptLink){
+    if(!finalScriptUrl){
         alert("❌ Chưa có link script! Tạo lại từ trang quản lý.");
         return;
     }
@@ -274,11 +262,9 @@ function vaoTrucTiep(){
 }
 
 function moDenLink(){
-    if(!scriptLink) return;
-    window.open(scriptLink, '_blank', 'noopener,noreferrer');
-    setTimeout(()=>{
-        window.location.href = scriptLink;
-    }, 150);
+    if(!finalScriptUrl) return;
+    window.open(finalScriptUrl, '_blank', 'noopener,noreferrer');
+    setTimeout(() => { window.location.href = finalScriptUrl; }, 200);
 }
 
 function getScriptId(){
@@ -291,14 +277,12 @@ function loadStats(){
     const id = getScriptId();
     let visits = parseInt(localStorage.getItem(STORAGE_KEY_VISIT + id) || "0");
     let dones = parseInt(localStorage.getItem(STORAGE_KEY_DONE + id) || "0");
-    
     const visitMark = "visited_" + id;
     if(!sessionStorage.getItem(visitMark)){
         visits++;
         sessionStorage.setItem(visitMark, "1");
         localStorage.setItem(STORAGE_KEY_VISIT + id, visits);
     }
-    
     document.getElementById('visitCount').innerText = visits;
     document.getElementById('doneCount').innerText = dones;
 }
@@ -315,40 +299,37 @@ function incrementDone(){
     }
 }
 
-// === ĐÃ SỬA PHẦN ĐỌC LINK — ĐỦ 2 TRƯỜNG HỢP ===
 window.onload = function(){
     const p = new URLSearchParams(window.location.search);
     scriptName = p.get("name") || "Script";
-    scriptLink = p.get("link") || "";
     
-    // TRƯỜNG HỢP 1: Dán thẳng script → giải mã Base64
-    if(!scriptLink && p.get("s")){
+    // TRƯỜNG HỢP 1: Có link trực tiếp
+    if(p.get("link")){
+        finalScriptUrl = decodeURIComponent(p.get("link"));
+        isReady = true;
+    }
+    
+    // TRƯỜNG HỢP 2: Dán thẳng script → Base64
+    if(!finalScriptUrl && p.get("s")){
         try {
             const base64Text = p.get("s");
-            // Giải mã đúng chuẩn
             const decoded = decodeURIComponent(escape(atob(base64Text)));
-            // Tạo trang hiển thị script ngay
-            scriptLink = "data:text/html;charset=utf-8," + encodeURIComponent(
+            finalScriptUrl = "data:text/html;charset=utf-8," + encodeURIComponent(
                 `<html><body style="background:#1a1a1a;color:#fff;padding:20px;white-space:pre-wrap;font-family:monospace;font-size:13px">` +
                 `<h3 style="color:#ffd700;margin:0 0 15px 0">📜 ${scriptName}</h3><br>` +
                 decoded.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
                 `</body></html>`
             );
-            sanSangNhan = true; // ✅ Đánh dấu đã có link
+            isReady = true;
         } catch(e) {
-            console.error("Lỗi giải mã Base64:", e);
+            console.error("Lỗi giải mã:", e);
         }
-    }
-    
-    // TRƯỜNG HỢP 2: Dán link trực tiếp
-    if(scriptLink){
-        sanSangNhan = true; // ✅ Đánh dấu đã có link
     }
     
     document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
     
-    // Cập nhật trạng thái nút
-    if(!sanSangNhan){
+    // Kiểm tra & cập nhật nút
+    if(!isReady){
         document.getElementById('unlockBtn').classList.add('error');
         document.getElementById('unlockBtn').innerText = "❌ THIẾU LINK → TẠO LẠI TỪ INDEX.HTML";
     }
@@ -364,11 +345,8 @@ function openAndCount(type, num, seconds){
 
 function startTask(num, seconds){
     if(done[num-1]) return;
-
-    if(num === 4){
-        document.getElementById('videoContainer').classList.add('show');
-    }
-
+    if(num === 4) document.getElementById('videoContainer').classList.add('show');
+    
     document.getElementById(`btn${num}`).classList.add('locked');
     document.getElementById(`btn${num}`).disabled = true;
 
@@ -377,7 +355,6 @@ function startTask(num, seconds){
         t--;
         let text = (t > 60) ? `${Math.floor(t/60)}p ${t%60}s` : `${t}s`;
         document.getElementById(`t${num}-status`).innerText = text;
-        
         if(t <= 0){
             clearInterval(interval);
             done[num-1] = true;
@@ -392,7 +369,7 @@ function capNhatTienTrinh(){
     document.getElementById('progressText').innerText = `Tiến trình: ${count}/4`;
     document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
 
-    if(count === 4 && sanSangNhan){
+    if(count === 4 && isReady){
         const btn = document.getElementById('unlockBtn');
         btn.classList.remove('error');
         btn.classList.add('ready');
@@ -401,7 +378,7 @@ function capNhatTienTrinh(){
 }
 
 function nhanScript(){
-    if(!sanSangNhan){
+    if(!isReady){
         alert("⚠️ Chưa có link script! Tạo lại từ trang quản lý.");
         return;
     }
@@ -409,7 +386,6 @@ function nhanScript(){
         alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
         return;
     }
-    
     incrementDone();
     moDenLink();
 }
