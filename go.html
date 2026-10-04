@@ -1,3 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Script — Mở Khóa</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', Arial, sans-serif}
+        body{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height:100vh;
+            padding:20px;padding-top:70px;
+        }
+        .container{max-width:420px;margin:0 auto}
+
+        /* NÚT MENU 3 GẠCH */
+        .menu-btn{
+            position:fixed;top:15px;left:15px;z-index:100;
+            width:45px;height:45px;border-radius:12px;background:rgba(255,255,255,0.95);
+            border:none;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.15);
+        }
+        .menu-btn:active{transform:scale(0.95)}
+
+        /* MENU BÊN TRÁI */
+        .side-menu{
+            position:fixed;top:0;left:0;width:280px;height:100%;background:#fff;z-index:200;
+            box-shadow:2px 0 20px rgba(0,0,0,0.2);padding:80px 25px 30px;transform:translateX(-100%);
+            transition:transform 0.3s ease;
+        }
+        .side-menu.open{transform:translateX(0)}
+        .menu-overlay{
+            position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:150;display:none;
+        }
+        .menu-overlay.show{display:block}
+
+        .side-menu h3{font-size:18px;color:#333;margin-bottom:25px}
+        .side-menu input{
+            width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;font-size:15px;margin-bottom:12px;
+        }
+        .side-menu button{
+            width:100%;padding:14px;background:#5865f2;color:#fff;font-weight:bold;border:none;
+            border-radius:10px;font-size:15px;cursor:pointer;
+        }
+        .close-menu{
+            position:absolute;top:20px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:#888;
+        }
+        
+        .script-header{
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            border-radius:20px;
+            padding:25px;
+            margin-bottom:15px;
+            text-align:center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+        .script-icon{font-size:40px;margin-bottom:10px}
+        .script-name{
+            font-size:26px;font-weight:800;
+            background: linear-gradient(135deg, #ff4444, #ff9900);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom:8px;
+        }
+        .script-desc{color:#666;font-size:14px}
+
+        .stats-row{display:flex;gap:10px;margin-bottom:20px}
+        .stat-box{
+            flex:1;background:#fff;border-radius:12px;padding:15px 10px;text-align:center;
+            box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+        .stat-num{font-size:22px;font-weight:bold;color:#ff4444}
+        .stat-label{font-size:12px;color:#777;margin-top:4px}
+        
+        .card{background:#fff;border-radius:20px;padding:25px;box-shadow:0 8px 32px rgba(0,0,0,0.12);margin-bottom:20px}
+
+        .task-btn{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:16px 20px;margin:10px 0;border-radius:14px;
+            color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .task-btn:active{transform:scale(0.98)}
+        .task-btn.discord{background:linear-gradient(90deg,#5865f2,#7289da)}
+        .task-btn.youtube{background:linear-gradient(90deg,#ff0000,#cc0000)}
+        .task-btn.tiktok{background:linear-gradient(90deg,#00f2ea,#00f7b4);color:#000}
+        .task-btn.video{background:linear-gradient(90deg,#ff4444,#e53935)}
+        .task-btn.locked{opacity:0.6;cursor:not-allowed}
+        .timer{font-size:13px;opacity:0.9;margin-left:8px}
+        .done-mark{color:#22c55e;font-weight:bold;margin-left:8px}
+
+        .video-box{margin:15px 0;display:none;border-radius:14px;overflow:hidden;background:#000}
+        .video-box.show{display:block;animation:fadeIn 0.3s ease}
+        .video-box iframe{width:100%;aspect-ratio:16/9;border:none}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+        .progress-area{margin:25px 0;text-align:center}
+        .progress-text{font-size:15px;color:#444;margin-bottom:10px;font-weight:600}
+        .progress-bar{height:12px;background:#eee;border-radius:10px;overflow:hidden;margin:0 20px}
+        .progress-fill{
+            height:100%;
+            background:linear-gradient(90deg,#22c55e,#4ade80);
+            width:0%;transition:0.5s ease;border-radius:10px;
+        }
+
+        .unlock-btn{
+            width:100%;padding:16px;background:#ccc;color:#666;
+            font-weight:bold;border:none;border-radius:14px;font-size:16px;
+            cursor:not-allowed;margin-top:10px;transition:all 0.3s;
+        }
+        .unlock-btn.ready{
+            background:linear-gradient(90deg,#22c55e,#4ade80);
+            color:#fff;cursor:pointer;box-shadow:0 4px 15px rgba(34,197,94,0.4);
+        }
+        .unlock-btn.ready:active{transform:scale(0.97)}
+        .unlock-btn.error{background:#ffcccc;color:#cc0000;cursor:not-allowed}
+
+        .premium{
+            background:linear-gradient(135deg,#fff8dc,#fff3b0);
+            border-radius:20px;padding:25px;border:2px solid #ffd700;
+            box-shadow:0 4px 20px rgba(255,215,0,0.2);
+        }
+        .premium h3{color:#e74c3c;font-size:18px;margin-bottom:15px;text-align:center}
+        .premium p{font-size:14px;line-height:1.8;color:#333;margin:6px 0}
+        .premium .price{background:#fff;padding:15px;border-radius:12px;margin:12px 0;text-align:center}
+        .premium .contact{margin-top:15px;padding:15px;background:#fff;border-radius:12px}
+        .premium .heart{margin-top:15px;padding:15px;background:#fff;border-radius:12px;text-align:center;color:#e74c3c;font-weight:bold;font-style:italic;line-height:1.6}
+        .premium a{color:#5865f2;font-weight:bold;text-decoration:none}
+    </style>
+</head>
+<body>
+
+    <!-- NÚT MENU 3 GẠCH -->
+    <button class="menu-btn" onclick="moMenu()">☰</button>
+
+    <!-- MENU NỀN ĐEN KHI MỞ -->
+    <div class="menu-overlay" id="menuOverlay" onclick="dongMenu()"></div>
+
+    <!-- MENU BÊN TRÁI -->
+    <div class="side-menu" id="sideMenu">
+        <button class="close-menu" onclick="dongMenu()">✕</button>
+        <h3>🔐 Truy cập trực tiếp</h3>
+        <input type="password" id="adminPass" placeholder="Nhập mật khẩu quản lý">
+        <button onclick="vaoTrucTiep()">✅ Vào lấy script ngay</button>
+        <p style="margin-top:15px;font-size:12px;color:#888">Chỉ dành cho quản lý</p>
+    </div>
+
+    <div class="container">
+        
+        <div class="script-header">
+            <div class="script-icon">📜</div>
+            <h1 class="script-name" id="scriptNameDisplay">Script</h1>
+            <p class="script-desc">Hoàn thành nhiệm vụ để nhận link</p>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-num" id="visitCount">0</div>
+                <div class="stat-label">👁️ Lượt xem</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num" id="doneCount">0</div>
+                <div class="stat-label">✅ Đã nhận</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <button class="task-btn discord" id="btn1" onclick="openAndCount('discord', 1, 20)">
+                <span>💬 Tham gia Discord</span>
+                <span id="t1-status" class="timer">Bắt đầu</span>
+            </button>
+
+            <button class="task-btn youtube" id="btn2" onclick="openAndCount('youtube', 2, 30)">
+                <span>▶ Đăng ký Kênh YouTube</span>
+                <span id="t2-status" class="timer">Bắt đầu</span>
+            </button>
+
+            <button class="task-btn tiktok" id="btn3" onclick="openAndCount('tiktok', 3, 30)">
+                <span>🎵 Theo dõi TikTok</span>
+                <span id="t3-status" class="timer">Bắt đầu</span>
+            </button>
+
+            <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
+                <span>📺 Xem video 2 phút</span>
+                <span id="t4-status" class="timer">Bắt đầu</span>
+            </button>
+
+            <div class="video-box" id="videoContainer">
+                <iframe 
+                    src="https://www.youtube.com/embed/zKTNXUA7lWI?rel=0" 
+                    title="Video" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="progress-area">
+                <p class="progress-text" id="progressText">Tiến trình: 0/4</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <button class="unlock-btn" id="unlockBtn" onclick="nhanScript()">
+                🔒 Hoàn thành để nhận
+            </button>
+        </div>
+
+        <div class="premium">
+            <h3>💎 NẠP PREMIUM — NHẬN NGAY KHÔNG CẦN CHỜ</h3>
+            
+            <div class="price">
+                <p>💸 <strong>10.000đ</strong> → 2 tháng (chuyển khoản)</p>
+                <p>💸 <strong>20.000đ</strong> → 2 tháng (thẻ nạp game)</p>
+            </div>
+
+            <p>✨ <strong>Quyền lợi Premium:</strong></p>
+            <p>✅ Nhận link ngay, không cần làm nhiệm vụ</p>
+            <p>✅ Tất cả script mới nhất, không giới hạn</p>
+            <p>✅ Script đặc biệt chỉ dành Premium</p>
+            <p>✅ Được cấp role đặc biệt trên Discord</p>
+            <p>✅ Hỗ trợ tận tình mọi lúc</p>
+
+            <div class="contact">
+                <p>📞 <strong>Liên hệ:</strong></p>
+                <p>• Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhl12</a></p>
+                <p>• SĐT: 0383292439</p>
+            </div>
+
+            <div class="heart">
+                💖 Cảm ơn mọi người đã ủng hộ! Mỗi đồng đóng góp là động lực để mình có kinh phí tạo ra nhiều thứ tốt hơn 💖
+            </div>
+        </div>
+    </div>
+
+<script>
+const PASSWORD = "dobinhl12345";
+const done = [false, false, false, false];
+let scriptName = "";
+let scriptLink = "";
+let sanSangNhan = false;
+
+const links = {
+    discord: "https://discord.gg/uqhEpzXy9q",
+    youtube: "https://youtube.com/@binngamingg?si=DiC2PvPzceaba-yY",
+    tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553"
+};
+
+const STORAGE_KEY_VISIT = "stat_visit_";
+const STORAGE_KEY_DONE = "stat_done_";
+
+function moMenu(){
+    document.getElementById('sideMenu').classList.add('open');
+    document.getElementById('menuOverlay').classList.add('show');
+}
+function dongMenu(){
+    document.getElementById('sideMenu').classList.remove('open');
+    document.getElementById('menuOverlay').classList.remove('show');
+}
+
+function vaoTrucTiep(){
+    const mk = document.getElementById('adminPass').value;
+    if(mk !== PASSWORD){
+        alert("❌ Sai mật khẩu!");
+        return;
+    }
+    if(!scriptLink){
+        alert("❌ Chưa có link script! Tạo lại từ trang quản lý.");
+        return;
+    }
+    dongMenu();
+    moDenLink();
+}
+
+function moDenLink(){
+    if(!scriptLink) return;
+    window.open(scriptLink, '_blank', 'noopener,noreferrer');
+    setTimeout(()=>{
+        window.location.href = scriptLink;
+    }, 150);
+}
+
+function getScriptId(){
+    const p = new URLSearchParams(window.location.search);
+    const name = p.get("name") || "default";
+    return btoa(name).substring(0,12);
+}
+
+function loadStats(){
+    const id = getScriptId();
+    let visits = parseInt(localStorage.getItem(STORAGE_KEY_VISIT + id) || "0");
+    let dones = parseInt(localStorage.getItem(STORAGE_KEY_DONE + id) || "0");
+    
+    const visitMark = "visited_" + id;
+    if(!sessionStorage.getItem(visitMark)){
+        visits++;
+        sessionStorage.setItem(visitMark, "1");
+        localStorage.setItem(STORAGE_KEY_VISIT + id, visits);
+    }
+    
+    document.getElementById('visitCount').innerText = visits;
+    document.getElementById('doneCount').innerText = dones;
+}
+
+function incrementDone(){
+    const id = getScriptId();
+    const doneMark = "done_" + id;
+    if(!sessionStorage.getItem(doneMark)){
+        let count = parseInt(localStorage.getItem(STORAGE_KEY_DONE + id) || "0");
+        count++;
+        localStorage.setItem(STORAGE_KEY_DONE + id, count);
+        sessionStorage.setItem(doneMark, "1");
+        document.getElementById('doneCount').innerText = count;
+    }
+}
+
+// === PHẦN NÀY MỚI CẬP NHẬT ===
 window.onload = function(){
     const p = new URLSearchParams(window.location.search);
     scriptName = p.get("name") || "Script";
@@ -25,7 +343,72 @@ window.onload = function(){
         document.getElementById('unlockBtn').classList.add('error');
         document.getElementById('unlockBtn').innerText = "❌ THIẾU LINK → TẠO LẠI TỪ INDEX.HTML";
         sanSangNhan = false;
+    } else {
+        sanSangNhan = true;
     }
     
     loadStats();
 };
+
+function openAndCount(type, num, seconds){
+    if(done[num-1]) return;
+    window.open(links[type], '_blank', 'noopener,noreferrer');
+    startTask(num, seconds);
+}
+
+function startTask(num, seconds){
+    if(done[num-1]) return;
+
+    if(num === 4){
+        document.getElementById('videoContainer').classList.add('show');
+    }
+
+    document.getElementById(`btn${num}`).classList.add('locked');
+    document.getElementById(`btn${num}`).disabled = true;
+
+    let t = seconds;
+    let interval = setInterval(()=>{
+        t--;
+        let text = (t > 60) ? `${Math.floor(t/60)}p ${t%60}s` : `${t}s`;
+        document.getElementById(`t${num}-status`).innerText = text;
+        
+        if(t <= 0){
+            clearInterval(interval);
+            done[num-1] = true;
+            document.getElementById(`t${num}-status`).innerHTML = '<span class="done-mark">✅ Xong</span>';
+            capNhatTienTrinh();
+        }
+    }, 1000);
+}
+
+function capNhatTienTrinh(){
+    const count = done.filter(x=>x).length;
+    document.getElementById('progressText').innerText = `Tiến trình: ${count}/4`;
+    document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
+
+    if(count === 4 && scriptLink){
+        sanSangNhan = true;
+        const btn = document.getElementById('unlockBtn');
+        btn.classList.remove('error');
+        btn.classList.add('ready');
+        btn.innerText = `🔓 NHẬN ${scriptName.toUpperCase()} NGAY`;
+    }
+}
+
+function nhanScript(){
+    if(!sanSangNhan){
+        alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
+        return;
+    }
+    if(!scriptLink){
+        alert("❌ Thiếu link Script! Tạo lại từ trang index.html");
+        return;
+    }
+    
+    incrementDone();
+    moDenLink();
+}
+</script>
+</body>
+    </html>
+    
