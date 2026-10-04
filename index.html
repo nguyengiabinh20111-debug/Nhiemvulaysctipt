@@ -2,138 +2,118 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Tạo Link Script</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-        body{background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:20px}
-        .container{max-width:460px;margin:0 auto}
-        .card{background:#fff;border-radius:20px;padding:25px;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
-        .title{text-align:center;margin-bottom:25px}
-        .title h2{font-size:22px;color:#333}
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{background:#f5f5f7;color:#333;min-height:100vh;padding:30px}
+        .box{max-width:550px;margin:0 auto;background:#fff;padding:30px;border-radius:16px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
+        h1{color:#ff4444;text-align:center;margin-bottom:25px;font-size:22px}
         
-        .input-group{margin-bottom:15px}
-        label{display:block;margin-bottom:6px;font-weight:bold;color:#444;font-size:14px}
-        input, textarea{
-            width:100%;padding:14px;border:1px solid #ddd;border-radius:12px;font-size:15px;
-        }
-        textarea{min-height:140px;resize:vertical}
+        .tab-wrap{display:flex;margin-bottom:20px;border-bottom:2px solid #eee}
+        .tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:bold;color:#888}
+        .tab.active{color:#ff4444;border-bottom:2px solid #ff4444}
+        .tab-content{display:none}
+        .tab-content.active{display:block}
         
-        .tabs{display:flex;margin-bottom:15px;border-bottom:2px solid #eee}
-        .tab{padding:12px 20px;cursor:pointer;border-bottom:3px solid transparent}
-        .tab.active{border-bottom-color:#ff4444;color:#ff4444;font-weight:bold}
-        
-        button{
-            width:100%;padding:16px;border:none;border-radius:12px;font-size:17px;font-weight:bold;
-            cursor:pointer;transition:0.2s
-        }
-        .btn-create{background:linear-gradient(90deg,#ff4444,#ff9900);color:#fff;margin-top:10px}
-        .btn-create:active{transform:scale(0.97)}
-        
-        .result{margin-top:20px;padding:15px;background:#f0fff4;border-radius:12px;display:none}
-        .result.show{display:block}
-        .link-box{background:#fff;padding:12px;border-radius:8px;word-break:break-all;margin:10px 0;border:1px solid #ddd;font-size:13px}
-        .copy-btn{background:#5865f2;color:#fff;padding:8px 16px;border-radius:8px;font-size:14px;width:auto;border:none}
-        
-        .hint{font-size:13px;color:#888;margin-top:8px}
+        input, textarea{width:100%;padding:14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+        textarea{min-height:180px;resize:vertical;font-family:monospace;font-size:13px;line-height:1.5}
+        button{width:100%;padding:14px;background:#ff4444;color:#fff;font-weight:bold;border:none;border-radius:10px;font-size:16px;cursor:pointer;margin-top:10px}
+        .result{margin-top:20px;padding:20px;background:#d4edda;border-radius:10px;display:none}
+        .link-out{background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;word-break:break-all;font-size:13px}
+        .note{margin-top:15px;color:#666;font-size:13px;text-align:center;line-height:1.6}
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="title">
-                <h2>🔐 TẠO LINK SCRIPT</h2>
-            </div>
+    <div class="box">
+        <h1>🔐 TẠO LINK SCRIPT</h1>
 
-            <div class="input-group">
-                <label>Mật khẩu quản lý</label>
-                <input type="password" id="pass" placeholder="Nhập mật khẩu">
-            </div>
+        <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
+        <input type="text" id="scriptName" placeholder="📝 Tên Script (vd: ATRAS | GIABÌNH)">
 
-            <div class="input-group">
-                <label>Tên Script</label>
-                <input type="text" id="scriptName" placeholder="VD: Lennon Hub...">
-            </div>
+        <!-- Chọn cách nhập -->
+        <div class="tab-wrap">
+            <div class="tab active" onclick="switchTab(1)">📋 Dán Script</div>
+            <div class="tab" onclick="switchTab(2)">🔗 Dán Link</div>
+        </div>
 
-            <div class="tabs">
-                <div class="tab active" onclick="switchTab('script')">📋 Dán Script</div>
-                <div class="tab" onclick="switchTab('link')">🔗 Dán Link</div>
-            </div>
+        <!-- Cách 1: Dán thẳng nội dung script -->
+        <div class="tab-content active" id="tab1">
+            <textarea id="scriptContent" placeholder="📝 Dán toàn bộ code/script Lua vào đây...&#10;&#10;Ví dụ:&#10;loadstring(game:HttpGet('link'))()&#10;..."></textarea>
+            <p style="font-size:12px;color:#666;margin:5px 0 15px">✅ Hệ thống sẽ tự tạo trang lấy script riêng cho bạn</p>
+        </div>
 
-            <div id="tabScript">
-                <div class="input-group">
-                    <label>Nội dung Script</label>
-                    <textarea id="scriptContent" placeholder="Dán toàn bộ code script vào đây..."></textarea>
-                </div>
-                <p class="hint">💡 Tự mã hóa → link gọn không bị cắt</p>
-            </div>
+        <!-- Cách 2: Dán link như cũ -->
+        <div class="tab-content" id="tab2">
+            <input type="text" id="scriptLink" placeholder="📎 Dán link script gốc / Passfy vào đây">
+        </div>
 
-            <div id="tabLink" style="display:none">
-                <div class="input-group">
-                    <label>Link Script / Pastefy / Github</label>
-                    <input type="url" id="directLink" placeholder="https://pastefy.app/... hoặc https://raw.githubusercontent.com/...">
-                </div>
-                <p class="hint">💡 Nhanh & ổn định nhất ✅</p>
-            </div>
+        <button onclick="createLink()">✨ TẠO LINK DÙNG NGAY</button>
 
-            <button class="btn-create" onclick="taoLink()">✨ TẠO LINK DÙNG NGAY</button>
-
-            <div class="result" id="resultBox">
-                <p style="font-weight:bold;color:#22c55e">✅ Tạo link thành công!</p>
-                <div class="link-box" id="finalLink"></div>
-                <button class="copy-btn" onclick="copyLink()">📋 Sao chép Link</button>
+        <div class="result" id="resultBox">
+            <strong>✅ Link tạo xong — Gửi cho mọi người thôi!</strong>
+            <div class="link-out" id="newLink"></div>
+            <button onclick="copyLink()" style="background:#2563eb">📋 Sao chép link nhận nhiệm vụ</button>
+            <div style="margin-top:12px;padding:10px;background:#eef2ff;border-radius:8px">
+                <small style="color:#444">🔗 Trang lấy script tự tạo:</small>
+                <div class="link-out" id="scriptPageLink" style="margin:5px 0"></div>
             </div>
         </div>
+
+        <p class="note">Người mở link → hoàn thành nhiệm vụ → nhận script ngay<br>Không cần Passfy nữa — hệ thống tự quản lý trang lấy script</p>
     </div>
 
 <script>
-const PASSWORD = "dobinhl12345";
-// ✅ ĐÃ SỬA ĐƯỜNG DẪN CHÍNH XÁC CÓ go.html
-const BASE_URL = "https://nguyengiabinh20111-debug.github.io/Nhiemvulaysctipt/go.html";
+const PASSWORD = "dobinhl12345"; // Đổi mật khẩu ở đây
+let useContent = true;
 
-function switchTab(mode){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    event.target.classList.add('active');
-    document.getElementById('tabScript').style.display = mode==='script' ? 'block' : 'none';
-    document.getElementById('tabLink').style.display = mode==='link' ? 'block' : 'none';
+function switchTab(n){
+    useContent = (n === 1);
+    document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active', i+1===n));
+    document.querySelectorAll('.tab-content').forEach((t,i)=>t.classList.toggle('active', i+1===n));
 }
 
-function taoLink(){
+function createLink(){
     const pass = document.getElementById('pass').value;
-    if(pass !== PASSWORD){
-        alert("❌ Sai mật khẩu!");
-        return;
+    if(pass !== PASSWORD) return alert("❌ Sai mật khẩu!");
+    
+    const name = document.getElementById('scriptName').value.trim();
+    if(!name) return alert("❌ Nhập Tên Script!");
+
+    let finalScriptLink = "";
+    const origin = window.location.origin;
+    const path = window.location.pathname;
+    const folder = path.substring(0, path.lastIndexOf('/') + 1);
+
+    if(useContent){
+        // Dán thẳng nội dung → mã hóa nhúng vào link trang lấy script
+        const content = document.getElementById('scriptContent').value.trim();
+        if(!content) return alert("❌ Dán nội dung Script vào!");
+        
+        // Tạo link trang hiển thị script riêng
+        const encoded = btoa(unescape(encodeURIComponent(content)));
+        finalScriptLink = origin + folder + "getscript.html?data=" + encoded + "&name=" + encodeURIComponent(name);
+    }else{
+        // Dán link như cũ
+        const link = document.getElementById('scriptLink').value.trim();
+        if(!link) return alert("❌ Dán link Script vào!");
+        finalScriptLink = link;
     }
 
-    const name = encodeURIComponent(document.getElementById('scriptName').value.trim() || "Script");
-    let finalLink = "";
-
-    if(document.getElementById('tabScript').style.display !== 'none'){
-        const scriptText = document.getElementById('scriptContent').value.trim();
-        if(!scriptText){
-            alert("⚠️ Chưa dán nội dung script!");
-            return;
-        }
-        const encodedScript = btoa(unescape(encodeURIComponent(scriptText)));
-        finalLink = `${BASE_URL}?name=${name}&s=${encodedScript}`;
-    } else {
-        const link = document.getElementById('directLink').value.trim();
-        if(!link){
-            alert("⚠️ Chưa nhập link!");
-            return;
-        }
-        finalLink = `${BASE_URL}?name=${name}&link=${encodeURIComponent(link)}`;
+    // Tạo link trang nhiệm vụ
+    const taskLink = origin + folder + "go.html?name=" + encodeURIComponent(name) + "&link=" + encodeURIComponent(finalScriptLink);
+    
+    document.getElementById('newLink').innerText = taskLink;
+    if(useContent){
+        document.getElementById('scriptPageLink').innerText = finalScriptLink;
+    }else{
+        document.getElementById('scriptPageLink').innerText = "Dùng link gốc: " + finalScriptLink;
     }
-
-    document.getElementById('finalLink').innerText = finalLink;
-    document.getElementById('resultBox').classList.add('show');
+    document.getElementById('resultBox').style.display = "block";
 }
 
 function copyLink(){
-    const link = document.getElementById('finalLink').innerText;
-    navigator.clipboard.writeText(link).then(()=>{
-        alert("✅ Đã sao chép! Gửi cho mọi người thôi 😊");
-    });
+    navigator.clipboard.writeText(document.getElementById('newLink').innerText)
+        .then(()=>alert("✅ Đã sao chép! Gửi đi thôi!"));
 }
 </script>
 </body>
