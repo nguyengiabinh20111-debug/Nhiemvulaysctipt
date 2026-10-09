@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Bảng Giá Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: #fff;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .back-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .back-link:hover {
+            color: #ffd700;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .crown {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 28px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: #aaa;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+        .package {
+            background: linear-gradient(145deg, #1e1e30, #2a2a40);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+            transition: 0.3s;
+        }
+        .package:hover {
+            border-color: #ffd700;
+            transform: translateY(-3px);
+        }
+        .package.highlight {
+            border-color: #ffd700;
+            background: linear-gradient(145deg, #2e2400, #3a3010);
+        }
+        .package-name {
+            font-size: 19px;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 26px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .duration {
+            color: #888;
+            font-size: 14px;
+            margin: 4px 0 12px;
+        }
+        .payment {
+            display: inline-block;
+            background: #2a2a40;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #ffd700;
+        }
+        .vip-badge {
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .free-badge {
+            background: #4CAF50;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .perks {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.7;
+        }
+        .contact {
+            margin-top: 35px;
+            background: #1e1e30;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        .contact h3 {
+            color: #ffd700;
+            margin-bottom: 12px;
+        }
+        .contact p {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .contact a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="javascript:history.back()" class="back-link">← Quay lại nhận script</a>
+
+        <div class="header">
+            <div class="crown">👑</div>
+            <h1>BẢNG GIÁ PREMIUM</h1>
+            <p class="subtitle">Nhận script ngay — không cần làm nhiệm vụ!</p>
+        </div>
+
+        <!-- Gói Premium 2 tháng - CK -->
+        <div class="package">
+            <div class="package-name">✨ Premium</div>
+            <div class="price">10.000đ</div>
+            <div class="duration">⏳ Thời hạn: 2 tháng</div>
+            <div class="payment">💳 Chuyển khoản</div>
+            <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ</div>
+        </div>
+
+        <!-- Gói Premium 2 tháng - Thẻ -->
+        <div class="package">
+            <div class="package-name">✨ Premium</div>
+            <div class="price">20.000đ</div>
+            <div class="duration">⏳ Thời hạn: 2 tháng</div>
+            <div class="payment">🎫 Thẻ cào</div>
+            <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ</div>
+        </div>
+
+        <!-- Gói Premium 10 tháng - CK -->
+        <div class="package">
+            <div class="package-name">✨ Premium</div>
+            <div class="price">40.000đ</div>
+            <div class="duration">⏳ Thời hạn: 10 tháng</div>
+            <div class="payment">💳 Chuyển khoản</div>
+            <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%</div>
+        </div>
+
+        <!-- Gói Premium 10 tháng - Thẻ -->
+        <div class="package">
+            <div class="package-name">✨ Premium</div>
+            <div class="price">50.000đ</div>
+            <div class="duration">⏳ Thời hạn: 10 tháng</div>
+            <div class="payment">🎫 Thẻ cào</div>
+            <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%</div>
+        </div>
+
+        <!-- Gói Premium Vĩnh viễn -->
+        <div class="package highlight">
+            <div class="package-name">👑 Premium VIP <span class="vip-badge">BEST</span></div>
+            <div class="price">100.000đ</div>
+            <div class="duration">♾️ Thời hạn: Vĩnh viễn</div>
+            <div class="payment">💳 Chuyển khoản / 🎫 Thẻ cào</div>
+            <div class="perks">✅ Truy cập mọi script mãi mãi<br>✅ Độc quyền cập nhật sớm<br>✅ Role Premium trên Discord<br>✅ Hỗ trợ ưu tiên<br>✅ Không cần làm nhiệm vụ</div>
+        </div>
+
+        <!-- Event Free Premium -->
+        <div class="package" style="border-color: #4CAF50;">
+            <div class="package-name">🎁 Premium Test <span class="free-badge">MIỄN PHÍ</span></div>
+            <div class="price">0đ</div>
+            <div class="duration">⏳ Thời hạn: 1 tuần</div>
+            <div class="payment">🎉 Sẽ kiện</div>
+            <div class="perks">✅ Trải nghiệm tính năng Premium<br>✅ Giới hạn số lượng</div>
+        </div>
+
+        <!-- Booster Server -->
+        <div class="package" style="border-color: #7289da;">
+            <div class="package-name">🚀 Premium Booster <span class="free-badge">MIỄN PHÍ</span></div>
+            <div class="price">0đ</div>
+            <div class="duration">⏳ Thời hạn: 1 tháng</div>
+            <div class="payment">🔥 Boost server Discord</div>
+            <div class="perks">✅ Boost server nhận Premium 1 tháng<br>✅ Áp dụng mỗi lần boost</div>
+        </div>
+
+        <!-- Liên hệ -->
+        <div class="contact">
+            <h3>📩 MUA & HỖ TRỢ</h3>
+            <p>
+                💬 Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhh12</a><br>
+                📞 SĐT/Zalo: <strong>0383292439</strong><br><br>
+                <em>Cảm ơn bạn đã ủng hộ! Mỗi đồng đóng góp là động lực lớn nhất để mình có kinh phí tạo ra nhiều script tốt hơn 💛</em>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
