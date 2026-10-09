@@ -1,341 +1,239 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <base target="_blank">
-    <title>Script — Mở Khóa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Bảng Giá Premium</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-        body{background:#f5f5f7;min-height:100vh;padding:20px;padding-top:70px}
-        .container{max-width:420px;margin:0 auto}
-
-        /* NÚT MENU 3 GẠCH */
-        .menu-toggle{
-            position:fixed;top:15px;left:15px;z-index:100;
-            width:45px;height:45px;border-radius:12px;background:#fff;
-            border:none;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
-        .menu-toggle:active{transform:scale(0.95)}
-
-        /* MENU BÊN TRÁI */
-        .menu-overlay{
-            position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:150;display:none;
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: #333;
         }
-        .menu-overlay.show{display:block}
-
-        .side-menu{
-            position:fixed;top:0;left:0;width:300px;height:100%;background:#fff;z-index:200;
-            box-shadow:2px 0 20px rgba(0,0,0,0.15);padding:70px 25px 30px;
-            transform:translateX(-100%);transition:transform 0.3s ease;
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
         }
-        .side-menu.open{transform:translateX(0)}
-
-        .side-menu .close-btn{
-            position:absolute;top:20px;right:20px;background:none;border:none;
-            font-size:22px;cursor:pointer;color:#888;
+        .back-link {
+            color: #5865f2;
+            text-decoration: none;
+            font-size: 15px;
+            display: inline-block;
+            margin-bottom: 20px;
         }
-        .side-menu h3{font-size:18px;color:#333;margin-bottom:20px}
-        .side-menu input{
-            width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;
-            font-size:15px;margin-bottom:15px;
+        .back-link:hover {
+            color: #3341c0;
         }
-        .side-menu button{
-            width:100%;padding:13px;border:none;border-radius:10px;font-size:15px;cursor:pointer;
-            font-weight:bold;margin:6px 0
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        .btn-direct{background:#22c55e;color:#fff}
-        .btn-auto{background:#5865f2;color:#fff}
-
-        /* === HỘP ĐỀM SỐ NGƯỜI === */
-        .counter-box{
-            background:linear-gradient(135deg,#e8f0ff,#d4e2ff);
-            border-radius:12px;padding:15px;text-align:center;margin-bottom:20px
+        .crown {
+            font-size: 50px;
+            margin-bottom: 10px;
         }
-        .counter-num{font-size:28px;font-weight:bold;color:#5865f2}
-        .counter-text{font-size:13px;color:#555;margin-top:4px}
-
-        /* NỘI DUNG CHÍNH */
-        .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
-        .title{text-align:center;margin-bottom:25px}
-        .title h2{font-size:22px;color:#ff4444;margin-bottom:8px}
-        .title p{color:#666;font-size:14px}
-
-        .task-btn{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin:10px 0;border-radius:12px;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left}
-        .task-btn.discord{background:linear-gradient(90deg,#5865f2,#7289da)}
-        .task-btn.youtube{background:linear-gradient(90deg,#ff0000,#cc0000)}
-        .task-btn.tiktok{background:linear-gradient(90deg,#00f2ea,#00f7b4);color:#000}
-        .task-btn.video{background:linear-gradient(90deg,#ff4444,#e53935)}
-        .task-btn.locked{opacity:0.6;cursor:not-allowed}
-        .timer{font-size:13px;opacity:0.9;margin-left:8px}
-        .done-mark{color:#22c55e;font-weight:bold;margin-left:8px}
-
-        .video-box{margin:15px 0;display:none;border-radius:12px;overflow:hidden;background:#000}
-        .video-box.show{display:block}
-        .video-box iframe{width:100%;aspect-ratio:16/9;border:none}
-
-        .progress-area{margin:25px 0;text-align:center}
-        .progress-text{font-size:15px;color:#444;margin-bottom:10px}
-        .progress-bar{height:10px;background:#eee;border-radius:5px;overflow:hidden;margin:0 20px}
-        .progress-fill{height:100%;background:#22c55e;width:0%;transition:0.4s ease;border-radius:5px}
-
-        .unlock-btn{width:100%;padding:16px;background:#ccc;color:#666;font-weight:bold;border:none;border-radius:12px;font-size:16px;cursor:not-allowed;margin-top:10px}
-        .unlock-btn.ready{background:#22c55e;color:#fff;cursor:pointer}
-        .unlock-btn:active{transform:scale(0.98)}
-
-        .premium{margin-top:25px;padding:22px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700;text-align:center}
-        .premium h3{color:#e74c3c;font-size:17px;margin-bottom:10px}
-        .premium p{font-size:14px;color:#444;margin-bottom:15px;line-height:1.7}
-        .premium-btn{
-            display:inline-block;background:linear-gradient(90deg,#ffd700,#ffed4e);color:#000;font-weight:bold;
-            padding:12px 28px;border-radius:10px;text-decoration:none;font-size:15px;
-            transition:transform 0.2s;
+        h1 {
+            font-size: 28px;
+            color: #d4a000;
         }
-        .premium-btn:hover{transform:scale(1.03)}
-        .premium .heart{margin-top:15px;font-size:13px;color:#888;font-style:italic}
+        .subtitle {
+            color: #666;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+        .package {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 2px solid #e5e5e5;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .package:hover {
+            border-color: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .package.highlight {
+            border-color: #ffd700;
+            background: #fffbf0;
+        }
+        .package-name {
+            font-size: 19px;
+            font-weight: bold;
+            color: #b8860b;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 26px;
+            font-weight: bold;
+            color: #222;
+        }
+        .duration {
+            color: #777;
+            font-size: 14px;
+            margin: 4px 0 12px;
+        }
+        .payment {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #444;
+        }
+        .vip-badge {
+            background: #ffd700;
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .free-badge {
+            background: #22c55e;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .perks {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.7;
+        }
+        .contact {
+            margin-top: 35px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #e5e5e5;
+        }
+        .contact h3 {
+            color: #b8860b;
+            margin-bottom: 12px;
+        }
+        .contact p {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .contact a {
+            color: #5865f2;
+            text-decoration: none;
+        }
+        a.package-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
     </style>
 </head>
 <body>
-
-    <!-- NÚT MENU 3 GẠCH -->
-    <button class="menu-toggle" onclick="openMenu()">☰</button>
-
-    <!-- NỀN ĐEN MỞ MENU -->
-    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-
-    <!-- MENU BÊN TRÁI -->
-    <div class="side-menu" id="sideMenu">
-        <button class="close-btn" onclick="closeMenu()">✕</button>
-        <h3>🔐 Truy cập quản lý</h3>
-        <input type="password" id="adminPassword" placeholder="Nhập mật khẩu">
-        
-        <button class="btn-direct" onclick="vaoThang()">⚡ Vào thẳng lấy script</button>
-        <button class="btn-auto" onclick="hoanThanhTuDong()">✅ Tự hoàn thành nhiệm vụ</button>
-    </div>
-
     <div class="container">
-        <!-- === HỘP ĐỀM SỐ NGƯỜI === -->
-        <div class="counter-box">
-            <div class="counter-num" id="userCounter">0</div>
-            <div class="counter-text">người đã nhận script thành công ✅</div>
+        <a href="javascript:history.back()" class="back-link">← Quay lại nhận script</a>
+
+        <div class="header">
+            <div class="crown">👑</div>
+            <h1>BẢNG GIÁ PREMIUM</h1>
+            <p class="subtitle">Nhận script ngay — không cần làm nhiệm vụ!</p>
         </div>
 
-        <div class="card">
-            <div class="title">
-                <h2 id="scriptNameDisplay">📜 Script</h2>
-                <p>Hoàn thành các bước để nhận script</p>
+        <!-- Gói Premium 2 tháng - CK -->
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-2t-ck" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">10.000đ</div>
+                <div class="duration">⏳ Thời hạn: 2 tháng</div>
+                <div class="payment">💳 Chuyển khoản</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để xem thông tin chuyển khoản</div>
             </div>
+        </a>
 
-            <button class="task-btn discord" id="btn1" onclick="openAndCount('discord', 1, 20)">
-                <span>💬 Tham gia Discord</span>
-                <span id="t1-status" class="timer">Bắt đầu</span>
-            </button>
-
-            <button class="task-btn youtube" id="btn2" onclick="openAndCount('youtube', 2, 30)">
-                <span>▶ Đăng ký Kênh YouTube</span>
-                <span id="t2-status" class="timer">Bắt đầu</span>
-            </button>
-
-            <button class="task-btn tiktok" id="btn3" onclick="openAndCount('tiktok', 3, 30)">
-                <span>🎵 Theo dõi TikTok</span>
-                <span id="t3-status" class="timer">Bắt đầu</span>
-            </button>
-
-            <button class="task-btn video" id="btn4" onclick="startTask(4, 120)">
-                <span>📺 Xem video 2 phút</span>
-                <span id="t4-status" class="timer">Bắt đầu</span>
-            </button>
-
-            <div class="video-box" id="videoContainer">
-                <iframe 
-                    src="https://www.youtube.com/embed/zKTNXUA7lWI?rel=0" 
-                    title="Video" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
+        <!-- Gói Premium 2 tháng - Thẻ -->
+        <a href="thanh-toan-the-cao.html?goi=premium-2t-the" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">20.000đ</div>
+                <div class="duration">⏳ Thời hạn: 2 tháng</div>
+                <div class="payment">🎫 Thẻ cào Viettel</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để nhập thông tin thẻ</div>
             </div>
+        </a>
 
-            <div class="progress-area">
-                <p class="progress-text" id="progressText">Tiến trình: 0/4</p>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
+        <!-- Gói Premium 10 tháng - CK -->
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-10t-ck" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">40.000đ</div>
+                <div class="duration">⏳ Thời hạn: 10 tháng</div>
+                <div class="payment">💳 Chuyển khoản</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%<br>👉 Nhấn để xem thông tin chuyển khoản</div>
             </div>
+        </a>
 
-            <button class="unlock-btn" id="unlockBtn" onclick="nhanScript()">
-                🔒 Hoàn thành để nhận
-            </button>
+        <!-- Gói Premium 10 tháng - Thẻ -->
+        <a href="thanh-toan-the-cao.html?goi=premium-10t-the" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">50.000đ</div>
+                <div class="duration">⏳ Thời hạn: 10 tháng</div>
+                <div class="payment">🎫 Thẻ cào Viettel</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%<br>👉 Nhấn để nhập thông tin thẻ</div>
+            </div>
+        </a>
+
+        <!-- Gói Premium Vĩnh viễn -->
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-vinhvien" class="package-link">
+            <div class="package highlight">
+                <div class="package-name">👑 Premium VIP <span class="vip-badge">BEST</span></div>
+                <div class="price">100.000đ</div>
+                <div class="duration">♾️ Thời hạn: Vĩnh viễn</div>
+                <div class="payment">💳 Chuyển khoản / 🎫 Thẻ cào</div>
+                <div class="perks">✅ Truy cập mọi script mãi mãi<br>✅ Độc quyền cập nhật sớm<br>✅ Role Premium trên Discord<br>✅ Hỗ trợ ưu tiên<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn chọn hình thức thanh toán</div>
+            </div>
+        </a>
+
+        <!-- Premium Test -->
+        <div class="package" style="border-color: #22c55e; background: #f0fdf4;">
+            <div class="package-name">🎁 Premium Test <span class="free-badge">MIỄN PHÍ</span></div>
+            <div class="price">0đ</div>
+            <div class="duration">⏳ Thời hạn: 1 tuần</div>
+            <div class="payment">🎉 Sự kiện</div>
+            <div class="perks">✅ Tham gia sự kiện trên Discord Server<br>✅ May mắn sẽ nhận được Premium miễn phí 1 tuần<br>✅ Giới hạn số lượng — tham gia sớm!</div>
         </div>
 
-        <div class="premium">
-            <h3>💎 NHẬN SCRIPT NGAY — KHÔNG CẦN LÀM NHIỆM VỤ</h3>
-            <p>✅ Truy cập tất cả script mới nhất<br>✅ Không cần chờ đợi, không cần làm nhiệm vụ<br>✅ Độc quyền & hỗ trợ ưu tiên</p>
-            <a href="bang-gia-premium.html" class="premium-btn" target="_blank">🛒 Xem Bảng Giá & Mua Premium</a>
-            <div class="heart">
-                Cảm ơn bạn đã ủng hộ! Mỗi đóng góp giúp mình có thêm động lực phát triển 💖
-            </div>
+        <!-- Premium Booster -->
+        <div class="package" style="border-color: #5865f2; background: #f0f4ff;">
+            <div class="package-name">🚀 Premium Booster <span class="free-badge">MIỄN PHÍ</span></div>
+            <div class="price">0đ</div>
+            <div class="duration">⏳ Thời hạn: 1 tháng</div>
+            <div class="payment">🔥 Boost Server Discord</div>
+            <div class="perks">✅ Boost server Discord → nhận Premium 1 tháng miễn phí<br>✅ Áp dụng mỗi lần bạn boost server<br>✅ Tự động cấp sau khi boost thành công</div>
+        </div>
+
+        <!-- Liên hệ -->
+        <div class="contact">
+            <h3>📩 HỖ TRỢ & LIÊN HỆ</h3>
+            <p>
+                💬 Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhh12</a><br>
+                📞 SĐT/Zalo: <strong>0383292439</strong><br><br>
+                <em style="color: #777;">Cảm ơn bạn đã ủng hộ! Mỗi đồng đóng góp là động lực lớn nhất để mình có kinh phí tạo ra nhiều script tốt hơn 💛</em>
+            </p>
         </div>
     </div>
-
-<script>
-const ADMIN_PASS = "dobinhl12345";
-const done = [false, false, false, false];
-let scriptName = "Script";
-let scriptLink = "";
-let directScriptHtml = "";
-let daNhan = false;
-
-const links = {
-    discord: "https://discord.gg/uqhEpzXy9q",
-    youtube: "https://youtube.com/@binngamingg?si=DiC2PvPzceaba-yY",
-    tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553"
-};
-
-function getCounter(){
-    return parseInt(localStorage.getItem('userCounter') || '0');
-}
-function setCounter(val){
-    localStorage.setItem('userCounter', val);
-    document.getElementById('userCounter').innerText = val;
-}
-function tangMotNguoi(){
-    setCounter(getCounter() + 1);
-}
-
-function openMenu(){
-    document.getElementById('sideMenu').classList.add('open');
-    document.getElementById('menuOverlay').classList.add('show');
-}
-function closeMenu(){
-    document.getElementById('sideMenu').classList.remove('open');
-    document.getElementById('menuOverlay').classList.remove('show');
-}
-
-function vaoThang(){
-    const mk = document.getElementById('adminPassword').value;
-    if(mk !== ADMIN_PASS){
-        alert("❌ Sai mật khẩu!");
-        return;
-    }
-    closeMenu();
-    moDenScript();
-}
-
-function hoanThanhTuDong(){
-    const mk = document.getElementById('adminPassword').value;
-    if(mk !== ADMIN_PASS){
-        alert("❌ Sai mật khẩu!");
-        return;
-    }
-    closeMenu();
-
-    for(let i=0; i<4; i++) done[i] = true;
-    
-    for(let i=1; i<=4; i++){
-        document.getElementById(`btn${i}`).classList.add('locked');
-        document.getElementById(`btn${i}`).disabled = true;
-        document.getElementById(`t${i}-status`).innerHTML = '<span class="done-mark">✅ Xong</span>';
-    }
-    document.getElementById('videoContainer').classList.add('show');
-    
-    updateProgress();
-    
-    alert("✅ Đã hoàn thành tất cả nhiệm vụ!\nBây giờ bấm nút xanh để nhận script nhé 😉");
-}
-
-function moDenScript(){
-    if(scriptLink){
-        window.open(scriptLink, '_blank', 'noopener,noreferrer');
-        setTimeout(() => { window.location.href = scriptLink; }, 150);
-    } else if(directScriptHtml){
-        window.open(directScriptHtml, '_blank', 'noopener,noreferrer');
-        setTimeout(() => { window.location.href = directScriptHtml; }, 150);
-    } else {
-        alert("⚠️ Chưa có script! Tạo lại từ trang index.html");
-    }
-}
-
-window.onload = function(){
-    document.getElementById('userCounter').innerText = getCounter();
-
-    const p = new URLSearchParams(window.location.search);
-    scriptName = p.get("name") || "Script";
-    scriptLink = p.get("link") || "";
-    
-    if(!scriptLink && p.get("s")){
-        try {
-            const decoded = decodeURIComponent(escape(atob(p.get("s"))));
-            directScriptHtml = "data:text/html;charset=utf-8," + encodeURIComponent(
-                `<html><body style="background:#1a1a1a;color:#fff;padding:20px;white-space:pre-wrap;font-family:monospace;font-size:13px">` +
-                `<h3 style="color:#ffd700;margin:0 0 15px 0">📜 ${scriptName}</h3><br>` +
-                decoded.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
-                `</body></html>`
-            );
-        } catch(e) {}
-    }
-    
-    document.getElementById('scriptNameDisplay').innerText = "📜 " + scriptName;
-};
-
-function openAndCount(type, num, seconds){
-    if(done[num-1]) return;
-    window.open(links[type], '_blank', 'noopener,noreferrer');
-    startTask(num, seconds);
-}
-
-function startTask(num, seconds){
-    if(done[num-1]) return;
-    if(num === 4) document.getElementById('videoContainer').classList.add('show');
-    
-    document.getElementById(`btn${num}`).classList.add('locked');
-    document.getElementById(`btn${num}`).disabled = true;
-
-    let t = seconds;
-    let interval = setInterval(()=>{
-        t--;
-        let text = (t > 60) ? `${Math.floor(t/60)}p ${t%60}s` : `${t}s`;
-        document.getElementById(`t${num}-status`).innerText = text;
-        if(t <= 0){
-            clearInterval(interval);
-            done[num-1] = true;
-            document.getElementById(`t${num}-status`).innerHTML = '<span class="done-mark">✅ Xong</span>';
-            updateProgress();
-        }
-    }, 1000);
-}
-
-function updateProgress(){
-    const count = done.filter(x=>x).length;
-    document.getElementById('progressText').innerText = `Tiến trình: ${count}/4`;
-    document.getElementById('progressFill').style.width = `${(count/4)*100}%`;
-
-    if(count === 4 && (scriptLink || directScriptHtml)){
-        const btn = document.getElementById('unlockBtn');
-        btn.classList.add('ready');
-        btn.innerText = `🔓 NHẬN ${scriptName.toUpperCase()} NGAY`;
-    }
-}
-
-function nhanScript(){
-    if(!scriptLink && !directScriptHtml){
-        alert("⚠️ Chưa có script! Tạo lại từ trang index.html");
-        return;
-    }
-    if(done.filter(x=>x).length < 4){
-        alert("⚠️ Chưa hoàn thành đủ 4 nhiệm vụ!");
-        return;
-    }
-    if(daNhan){
-        moDenScript();
-        return;
-    }
-    
-    daNhan = true;
-    tangMotNguoi();
-    moDenScript();
-}
-</script>
 </body>
-    </html>
-    
+</html>
