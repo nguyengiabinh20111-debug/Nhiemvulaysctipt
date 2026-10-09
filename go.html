@@ -7,7 +7,7 @@
     <title>ATRAS | GIABÌNH 🐬</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-        body{background:linear-gradient(135deg,#1a1a2e,#16213e);min-height:100vh;padding:20px;padding-top:70px}
+        body{background:#f9f6ed;min-height:100vh;padding:20px;padding-top:70px}
         .container{max-width:420px;margin:0 auto}
 
         /* NÚT MENU 3 GẠCH */
@@ -15,19 +15,19 @@
             position:fixed;top:15px;left:15px;z-index:100;
             width:45px;height:45px;border-radius:12px;background:#fff;
             border:none;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-            box-shadow:0 2px 10px rgba(0,0,0,0.3);
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
         }
         .menu-toggle:active{transform:scale(0.95)}
 
         /* MENU BÊN TRÁI */
         .menu-overlay{
-            position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;display:none;
+            position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;display:none;
         }
         .menu-overlay.show{display:block}
 
         .side-menu{
             position:fixed;top:0;left:0;width:300px;height:100%;background:#fff;z-index:200;
-            box-shadow:2px 0 20px rgba(0,0,0,0.2);padding:70px 25px 30px;
+            box-shadow:2px 0 20px rgba(0,0,0,0.1);padding:70px 25px 30px;
             transform:translateX(-100%);transition:transform 0.3s ease;
         }
         .side-menu.open{transform:translateX(0)}
@@ -47,6 +47,9 @@
         }
         .btn-direct{background:#22c55e;color:#fff}
         .btn-auto{background:#5865f2;color:#fff}
+        .support-box{margin-top:20px;padding-top:15px;border-top:1px solid #eee}
+        .support-box h4{font-size:15px;color:#555;margin-bottom:10px}
+        .support-box p{font-size:13px;color:#666;line-height:1.8}
 
         /* === AVATAR CHÍNH GIỮA === */
         .avatar-box{text-align:center;margin-bottom:25px}
@@ -54,32 +57,32 @@
             width:140px;height:140px;border-radius:50%;
             background:linear-gradient(135deg,#ffd700,#ff9500);
             padding:4px;display:inline-block;
-            box-shadow:0 0 25px rgba(255,215,0,0.4);
+            box-shadow:0 0 20px rgba(255,215,0,0.25);
         }
         .avatar-img{
             width:100%;height:100%;border-radius:50%;
             object-fit:cover;border:4px solid #fff;
         }
         .brand-name{
-            text-align:center;color:#fff;
+            text-align:center;color:#b8860b;
             font-size:24px;font-weight:bold;
             margin-top:12px;
-            text-shadow:0 2px 10px rgba(0,0,0,0.3);
         }
-        .brand-name span{color:#58c7ff}
+        .brand-name span{color:#5865f2}
 
         /* NỘI DUNG CHÍNH */
-        .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+        .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid #f0e9d2}
         .title{text-align:center;margin-bottom:25px}
-        .title h2{font-size:20px;color:#222;margin-bottom:8px}
-        .title p{color:#666;font-size:14px}
+        .title h2{font-size:20px;color:#b8860b;margin-bottom:8px}
+        .title p{color:#888;font-size:14px}
 
-        .task-btn{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin:10px 0;border-radius:12px;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left}
-        .task-btn.discord{background:linear-gradient(90deg,#dc2626,#b91c1c)}
-        .task-btn.youtube{background:linear-gradient(90deg,#dc2626,#b91c1c)}
-        .task-btn.tiktok{background:linear-gradient(90deg,#dc2626,#b91c1c)}
-        .task-btn.video{background:linear-gradient(90deg,#dc2626,#b91c1c)}
-        .task-btn.locked{opacity:0.6;cursor:not-allowed}
+        .task-btn{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin:10px 0;border-radius:12px;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left;transition:0.2s}
+        .task-btn.discord{background:linear-gradient(90deg,#7289da,#677bc4)}
+        .task-btn.youtube{background:linear-gradient(90deg,#ff0000,#cc0000)}
+        .task-btn.tiktok{background:linear-gradient(90deg,#00f2ea,#ff0050)}
+        .task-btn.video{background:linear-gradient(90deg,#ff9800,#e68900)}
+        .task-btn:hover{transform:translateY(-1px)}
+        .task-btn.locked{opacity:0.6;cursor:not-allowed;transform:none}
         .timer{font-size:13px;opacity:0.9;margin-left:8px}
         .done-mark{color:#90ee90;font-weight:bold;margin-left:8px}
 
@@ -88,27 +91,25 @@
         .video-box iframe{width:100%;aspect-ratio:16/9;border:none}
 
         .progress-area{margin:25px 0;text-align:center}
-        .progress-text{font-size:15px;color:#444;margin-bottom:10px}
-        .progress-bar{height:10px;background:#eee;border-radius:5px;overflow:hidden;margin:0 20px}
-        .progress-fill{height:100%;background:#22c55e;width:0%;transition:0.4s ease;border-radius:5px}
+        .progress-text{font-size:15px;color:#666;margin-bottom:10px}
+        .progress-bar{height:10px;background:#f0f0f0;border-radius:5px;overflow:hidden;margin:0 20px}
+        .progress-fill{height:100%;background:linear-gradient(90deg,#ffc107,#ff9800);width:0%;transition:0.4s ease;border-radius:5px}
 
-        .unlock-btn{width:100%;padding:16px;background:#ccc;color:#666;font-weight:bold;border:none;border-radius:12px;font-size:16px;cursor:not-allowed;margin-top:10px}
-        .unlock-btn.ready{background:linear-gradient(90deg,#22c55e,#16a34a);color:#fff;cursor:pointer}
+        .unlock-btn{width:100%;padding:16px;background:#ddd;color:#888;font-weight:bold;border:none;border-radius:12px;font-size:16px;cursor:not-allowed;margin-top:10px;transition:0.2s}
+        .unlock-btn.ready{background:linear-gradient(90deg,#ffc107,#ff9800);color:#222;cursor:pointer;box-shadow:0 3px 10px rgba(255,193,7,0.3)}
+        .unlock-btn.ready:hover{transform:translateY(-2px)}
         .unlock-btn:active{transform:scale(0.98)}
 
-        .premium-info{margin-top:25px;padding:20px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700}
-        .premium-info h3{color:#b8860b;font-size:17px;margin-bottom:15px;text-align:center}
-        .premium-info p{font-size:14px;line-height:1.8;color:#333;margin:6px 0}
-        .premium-info .price-list{background:#fff;padding:15px;border-radius:10px;margin:12px 0}
-        .premium-info .price-item{padding:8px 0;border-bottom:1px dashed #eee;font-size:15px}
-        .premium-info .price-item:last-child{border-bottom:none}
-        .premium-info .highlight{color:#b8860b;font-weight:bold;font-size:16px}
+        .premium-info{margin-top:25px;padding:22px;background:linear-gradient(135deg,#fff9e6,#fff8f0);border-radius:16px;border:2px solid #ffc107}
+        .premium-info h3{color:#b8860b;font-size:18px;margin-bottom:15px;text-align:center}
+        .premium-info p{font-size:14px;line-height:1.8;color:#555;margin:5px 0}
+        .premium-benefits{margin:15px 0}
         
         .go-premium-btn{
             display:block;
             width:100%;
             padding:16px;
-            background:linear-gradient(90deg, #5865f2, #7b74ff);
+            background:linear-gradient(90deg, #9c27b0, #6a1b9a);
             color:#fff;
             font-weight:bold;
             font-size:17px;
@@ -118,13 +119,16 @@
             text-decoration:none;
             text-align:center;
             transition:0.3s;
-            box-shadow:0 4px 12px rgba(88,101,242,0.3);
-            margin-top:20px;
+            box-shadow:0 4px 12px rgba(156,39,176,0.25);
+            margin-top:15px;
         }
         .go-premium-btn:hover{
             transform:translateY(-2px);
-            box-shadow:0 6px 20px rgba(88,101,242,0.4);
+            box-shadow:0 6px 20px rgba(156,39,176,0.35);
         }
+        .contact-premium{margin-top:18px;padding-top:15px;border-top:1px dashed #e0c888}
+        .contact-premium p{font-size:13px;color:#555;line-height:1.7;margin:3px 0}
+        .contact-premium .note{font-size:12px;color:#999;margin-top:5px}
     </style>
 </head>
 <body>
@@ -143,6 +147,15 @@
         
         <button class="btn-direct" onclick="vaoThang()">⚡ Vào thẳng lấy script</button>
         <button class="btn-auto" onclick="hoanThanhTuDong()">✅ Tự hoàn thành nhiệm vụ</button>
+
+        <div class="support-box">
+            <h4>📞 Liên hệ hỗ trợ</h4>
+            <p>
+                💬 Discord: @dobinhl12<br>
+                📱 SĐT: 0383292439<br>
+                ⏰ Phản hồi: 8:00 - 22:00
+            </p>
+        </div>
     </div>
 
     <div class="container">
@@ -205,23 +218,22 @@
         <div class="premium-info">
             <h3>💎 TẠI SAO NÊN CHỌN PREMIUM?</h3>
             
-            <div class="price-list">
-                <div class="price-item">💰 <strong>10.000đ</strong> → 2 tháng (Chuyển khoản MB Bank)</div>
-                <div class="price-item">💰 <strong>20.000đ</strong> → 2 tháng (Thẻ cào Viettel)</div>
-                <div class="price-item">💰 <strong>40.000đ</strong> → 10 tháng (Chuyển khoản MB Bank)</div>
-                <div class="price-item">💰 <strong>50.000đ</strong> → 10 tháng (Thẻ cào Viettel)</div>
-                <div class="price-item highlight">👑 <strong>100.000đ</strong> → Vĩnh viễn (Chuyển khoản)</div>
+            <div class="premium-benefits">
+                <p>✅ Nhận script ngay — không cần làm nhiệm vụ</p>
+                <p>✅ Truy cập tất cả script mới nhất, không giới hạn</p>
+                <p>✅ Độc quyền cập nhật sớm hơn mọi người</p>
+                <p>✅ Role đặc biệt trên Discord Server</p>
+                <p>✅ Hỗ trợ ưu tiên nhanh nhất</p>
             </div>
 
-            <p>✨ <strong>Quyền lợi Premium:</strong></p>
-            <p>✅ Nhận script ngay — không cần làm nhiệm vụ</p>
-            <p>✅ Truy cập tất cả script mới nhất, không giới hạn</p>
-            <p>✅ Độc quyền cập nhật sớm hơn mọi người</p>
-            <p>✅ Role đặc biệt trên Discord Server</p>
-            <p>✅ Hỗ trợ ưu tiên nhanh nhất</p>
-            <p>✅ Tiết kiệm thời gian — chỉ cần thanh toán là có ngay</p>
-
             <a href="bang-gia-premium.html" class="go-premium-btn">👑 Xem Bảng Giá & Thanh Toán</a>
+            
+            <div class="contact-premium">
+                <p><strong>📞 Liên hệ hỗ trợ Premium:</strong></p>
+                <p>💬 Discord: @dobinhl12</p>
+                <p>📱 SĐT: 0383292439</p>
+                <p class="note">⏰ Phản hồi: đa số online xin hãy chờ!</p>
+            </div>
         </div>
     </div>
 
@@ -280,7 +292,7 @@ function hoanThanhTuDong(){
     
     updateProgress();
     
-    alert("✅ Đã hoàn thành tất cả nhiệm vụ!\nBây giờ bấm nút xanh để nhận script nhé 😉");
+    alert("✅ Đã hoàn thành tất cả nhiệm vụ!\nBây giờ bấm nút vàng để nhận script nhé 😉");
 }
 
 // === MỞ SCRIPT ===
@@ -305,8 +317,8 @@ window.onload = function(){
         try {
             const decoded = decodeURIComponent(escape(atob(p.get("s"))));
             directScriptHtml = "data:text/html;charset=utf-8," + encodeURIComponent(
-                `<html><body style="background:#1a1a1a;color:#fff;padding:20px;white-space:pre-wrap;font-family:monospace;font-size:13px">` +
-                `<h3 style="color:#ffd700;margin:0 0 15px 0">📜 ${scriptName}</h3><br>` +
+                `<html><body style="background:#f9f6ed;color:#333;padding:20px;white-space:pre-wrap;font-family:monospace;font-size:13px">` +
+                `<h3 style="color:#b8860b;margin:0 0 15px 0">📜 ${scriptName}</h3><br>` +
                 decoded.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
                 `</body></html>`
             );
@@ -374,4 +386,5 @@ function nhanScript(){
 }
 </script>
 </body>
-</html>
+    </html>
+    
