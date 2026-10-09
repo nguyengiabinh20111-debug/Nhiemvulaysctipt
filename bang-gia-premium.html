@@ -12,24 +12,24 @@
             font-family: 'Segoe UI', Arial, sans-serif;
         }
         body {
-            background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+            background: #f8f9fa;
             min-height: 100vh;
             padding: 30px 20px;
-            color: #fff;
+            color: #333;
         }
         .container {
             max-width: 480px;
             margin: 0 auto;
         }
         .back-link {
-            color: #888;
+            color: #5865f2;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 15px;
             display: inline-block;
             margin-bottom: 20px;
         }
         .back-link:hover {
-            color: #ffd700;
+            color: #3341c0;
         }
         .header {
             text-align: center;
@@ -41,58 +41,57 @@
         }
         h1 {
             font-size: 28px;
-            background: linear-gradient(90deg, #ffd700, #ffed4e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #d4a000;
         }
         .subtitle {
-            color: #aaa;
+            color: #666;
             margin-top: 8px;
             font-size: 15px;
         }
         .package {
-            background: linear-gradient(145deg, #1e1e30, #2a2a40);
+            background: #fff;
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 16px;
-            border: 1px solid #333;
+            border: 2px solid #e5e5e5;
             transition: 0.3s;
+            cursor: pointer;
         }
         .package:hover {
             border-color: #ffd700;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
         .package.highlight {
             border-color: #ffd700;
-            background: linear-gradient(145deg, #2e2400, #3a3010);
+            background: #fffbf0;
         }
         .package-name {
             font-size: 19px;
             font-weight: bold;
-            color: #ffd700;
+            color: #b8860b;
             margin-bottom: 10px;
         }
         .price {
             font-size: 26px;
             font-weight: bold;
-            color: #fff;
+            color: #222;
         }
         .duration {
-            color: #888;
+            color: #777;
             font-size: 14px;
             margin: 4px 0 12px;
         }
         .payment {
             display: inline-block;
-            background: #2a2a40;
+            background: #f0f0f0;
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 13px;
-            color: #ffd700;
+            color: #444;
         }
         .vip-badge {
-            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            background: #ffd700;
             color: #000;
             padding: 3px 10px;
             border-radius: 12px;
@@ -101,7 +100,7 @@
             margin-left: 8px;
         }
         .free-badge {
-            background: #4CAF50;
+            background: #22c55e;
             color: #fff;
             padding: 3px 10px;
             border-radius: 12px;
@@ -112,29 +111,34 @@
         .perks {
             margin-top: 10px;
             font-size: 13px;
-            color: #aaa;
+            color: #555;
             line-height: 1.7;
         }
         .contact {
             margin-top: 35px;
-            background: #1e1e30;
+            background: #fff;
             border-radius: 12px;
             padding: 20px;
             text-align: center;
-            border: 1px solid #333;
+            border: 2px solid #e5e5e5;
         }
         .contact h3 {
-            color: #ffd700;
+            color: #b8860b;
             margin-bottom: 12px;
         }
         .contact p {
-            color: #ccc;
+            color: #555;
             font-size: 14px;
             line-height: 1.8;
         }
         .contact a {
-            color: #ffd700;
+            color: #5865f2;
             text-decoration: none;
+        }
+        a.package-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
     </style>
 </head>
@@ -148,76 +152,78 @@
             <p class="subtitle">Nhận script ngay — không cần làm nhiệm vụ!</p>
         </div>
 
-        <!-- Gói Premium 2 tháng - CK -->
-        <div class="package">
-            <div class="package-name">✨ Premium</div>
-            <div class="price">10.000đ</div>
-            <div class="duration">⏳ Thời hạn: 2 tháng</div>
-            <div class="payment">💳 Chuyển khoản</div>
-            <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ</div>
-        </div>
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-2t-ck" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">10.000đ</div>
+                <div class="duration">⏳ Thời hạn: 2 tháng</div>
+                <div class="payment">💳 Chuyển khoản MB Bank</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
+            </div>
+        </a>
 
-        <!-- Gói Premium 2 tháng - Thẻ -->
-        <div class="package">
-            <div class="package-name">✨ Premium</div>
-            <div class="price">20.000đ</div>
-            <div class="duration">⏳ Thời hạn: 2 tháng</div>
-            <div class="payment">🎫 Thẻ cào</div>
-            <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ</div>
-        </div>
+        <a href="thanh-toan-the-cao.html?goi=premium-2t-the" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">20.000đ</div>
+                <div class="duration">⏳ Thời hạn: 2 tháng</div>
+                <div class="payment">🎫 Thẻ cào Viettel</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
+            </div>
+        </a>
 
-        <!-- Gói Premium 10 tháng - CK -->
-        <div class="package">
-            <div class="package-name">✨ Premium</div>
-            <div class="price">40.000đ</div>
-            <div class="duration">⏳ Thời hạn: 10 tháng</div>
-            <div class="payment">💳 Chuyển khoản</div>
-            <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%</div>
-        </div>
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-10t-ck" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">40.000đ</div>
+                <div class="duration">⏳ Thời hạn: 10 tháng</div>
+                <div class="payment">💳 Chuyển khoản MB Bank</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%<br>👉 Nhấn để thanh toán</div>
+            </div>
+        </a>
 
-        <!-- Gói Premium 10 tháng - Thẻ -->
-        <div class="package">
-            <div class="package-name">✨ Premium</div>
-            <div class="price">50.000đ</div>
-            <div class="duration">⏳ Thời hạn: 10 tháng</div>
-            <div class="payment">🎫 Thẻ cào</div>
-            <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%</div>
-        </div>
+        <a href="thanh-toan-the-cao.html?goi=premium-10t-the" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">50.000đ</div>
+                <div class="duration">⏳ Thời hạn: 10 tháng</div>
+                <div class="payment">🎫 Thẻ cào Viettel</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%<br>👉 Nhấn để thanh toán</div>
+            </div>
+        </a>
 
-        <!-- Gói Premium Vĩnh viễn -->
-        <div class="package highlight">
-            <div class="package-name">👑 Premium VIP <span class="vip-badge">BEST</span></div>
-            <div class="price">100.000đ</div>
-            <div class="duration">♾️ Thời hạn: Vĩnh viễn</div>
-            <div class="payment">💳 Chuyển khoản / 🎫 Thẻ cào</div>
-            <div class="perks">✅ Truy cập mọi script mãi mãi<br>✅ Độc quyền cập nhật sớm<br>✅ Role Premium trên Discord<br>✅ Hỗ trợ ưu tiên<br>✅ Không cần làm nhiệm vụ</div>
-        </div>
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-vinhvien" class="package-link">
+            <div class="package highlight">
+                <div class="package-name">👑 Premium VIP <span class="vip-badge">BEST</span></div>
+                <div class="price">100.000đ</div>
+                <div class="duration">♾️ Thời hạn: Vĩnh viễn</div>
+                <div class="payment">💳 Chuyển khoản MB Bank</div>
+                <div class="perks">✅ Truy cập mọi script mãi mãi<br>✅ Độc quyền cập nhật sớm<br>✅ Role Premium trên Discord<br>✅ Hỗ trợ ưu tiên<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
+            </div>
+        </a>
 
-        <!-- Event Free Premium -->
-        <div class="package" style="border-color: #4CAF50;">
+        <div class="package" style="border-color: #22c55e; background: #f0fdf4;">
             <div class="package-name">🎁 Premium Test <span class="free-badge">MIỄN PHÍ</span></div>
             <div class="price">0đ</div>
             <div class="duration">⏳ Thời hạn: 1 tuần</div>
-            <div class="payment">🎉 Sẽ kiện</div>
-            <div class="perks">✅ Trải nghiệm tính năng Premium<br>✅ Giới hạn số lượng</div>
+            <div class="payment">🎉 Sự kiện</div>
+            <div class="perks">✅ Tham gia sự kiện trên Discord Server<br>✅ May mắn sẽ nhận được Premium miễn phí 1 tuần<br>✅ Giới hạn số lượng — tham gia sớm!</div>
         </div>
 
-        <!-- Booster Server -->
-        <div class="package" style="border-color: #7289da;">
+        <div class="package" style="border-color: #5865f2; background: #f0f4ff;">
             <div class="package-name">🚀 Premium Booster <span class="free-badge">MIỄN PHÍ</span></div>
             <div class="price">0đ</div>
             <div class="duration">⏳ Thời hạn: 1 tháng</div>
-            <div class="payment">🔥 Boost server Discord</div>
-            <div class="perks">✅ Boost server nhận Premium 1 tháng<br>✅ Áp dụng mỗi lần boost</div>
+            <div class="payment">🔥 Boost Server Discord</div>
+            <div class="perks">✅ Boost server Discord → nhận Premium 1 tháng miễn phí<br>✅ Áp dụng mỗi lần bạn boost server<br>✅ Tự động cấp sau khi boost thành công</div>
         </div>
 
-        <!-- Liên hệ -->
         <div class="contact">
-            <h3>📩 MUA & HỖ TRỢ</h3>
+            <h3>📩 HỖ TRỢ & LIÊN HỆ</h3>
             <p>
                 💬 Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhh12</a><br>
                 📞 SĐT/Zalo: <strong>0383292439</strong><br><br>
-                <em>Cảm ơn bạn đã ủng hộ! Mỗi đồng đóng góp là động lực lớn nhất để mình có kinh phí tạo ra nhiều script tốt hơn 💛</em>
+                <em style="color: #777;">Cảm ơn bạn đã ủng hộ! Mỗi đồng đóng góp là động lực lớn nhất để mình có kinh phí tạo ra nhiều script tốt hơn 💛</em>
             </p>
         </div>
     </div>
