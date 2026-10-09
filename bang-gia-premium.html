@@ -1,230 +1,145 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎁 Bảng Giá Premium</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>BẢNG GIÁ PREMIUM — ATRAS | GIABÌNH 🐬</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{background:#f9f6ed;min-height:100vh;padding:20px}
+        .container{max-width:420px;margin:0 auto}
+
+        .back-link{
+            display:inline-flex;align-items:center;gap:6px;color:#5865f2;
+            text-decoration:none;font-size:15px;margin-bottom:25px;
         }
-        body {
-            background: #f8f9fa;
-            min-height: 100vh;
-            padding: 30px 20px;
-            color: #333;
+        .back-link:hover{text-decoration:underline}
+
+        .header{text-align:center;margin-bottom:30px}
+        .crown{font-size:48px;margin-bottom:10px}
+        .header h1{font-size:28px;color:#b8860b}
+        .header p{color:#777;font-size:15px;margin-top:5px}
+
+        .price-card{
+            background:#fff;border-radius:16px;padding:22px;margin-bottom:16px;
+            border:2px solid #eee;transition:0.3s
         }
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
+        .price-card:hover{border-color:#ffc107;box-shadow:0 4px 15px rgba(255,193,7,0.15)}
+        .price-card.highlight{border-color:#ff9800;background:linear-gradient(135deg,#fff9e6,#fff8f0)}
+        .price-card.queen{border-color:#9c27b0;background:linear-gradient(135deg,#faf0ff,#fff)}
+
+        .plan-label{font-size:16px;color:#666;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+        .price{font-size:32px;font-weight:bold;color:#222;margin-bottom:6px}
+        .duration{font-size:14px;color:#888;margin-bottom:12px}
+        .payment-method{font-size:14px;color:#555;margin-bottom:15px;display:flex;align-items:center;gap:6px}
+        .benefits{margin-top:12px}
+        .benefit{font-size:14px;color:#444;margin:8px 0;display:flex;align-items:center;gap:8px}
+        .benefit span:first-child{color:#22c55e;font-weight:bold}
+        .note{font-size:12px;color:#999;margin-top:10px;font-style:italic}
+
+        .contact-box{
+            background:#fff;border-radius:16px;padding:20px;margin-top:25px;
+            border-left:4px solid #5865f2
         }
-        .back-link {
-            color: #5865f2;
-            text-decoration: none;
-            font-size: 15px;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-        .back-link:hover {
-            color: #3341c0;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .crown {
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
-        h1 {
-            font-size: 28px;
-            color: #d4a000;
-        }
-        .subtitle {
-            color: #666;
-            margin-top: 8px;
-            font-size: 15px;
-        }
-        .package {
-            background: #fff;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border: 2px solid #e5e5e5;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        .package:hover {
-            border-color: #ffd700;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-        }
-        .package.highlight {
-            border-color: #ffd700;
-            background: #fffbf0;
-        }
-        .package-name {
-            font-size: 19px;
-            font-weight: bold;
-            color: #b8860b;
-            margin-bottom: 10px;
-        }
-        .price {
-            font-size: 26px;
-            font-weight: bold;
-            color: #222;
-        }
-        .duration {
-            color: #777;
-            font-size: 14px;
-            margin: 4px 0 12px;
-        }
-        .payment {
-            display: inline-block;
-            background: #f0f0f0;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            color: #444;
-        }
-        .vip-badge {
-            background: #ffd700;
-            color: #000;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 8px;
-        }
-        .free-badge {
-            background: #22c55e;
-            color: #fff;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 8px;
-        }
-        .perks {
-            margin-top: 10px;
-            font-size: 13px;
-            color: #555;
-            line-height: 1.7;
-        }
-        .contact {
-            margin-top: 35px;
-            background: #fff;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            border: 2px solid #e5e5e5;
-        }
-        .contact h3 {
-            color: #b8860b;
-            margin-bottom: 12px;
-        }
-        .contact p {
-            color: #555;
-            font-size: 14px;
-            line-height: 1.8;
-        }
-        .contact a {
-            color: #5865f2;
-            text-decoration: none;
-        }
-        a.package-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
+        .contact-box h3{font-size:16px;color:#333;margin-bottom:12px}
+        .contact-box p{font-size:14px;color:#555;line-height:1.8;margin:4px 0}
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 🔙 NÚT QUAY LẠI -->
         <a href="javascript:history.back()" class="back-link">← Quay lại nhận script</a>
 
         <div class="header">
             <div class="crown">👑</div>
             <h1>BẢNG GIÁ PREMIUM</h1>
-            <p class="subtitle">Nhận script ngay — không cần làm nhiệm vụ!</p>
+            <p>Nhận script ngay — không cần làm nhiệm vụ!</p>
         </div>
 
-        <a href="thanh-toan-chuyen-khoan.html?goi=premium-2t-ck" class="package-link">
-            <div class="package">
-                <div class="package-name">✨ Premium</div>
-                <div class="price">10.000đ</div>
-                <div class="duration">⏳ Thời hạn: 2 tháng</div>
-                <div class="payment">💳 Chuyển khoản MB Bank</div>
-                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
+        <!-- GÓI 1 -->
+        <div class="price-card">
+            <div class="plan-label">✨ Premium</div>
+            <div class="price">10.000đ</div>
+            <div class="duration">⏳ Thời hạn: 2 tháng</div>
+            <div class="payment-method">🏦 Chuyển khoản MB Bank</div>
+            <div class="benefits">
+                <div class="benefit"><span>✅</span> Xem script mới nhất</div>
+                <div class="benefit"><span>✅</span> Không cần làm nhiệm vụ</div>
+                <div class="benefit"><span>✅</span> Hỗ trợ cơ bản</div>
             </div>
-        </a>
-
-        <a href="thanh-toan-the-cao.html?goi=premium-2t-the" class="package-link">
-            <div class="package">
-                <div class="package-name">✨ Premium</div>
-                <div class="price">20.000đ</div>
-                <div class="duration">⏳ Thời hạn: 2 tháng</div>
-                <div class="payment">🎫 Thẻ cào Viettel</div>
-                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
-            </div>
-        </a>
-
-        <a href="thanh-toan-chuyen-khoan.html?goi=premium-10t-ck" class="package-link">
-            <div class="package">
-                <div class="package-name">✨ Premium</div>
-                <div class="price">40.000đ</div>
-                <div class="duration">⏳ Thời hạn: 10 tháng</div>
-                <div class="payment">💳 Chuyển khoản MB Bank</div>
-                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%<br>👉 Nhấn để thanh toán</div>
-            </div>
-        </a>
-
-        <a href="thanh-toan-the-cao.html?goi=premium-10t-the" class="package-link">
-            <div class="package">
-                <div class="package-name">✨ Premium</div>
-                <div class="price">50.000đ</div>
-                <div class="duration">⏳ Thời hạn: 10 tháng</div>
-                <div class="payment">🎫 Thẻ cào Viettel</div>
-                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%<br>👉 Nhấn để thanh toán</div>
-            </div>
-        </a>
-
-        <a href="thanh-toan-chuyen-khoan.html?goi=premium-vinhvien" class="package-link">
-            <div class="package highlight">
-                <div class="package-name">👑 Premium VIP <span class="vip-badge">BEST</span></div>
-                <div class="price">100.000đ</div>
-                <div class="duration">♾️ Thời hạn: Vĩnh viễn</div>
-                <div class="payment">💳 Chuyển khoản MB Bank</div>
-                <div class="perks">✅ Truy cập mọi script mãi mãi<br>✅ Độc quyền cập nhật sớm<br>✅ Role Premium trên Discord<br>✅ Hỗ trợ ưu tiên<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
-            </div>
-        </a>
-
-        <div class="package" style="border-color: #22c55e; background: #f0fdf4;">
-            <div class="package-name">🎁 Premium Test <span class="free-badge">MIỄN PHÍ</span></div>
-            <div class="price">0đ</div>
-            <div class="duration">⏳ Thời hạn: 1 tuần</div>
-            <div class="payment">🎉 Sự kiện</div>
-            <div class="perks">✅ Tham gia sự kiện trên Discord Server<br>✅ May mắn sẽ nhận được Premium miễn phí 1 tuần<br>✅ Giới hạn số lượng — tham gia sớm!</div>
+            <div class="note">💡 Nhắn @dobinhl12 để nhận thông tin thanh toán</div>
         </div>
 
-        <div class="package" style="border-color: #5865f2; background: #f0f4ff;">
-            <div class="package-name">🚀 Premium Booster <span class="free-badge">MIỄN PHÍ</span></div>
-            <div class="price">0đ</div>
-            <div class="duration">⏳ Thời hạn: 1 tháng</div>
-            <div class="payment">🔥 Boost Server Discord</div>
-            <div class="perks">✅ Boost server Discord → nhận Premium 1 tháng miễn phí<br>✅ Áp dụng mỗi lần bạn boost server<br>✅ Tự động cấp sau khi boost thành công</div>
+        <!-- GÓI 2 -->
+        <div class="price-card">
+            <div class="plan-label">✨ Premium</div>
+            <div class="price">20.000đ</div>
+            <div class="duration">⏳ Thời hạn: 2 tháng</div>
+            <div class="payment-method">📱 Thẻ cào Viettel</div>
+            <div class="benefits">
+                <div class="benefit"><span>✅</span> Xem script mới nhất</div>
+                <div class="benefit"><span>✅</span> Không cần làm nhiệm vụ</div>
+                <div class="benefit"><span>✅</span> Hỗ trợ cơ bản</div>
+            </div>
+            <div class="note">💡 Nhắn @dobinhl12 để nhận thông tin thanh toán</div>
         </div>
 
-        <div class="contact">
-            <h3>📩 HỖ TRỢ & LIÊN HỆ</h3>
-            <p>
-                💬 Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhh12</a><br>
-                📞 SĐT/Zalo: <strong>0383292439</strong><br><br>
-                <em style="color: #777;">Cảm ơn bạn đã ủng hộ! Mỗi đồng đóng góp là động lực lớn nhất để mình có kinh phí tạo ra nhiều script tốt hơn 💛</em>
-            </p>
+        <!-- GÓI 3 -->
+        <div class="price-card">
+            <div class="plan-label">💎 Premium</div>
+            <div class="price">40.000đ</div>
+            <div class="duration">⏳ Thời hạn: 10 tháng</div>
+            <div class="payment-method">🏦 Chuyển khoản MB Bank</div>
+            <div class="benefits">
+                <div class="benefit"><span>✅</span> Tất cả script mới nhất</div>
+                <div class="benefit"><span>✅</span> Không cần làm nhiệm vụ</div>
+                <div class="benefit"><span>✅</span> Độc quyền cập nhật sớm</div>
+                <div class="benefit"><span>✅</span> Role đặc biệt trên Discord</div>
+                <div class="benefit"><span>✅</span> Hỗ trợ ưu tiên</div>
+            </div>
+            <div class="note">💡 Nhắn @dobinhl12 để nhận thông tin thanh toán</div>
+        </div>
+
+        <!-- GÓI 4 -->
+        <div class="price-card">
+            <div class="plan-label">💎 Premium</div>
+            <div class="price">50.000đ</div>
+            <div class="duration">⏳ Thời hạn: 10 tháng</div>
+            <div class="payment-method">📱 Thẻ cào Viettel</div>
+            <div class="benefits">
+                <div class="benefit"><span>✅</span> Tất cả script mới nhất</div>
+                <div class="benefit"><span>✅</span> Không cần làm nhiệm vụ</div>
+                <div class="benefit"><span>✅</span> Độc quyền cập nhật sớm</div>
+                <div class="benefit"><span>✅</span> Role đặc biệt trên Discord</div>
+                <div class="benefit"><span>✅</span> Hỗ trợ ưu tiên</div>
+            </div>
+            <div class="note">💡 Nhắn @dobinhl12 để nhận thông tin thanh toán</div>
+        </div>
+
+        <!-- GÓI VĨNH VIỄN -->
+        <div class="price-card queen">
+            <div class="plan-label">👑 Vĩnh Viễn</div>
+            <div class="price">100.000đ</div>
+            <div class="duration">♾️ Sử dụng mãi mãi</div>
+            <div class="payment-method">🏦 Chuyển khoản MB Bank</div>
+            <div class="benefits">
+                <div class="benefit"><span>✅</span> Tất cả script — Vĩnh viễn</div>
+                <div class="benefit"><span>✅</span> Không cần làm nhiệm vụ</div>
+                <div class="benefit"><span>✅</span> Cập nhật sớm nhất</div>
+                <div class="benefit"><span>✅</span> Role đặc biệt Vĩnh Viễn</div>
+                <div class="benefit"><span>✅</span> Hỗ trợ 24/7 ưu tiên</div>
+                <div class="benefit"><span>✅</span> Ưu tiên yêu cầu script mới</div>
+            </div>
+            <div class="note">💡 Nhắn @dobinhl12 để nhận thông tin thanh toán</div>
+        </div>
+
+        <!-- LIÊN HỆ -->
+        <div class="contact-box">
+            <h3>📞 Liên hệ thanh toán</h3>
+            <p>💬 Discord: @dobinhl12</p>
+            <p>📱 SĐT: 0383292439</p>
+            <p>⏰ Phản hồi: đa số online xin hãy chờ!</p>
+            <p style="margin-top:8px;color:#22c55e;font-weight:bold;">✅ Sau khi thanh toán, vui lòng gửi bằng chứng cho chúng tôi để kích hoạt ngay!</p>
         </div>
     </div>
 </body>
