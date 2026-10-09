@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <base target="_blank">
-    <title>Script — Mở Khóa</title>
+    <title>ATRAS | GIABÌNH 🐬</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-        body{background:#f5f5f7;min-height:100vh;padding:20px;padding-top:70px}
+        body{background:linear-gradient(135deg,#1a1a2e,#16213e);min-height:100vh;padding:20px;padding-top:70px}
         .container{max-width:420px;margin:0 auto}
 
         /* NÚT MENU 3 GẠCH */
@@ -15,19 +15,19 @@
             position:fixed;top:15px;left:15px;z-index:100;
             width:45px;height:45px;border-radius:12px;background:#fff;
             border:none;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            box-shadow:0 2px 10px rgba(0,0,0,0.3);
         }
         .menu-toggle:active{transform:scale(0.95)}
 
         /* MENU BÊN TRÁI */
         .menu-overlay{
-            position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:150;display:none;
+            position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;display:none;
         }
         .menu-overlay.show{display:block}
 
         .side-menu{
             position:fixed;top:0;left:0;width:300px;height:100%;background:#fff;z-index:200;
-            box-shadow:2px 0 20px rgba(0,0,0,0.15);padding:70px 25px 30px;
+            box-shadow:2px 0 20px rgba(0,0,0,0.2);padding:70px 25px 30px;
             transform:translateX(-100%);transition:transform 0.3s ease;
         }
         .side-menu.open{transform:translateX(0)}
@@ -48,28 +48,40 @@
         .btn-direct{background:#22c55e;color:#fff}
         .btn-auto{background:#5865f2;color:#fff}
 
-        /* === HỘP ĐỀM SỐ NGƯỜI === */
-        .counter-box{
-            background:linear-gradient(135deg,#e8f0ff,#d4e2ff);
-            border-radius:12px;padding:15px;text-align:center;margin-bottom:20px
+        /* === AVATAR CHÍNH GIỮA === */
+        .avatar-box{text-align:center;margin-bottom:25px}
+        .avatar-circle{
+            width:140px;height:140px;border-radius:50%;
+            background:linear-gradient(135deg,#ffd700,#ff9500);
+            padding:4px;display:inline-block;
+            box-shadow:0 0 25px rgba(255,215,0,0.4);
         }
-        .counter-num{font-size:28px;font-weight:bold;color:#5865f2}
-        .counter-text{font-size:13px;color:#555;margin-top:4px}
+        .avatar-img{
+            width:100%;height:100%;border-radius:50%;
+            object-fit:cover;border:4px solid #fff;
+        }
+        .brand-name{
+            text-align:center;color:#fff;
+            font-size:24px;font-weight:bold;
+            margin-top:12px;
+            text-shadow:0 2px 10px rgba(0,0,0,0.3);
+        }
+        .brand-name span{color:#58c7ff}
 
         /* NỘI DUNG CHÍNH */
-        .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
+        .card{background:#fff;border-radius:16px;padding:25px;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
         .title{text-align:center;margin-bottom:25px}
-        .title h2{font-size:22px;color:#ff4444;margin-bottom:8px}
+        .title h2{font-size:20px;color:#222;margin-bottom:8px}
         .title p{color:#666;font-size:14px}
 
         .task-btn{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin:10px 0;border-radius:12px;color:#fff;font-weight:bold;font-size:16px;cursor:pointer;border:none;width:100%;text-align:left}
-        .task-btn.discord{background:linear-gradient(90deg,#5865f2,#7289da)}
-        .task-btn.youtube{background:linear-gradient(90deg,#ff0000,#cc0000)}
-        .task-btn.tiktok{background:linear-gradient(90deg,#00f2ea,#00f7b4);color:#000}
-        .task-btn.video{background:linear-gradient(90deg,#ff4444,#e53935)}
+        .task-btn.discord{background:linear-gradient(90deg,#dc2626,#b91c1c)}
+        .task-btn.youtube{background:linear-gradient(90deg,#dc2626,#b91c1c)}
+        .task-btn.tiktok{background:linear-gradient(90deg,#dc2626,#b91c1c)}
+        .task-btn.video{background:linear-gradient(90deg,#dc2626,#b91c1c)}
         .task-btn.locked{opacity:0.6;cursor:not-allowed}
         .timer{font-size:13px;opacity:0.9;margin-left:8px}
-        .done-mark{color:#22c55e;font-weight:bold;margin-left:8px}
+        .done-mark{color:#90ee90;font-weight:bold;margin-left:8px}
 
         .video-box{margin:15px 0;display:none;border-radius:12px;overflow:hidden;background:#000}
         .video-box.show{display:block}
@@ -81,23 +93,38 @@
         .progress-fill{height:100%;background:#22c55e;width:0%;transition:0.4s ease;border-radius:5px}
 
         .unlock-btn{width:100%;padding:16px;background:#ccc;color:#666;font-weight:bold;border:none;border-radius:12px;font-size:16px;cursor:not-allowed;margin-top:10px}
-        .unlock-btn.ready{background:#22c55e;color:#fff;cursor:pointer}
+        .unlock-btn.ready{background:linear-gradient(90deg,#22c55e,#16a34a);color:#fff;cursor:pointer}
         .unlock-btn:active{transform:scale(0.98)}
 
-        .divider{margin:25px 0;display:flex;align-items:center;color:#aaa;font-size:14px}
-        .divider::before,.divider::after{content:"";flex:1;height:1px;background:#ddd}
-        .divider span{padding:0 15px}
-
-        .go-premium-btn{width:100%;padding:15px;background:linear-gradient(90deg,#5865f2,#7b74ff);color:#fff;font-weight:bold;border:none;border-radius:12px;font-size:16px;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:0.3s}
-        .go-premium-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(88,101,242,0.3)}
-
         .premium-info{margin-top:25px;padding:20px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700}
-        .premium-info h3{color:#b8860b;font-size:17px;margin-bottom:12px;text-align:center}
+        .premium-info h3{color:#b8860b;font-size:17px;margin-bottom:15px;text-align:center}
         .premium-info p{font-size:14px;line-height:1.8;color:#333;margin:6px 0}
         .premium-info .price-list{background:#fff;padding:15px;border-radius:10px;margin:12px 0}
-        .premium-info .price-item{padding:6px 0;border-bottom:1px dashed #eee}
+        .premium-info .price-item{padding:8px 0;border-bottom:1px dashed #eee;font-size:15px}
         .premium-info .price-item:last-child{border-bottom:none}
-        .premium-info .highlight{color:#b8860b;font-weight:bold}
+        .premium-info .highlight{color:#b8860b;font-weight:bold;font-size:16px}
+        
+        .go-premium-btn{
+            display:block;
+            width:100%;
+            padding:16px;
+            background:linear-gradient(90deg, #5865f2, #7b74ff);
+            color:#fff;
+            font-weight:bold;
+            font-size:17px;
+            border:none;
+            border-radius:14px;
+            cursor:pointer;
+            text-decoration:none;
+            text-align:center;
+            transition:0.3s;
+            box-shadow:0 4px 12px rgba(88,101,242,0.3);
+            margin-top:20px;
+        }
+        .go-premium-btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 6px 20px rgba(88,101,242,0.4);
+        }
     </style>
 </head>
 <body>
@@ -119,16 +146,18 @@
     </div>
 
     <div class="container">
-        <!-- === HỘP ĐỀM SỐ NGƯỜI === -->
-        <div class="counter-box">
-            <div class="counter-num" id="userCounter">0</div>
-            <div class="counter-text">người đã nhận script thành công ✅</div>
+        <!-- === AVATAR + TÊN TRANG === -->
+        <div class="avatar-box">
+            <div class="avatar-circle">
+                <img src="avatar.png" alt="ATRAS | GIABÌNH" class="avatar-img">
+            </div>
+            <div class="brand-name">ATRAS | GIABÌNH <span>🐬</span></div>
         </div>
 
         <div class="card">
             <div class="title">
                 <h2 id="scriptNameDisplay">📜 Script</h2>
-                <p>Hoàn thành 4 nhiệm vụ bên dưới để nhận script miễn phí</p>
+                <p>Hoàn thành 4 nhiệm vụ bên dưới để nhận script</p>
             </div>
 
             <button class="task-btn discord" id="btn1" onclick="openAndCount('discord', 1, 20)">
@@ -172,12 +201,7 @@
             </button>
         </div>
 
-        <div class="divider"><span>hoặc — nhanh hơn không cần làm nhiệm vụ</span></div>
-
-        <!-- NÚT QUA BẢNG GIÁ PREMIUM -->
-        <a href="bang-gia-premium.html" class="go-premium-btn">👑 Xem Bảng Giá Premium</a>
-
-        <!-- THÔNG TIN GIÁ PREMIUM TÓM TẮT -->
+        <!-- THÔNG TIN PREMIUM -->
         <div class="premium-info">
             <h3>💎 TẠI SAO NÊN CHỌN PREMIUM?</h3>
             
@@ -197,7 +221,7 @@
             <p>✅ Hỗ trợ ưu tiên nhanh nhất</p>
             <p>✅ Tiết kiệm thời gian — chỉ cần thanh toán là có ngay</p>
 
-            <p style="text-align:center;margin-top:12px;color:#5865f2;font-weight:bold;">👉 Nhấn nút bên trên để xem chi tiết & thanh toán</p>
+            <a href="bang-gia-premium.html" class="go-premium-btn">👑 Xem Bảng Giá & Thanh Toán</a>
         </div>
     </div>
 
@@ -214,18 +238,6 @@ const links = {
     youtube: "https://youtube.com/@binngamingg?si=DiC2PvPzceaba-yY",
     tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553"
 };
-
-// === ĐỀM SỐ NGƯỜI ===
-function getCounter(){
-    return parseInt(localStorage.getItem('userCounter') || '0');
-}
-function setCounter(val){
-    localStorage.setItem('userCounter', val);
-    document.getElementById('userCounter').innerText = val;
-}
-function tangMotNguoi(){
-    setCounter(getCounter() + 1);
-}
 
 // === MENU ===
 function openMenu(){
@@ -285,8 +297,6 @@ function moDenScript(){
 }
 
 window.onload = function(){
-    document.getElementById('userCounter').innerText = getCounter();
-
     const p = new URLSearchParams(window.location.search);
     scriptName = p.get("name") || "Script";
     scriptLink = p.get("link") || "";
@@ -360,7 +370,6 @@ function nhanScript(){
     }
     
     daNhan = true;
-    tangMotNguoi();
     moDenScript();
 }
 </script>
