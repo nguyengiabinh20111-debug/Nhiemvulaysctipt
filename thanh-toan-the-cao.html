@@ -198,7 +198,7 @@
                 <strong>📌 Lưu ý quan trọng:</strong><br>
                 • Vui lòng kiểm tra kỹ thông tin trước khi gửi — thông tin sai sẽ không được hoàn lại<br>
                 • Sau khi gửi, vui lòng đợi trong vòng vài phút đến sớm nhất có thể<br>
-                • Chủ server sẽ kiểm tra thông tin và cấp Premium cho bạn ✅<br>
+                • Chúng tôi sẽ kiểm tra thông tin và cấp Premium cho bạn ✅<br>
                 • Nếu tên Discord không đúng / không tìm thấy bạn trong server → thẻ sẽ KHÔNG được hoàn lại<br>
                 • Nếu có vấn đề, liên hệ: <strong>0383292439</strong>
             </div>
@@ -206,6 +206,8 @@
     </div>
 
 <script>
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1558195964672737451/hcA9wxAGuCUkfUu_LYEH9Ti4bQBA13dHKOCejdmRrIegPJs8OGlHFUSthqchuzxWRO9V";
+
 const goiData = {
     "premium-2t-the": { ten: "Premium — 2 tháng", gia: "20.000đ", menhGia: "20000" },
     "premium-10t-the": { ten: "Premium — 10 tháng", gia: "50.000đ", menhGia: "50000" },
@@ -220,7 +222,7 @@ document.getElementById("goi-ten").innerText = data.ten;
 document.getElementById("goi-gia").innerText = data.gia;
 document.getElementById("menh-gia").value = data.menhGia;
 
-function guiTheCao(){
+async function guiTheCao(){
     const discordName = document.getElementById("discord-name").value.trim();
     const seri = document.getElementById("seri").value.trim();
     const maThe = document.getElementById("ma-the").value.trim();
@@ -236,6 +238,31 @@ function guiTheCao(){
     }
 
     if(!confirm(`⚠️ KIỂM TRA KỸ TRƯỚC KHI GỬI:\n\nTên Discord: ${discordName}\nMệnh giá: ${parseInt(menhGia).toLocaleString()}đ\nSeri: ${seri}\nMã thẻ: ${maThe}\n\nNếu nhập sai tên Discord hoặc không tìm thấy bạn trong server → THẺ SẼ KHÔNG ĐƯỢC HOÀN LẠI!\n\nXác nhận gửi?`)){
+        return;
+    }
+
+    try {
+        await fetch(DISCORD_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                embeds: [{
+                    title: "🎫 THẺ CÀO MỚI ĐƯỢC GỬI",
+                    color: 16766720,
+                    fields: [
+                        { name: "👤 Tên Discord", value: discordName, inline: false },
+                        { name: "💰 Mệnh giá", value: parseInt(menhGia).toLocaleString() + "đ", inline: true },
+                        { name: "📝 Số Seri", value: "`" + seri + "`", inline: true },
+                        { name: "🔢 Mã thẻ", value: "`" + maThe + "`", inline: true },
+                        { name: "📦 Gói đăng ký", value: data.ten + " — " + data.gia, inline: false }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: { text: "ATRAS | GIABÌNH — Hệ thống tự động" }
+                }]
+            })
+        });
+    } catch (err) {
+        alert("⚠️ Lỗi kết nối! Vui lòng gửi lại thông tin thẻ cho @dobinhl12 trên Discord nhé!");
         return;
     }
 
