@@ -48,7 +48,7 @@
         .btn-direct{background:#22c55e;color:#fff}
         .btn-auto{background:#5865f2;color:#fff}
 
-        /* === HỘP ĐỀM SỐ NGƯỜI — Ở NGOÀI MÀN HÌNH CHÍNH === */
+        /* === HỘP ĐỀM SỐ NGƯỜI === */
         .counter-box{
             background:linear-gradient(135deg,#e8f0ff,#d4e2ff);
             border-radius:12px;padding:15px;text-align:center;margin-bottom:20px
@@ -84,13 +84,16 @@
         .unlock-btn.ready{background:#22c55e;color:#fff;cursor:pointer}
         .unlock-btn:active{transform:scale(0.98)}
 
-        .premium{margin-top:25px;padding:20px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700}
-        .premium h3{color:#e74c3c;font-size:17px;margin-bottom:12px;text-align:center}
-        .premium p{font-size:14px;line-height:1.8;color:#333;margin:8px 0}
-        .premium .price{background:#fff;padding:12px;border-radius:8px;margin:10px 0;text-align:center}
-        .premium .contact{margin-top:12px;padding:12px;background:#fff;border-radius:8px}
-        .premium .heart{margin-top:15px;padding:12px;background:#fff;border-radius:8px;text-align:center;color:#e74c3c;font-weight:bold;font-style:italic}
-        .premium a{color:#5865f2;font-weight:bold;text-decoration:none}
+        .premium{margin-top:25px;padding:22px;background:linear-gradient(135deg,#fff8dc,#fff3b0);border-radius:12px;border:2px solid #ffd700;text-align:center}
+        .premium h3{color:#e74c3c;font-size:17px;margin-bottom:10px}
+        .premium p{font-size:14px;color:#444;margin-bottom:15px;line-height:1.7}
+        .premium-btn{
+            display:inline-block;background:linear-gradient(90deg,#ffd700,#ffed4e);color:#000;font-weight:bold;
+            padding:12px 28px;border-radius:10px;text-decoration:none;font-size:15px;
+            transition:transform 0.2s;
+        }
+        .premium-btn:hover{transform:scale(1.03)}
+        .premium .heart{margin-top:15px;font-size:13px;color:#888;font-style:italic}
     </style>
 </head>
 <body>
@@ -101,7 +104,7 @@
     <!-- NỀN ĐEN MỞ MENU -->
     <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
-    <!-- MENU BÊN TRÁI → BỎ ĐỀM RA NGOÀI -->
+    <!-- MENU BÊN TRÁI -->
     <div class="side-menu" id="sideMenu">
         <button class="close-btn" onclick="closeMenu()">✕</button>
         <h3>🔐 Truy cập quản lý</h3>
@@ -112,7 +115,7 @@
     </div>
 
     <div class="container">
-        <!-- === HỘP ĐỀM SỐ NGƯỜI — Ở NGOÀI MÀN HÌNH CHÍNH === -->
+        <!-- === HỘP ĐỀM SỐ NGƯỜI === -->
         <div class="counter-box">
             <div class="counter-num" id="userCounter">0</div>
             <div class="counter-text">người đã nhận script thành công ✅</div>
@@ -160,35 +163,17 @@
                 </div>
             </div>
 
-            <!-- CHỈ TĂNG ĐỀM KHI BẤM NÚT NÀY SAU KHI ĐỦ 4/4 -->
             <button class="unlock-btn" id="unlockBtn" onclick="nhanScript()">
                 🔒 Hoàn thành để nhận
             </button>
         </div>
 
         <div class="premium">
-            <h3>💎 NẠP PREMIUM — NHẬN NGAY KHÔNG CẦN CHỜ</h3>
-            
-            <div class="price">
-                <p>💸 <strong>10.000đ</strong> → 2 tháng (chuyển khoản)</p>
-                <p>💸 <strong>20.000đ</strong> → 2 tháng (thẻ nạp game)</p>
-            </div>
-
-            <p>✨ <strong>Quyền lợi Premium:</strong></p>
-            <p>✅ Nhận link ngay, không cần làm nhiệm vụ</p>
-            <p>✅ Tất cả script mới nhất, không giới hạn</p>
-            <p>✅ Script đặc biệt chỉ dành Premium</p>
-            <p>✅ Được cấp role đặc biệt trên Discord</p>
-            <p>✅ Hỗ trợ tận tình mọi lúc</p>
-
-            <div class="contact">
-                <p>📞 <strong>Liên hệ:</strong></p>
-                <p>• Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhl12</a></p>
-                <p>• SĐT: 0383292439</p>
-            </div>
-
+            <h3>💎 NHẬN SCRIPT NGAY — KHÔNG CẦN LÀM NHIỆM VỤ</h3>
+            <p>✅ Truy cập tất cả script mới nhất<br>✅ Không cần chờ đợi, không cần làm nhiệm vụ<br>✅ Độc quyền & hỗ trợ ưu tiên</p>
+            <a href="bang-gia-premium.html" class="premium-btn" target="_blank">🛒 Xem Bảng Giá & Mua Premium</a>
             <div class="heart">
-                Cảm ơn mọi người đã ủng hộ! Mỗi đồng đóng góp là động lực để mình có kinh phí tạo ra nhiều thứ tốt hơn 💖
+                Cảm ơn bạn đã ủng hộ! Mỗi đóng góp giúp mình có thêm động lực phát triển 💖
             </div>
         </div>
     </div>
@@ -199,7 +184,7 @@ const done = [false, false, false, false];
 let scriptName = "Script";
 let scriptLink = "";
 let directScriptHtml = "";
-let daNhan = false; // Đánh dấu đã nhận rồi không tăng lại
+let daNhan = false;
 
 const links = {
     discord: "https://discord.gg/uqhEpzXy9q",
@@ -207,7 +192,6 @@ const links = {
     tiktok: "https://www.tiktok.com/@binn_255?_r=1&_t=ZS-9ADQ7wxj553"
 };
 
-// === ĐỀM SỐ NGƯỜI ===
 function getCounter(){
     return parseInt(localStorage.getItem('userCounter') || '0');
 }
@@ -219,7 +203,6 @@ function tangMotNguoi(){
     setCounter(getCounter() + 1);
 }
 
-// === MENU ===
 function openMenu(){
     document.getElementById('sideMenu').classList.add('open');
     document.getElementById('menuOverlay').classList.add('show');
@@ -229,7 +212,6 @@ function closeMenu(){
     document.getElementById('menuOverlay').classList.remove('show');
 }
 
-// === NÚT 1: VÀO THẲNG — KHÔNG TĂNG ĐỀM ===
 function vaoThang(){
     const mk = document.getElementById('adminPassword').value;
     if(mk !== ADMIN_PASS){
@@ -240,7 +222,6 @@ function vaoThang(){
     moDenScript();
 }
 
-// === NÚT 2: TỰ HOÀN THÀNH — KHÔNG TĂNG ĐỀM NGAY ===
 function hoanThanhTuDong(){
     const mk = document.getElementById('adminPassword').value;
     if(mk !== ADMIN_PASS){
@@ -249,7 +230,6 @@ function hoanThanhTuDong(){
     }
     closeMenu();
 
-    // Chỉ đánh dấu xong, KHÔNG tăng đếm
     for(let i=0; i<4; i++) done[i] = true;
     
     for(let i=1; i<=4; i++){
@@ -264,7 +244,6 @@ function hoanThanhTuDong(){
     alert("✅ Đã hoàn thành tất cả nhiệm vụ!\nBây giờ bấm nút xanh để nhận script nhé 😉");
 }
 
-// === MỞ SCRIPT ===
 function moDenScript(){
     if(scriptLink){
         window.open(scriptLink, '_blank', 'noopener,noreferrer');
@@ -278,7 +257,6 @@ function moDenScript(){
 }
 
 window.onload = function(){
-    // Hiển thị số người ra ngoài màn hình chính
     document.getElementById('userCounter').innerText = getCounter();
 
     const p = new URLSearchParams(window.location.search);
@@ -339,7 +317,6 @@ function updateProgress(){
     }
 }
 
-// === CHỈ TĂNG ĐỀM KHI BẤM NÚT NÀY ===
 function nhanScript(){
     if(!scriptLink && !directScriptHtml){
         alert("⚠️ Chưa có script! Tạo lại từ trang index.html");
@@ -350,16 +327,15 @@ function nhanScript(){
         return;
     }
     if(daNhan){
-        // Đã nhận rồi → chỉ mở script không tăng lại
         moDenScript();
         return;
     }
     
-    // LẦN ĐẦU BẤM → TĂNG ĐỀM + MỞ SCRIPT
     daNhan = true;
-    tangMotNguoi(); // ✅ Tăng số người ngay khi bấm nhận
+    tangMotNguoi();
     moDenScript();
 }
 </script>
 </body>
-</html>
+    </html>
+    
