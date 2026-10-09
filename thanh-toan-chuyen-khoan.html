@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💳 Thanh Toán Chuyển Khoản</title>
+    <title>🎁 Bảng Giá Premium</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
             color: #333;
         }
         .container {
-            max-width: 420px;
+            max-width: 480px;
             margin: 0 auto;
         }
         .back-link {
@@ -31,194 +31,201 @@
         .back-link:hover {
             color: #3341c0;
         }
-        .card {
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .crown {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 28px;
+            color: #d4a000;
+        }
+        .subtitle {
+            color: #666;
+            margin-top: 8px;
+            font-size: 15px;
+        }
+        .package {
             background: #fff;
             border-radius: 16px;
-            padding: 25px;
+            padding: 20px;
+            margin-bottom: 16px;
             border: 2px solid #e5e5e5;
+            transition: 0.3s;
+            cursor: pointer;
         }
-        h2 {
-            text-align: center;
-            color: #b8860b;
-            margin-bottom: 20px;
-            font-size: 20px;
+        .package:hover {
+            border-color: #ffd700;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
-        .package-info {
+        .package.highlight {
+            border-color: #ffd700;
             background: #fffbf0;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
         }
         .package-name {
+            font-size: 19px;
             font-weight: bold;
-            font-size: 17px;
             color: #b8860b;
+            margin-bottom: 10px;
         }
-        .package-price {
-            font-size: 24px;
+        .price {
+            font-size: 26px;
             font-weight: bold;
             color: #222;
-            margin-top: 5px;
         }
-        .warning-box {
-            background: #ffebee;
-            border-left: 4px solid #f44336;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #b71c1c;
-        }
-        .warning-box strong {
-            color: #c62828;
-        }
-        .qr-box {
-            text-align: center;
-            margin: 25px 0;
-        }
-        .qr-box img {
-            width: 100%;
-            max-width: 280px;
-            border-radius: 12px;
-            border: 1px solid #eee;
-        }
-        .bank-info {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .bank-info p {
-            margin: 8px 0;
-            font-size: 15px;
-        }
-        .bank-info strong {
-            color: #222;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-            font-size: 14px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-        }
-        input:focus {
-            outline: none;
-            border-color: #ffd700;
-        }
-        .confirm-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(90deg, #ffd700, #ffed4e);
-            color: #000;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .confirm-btn:hover {
-            opacity: 0.9;
-        }
-        .note {
-            margin-top: 20px;
-            font-size: 13px;
+        .duration {
             color: #777;
+            font-size: 14px;
+            margin: 4px 0 12px;
+        }
+        .payment {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #444;
+        }
+        .vip-badge {
+            background: #ffd700;
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .free-badge {
+            background: #22c55e;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .perks {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #555;
             line-height: 1.7;
+        }
+        .contact {
+            margin-top: 35px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #e5e5e5;
+        }
+        .contact h3 {
+            color: #b8860b;
+            margin-bottom: 12px;
+        }
+        .contact p {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .contact a {
+            color: #5865f2;
+            text-decoration: none;
+        }
+        a.package-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="bang-gia-premium.html" class="back-link">← Quay lại Bảng Giá</a>
+        <a href="javascript:history.back()" class="back-link">← Quay lại nhận script</a>
 
-        <div class="card">
-            <h2>💳 Thanh Toán Chuyển Khoản</h2>
+        <div class="header">
+            <div class="crown">👑</div>
+            <h1>BẢNG GIÁ PREMIUM</h1>
+            <p class="subtitle">Nhận script ngay — không cần làm nhiệm vụ!</p>
+        </div>
 
-            <div class="warning-box">
-                <strong>⚠️ CẢNH BÁO QUAN TRỌNG:</strong><br>
-                Vui lòng nhập đúng <strong>Tên Discord</strong> của bạn. Nếu nhập sai hoặc không tìm thấy bạn trong Discord Server, tiền sẽ <strong>KHÔNG ĐƯỢC HOÀN LẠI</strong>! ❌
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-2t-ck" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">10.000đ</div>
+                <div class="duration">⏳ Thời hạn: 2 tháng</div>
+                <div class="payment">💳 Chuyển khoản MB Bank</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
             </div>
+        </a>
 
-            <div class="package-info">
-                <div class="package-name" id="goi-ten">Premium</div>
-                <div class="package-price" id="goi-gia">10.000đ</div>
+        <a href="thanh-toan-the-cao.html?goi=premium-2t-the" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">20.000đ</div>
+                <div class="duration">⏳ Thời hạn: 2 tháng</div>
+                <div class="payment">🎫 Thẻ cào Viettel</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
             </div>
+        </a>
 
-            <div class="form-group">
-                <label for="discord-name">💬 Tên Discord của bạn</label>
-                <input type="text" id="discord-name" placeholder="VD: tenuser#1234 hoặc tenuser">
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-10t-ck" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">40.000đ</div>
+                <div class="duration">⏳ Thời hạn: 10 tháng</div>
+                <div class="payment">💳 Chuyển khoản MB Bank</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%<br>👉 Nhấn để thanh toán</div>
             </div>
+        </a>
 
-            <div class="qr-box">
-                <img src="qr-mbbank.png" alt="QR MB Bank">
-                <p style="font-size:13px; color:#777; margin-top:8px;">📸 Quét mã QR để chuyển khoản</p>
+        <a href="thanh-toan-the-cao.html?goi=premium-10t-the" class="package-link">
+            <div class="package">
+                <div class="package-name">✨ Premium</div>
+                <div class="price">50.000đ</div>
+                <div class="duration">⏳ Thời hạn: 10 tháng</div>
+                <div class="payment">🎫 Thẻ cào Viettel</div>
+                <div class="perks">✅ Xem script mới nhất<br>✅ Không cần làm nhiệm vụ<br>✅ Tiết kiệm hơn 50%<br>👉 Nhấn để thanh toán</div>
             </div>
+        </a>
 
-            <div class="bank-info">
-                <p><strong>🏦 Ngân hàng:</strong> MB Bank</p>
-                <p><strong>📌 Số tài khoản:</strong> 0383292439</p>
-                <p><strong>👤 Tên chủ TK:</strong> NGUYEN GIA BINH</p>
-                <p><strong>💵 Số tiền:</strong> <span id="so-tien">10.000đ</span></p>
-                <p><strong>📝 Nội dung:</strong> Premium + Tên Discord của bạn</p>
+        <a href="thanh-toan-chuyen-khoan.html?goi=premium-vinhvien" class="package-link">
+            <div class="package highlight">
+                <div class="package-name">👑 Premium VIP <span class="vip-badge">BEST</span></div>
+                <div class="price">100.000đ</div>
+                <div class="duration">♾️ Thời hạn: Vĩnh viễn</div>
+                <div class="payment">💳 Chuyển khoản MB Bank</div>
+                <div class="perks">✅ Truy cập mọi script mãi mãi<br>✅ Độc quyền cập nhật sớm<br>✅ Role Premium trên Discord<br>✅ Hỗ trợ ưu tiên<br>✅ Không cần làm nhiệm vụ<br>👉 Nhấn để thanh toán</div>
             </div>
+        </a>
 
-            <button class="confirm-btn" onclick="xacNhanChuyenKhoan()">✅ Tôi Đã Chuyển Khoản</button>
+        <div class="package" style="border-color: #22c55e; background: #f0fdf4;">
+            <div class="package-name">🎁 Premium Test <span class="free-badge">MIỄN PHÍ</span></div>
+            <div class="price">0đ</div>
+            <div class="duration">⏳ Thời hạn: 1 tuần</div>
+            <div class="payment">🎉 Sự kiện</div>
+            <div class="perks">✅ Tham gia sự kiện trên Discord Server<br>✅ May mắn sẽ nhận được Premium miễn phí 1 tuần<br>✅ Giới hạn số lượng — tham gia sớm!</div>
+        </div>
 
-            <div class="note">
-                <strong>📌 Lưu ý quan trọng:</strong><br>
-                1. Chuyển khoản đúng số tiền trên<br>
-                2. Ghi nội dung: Premium + Tên Discord của bạn<br>
-                3. Sau khi chuyển khoản, vui lòng đợi trong vòng <strong>từ vài phút đến sớm nhất có thể</strong><br>
-                4. Chủ server sẽ kiểm tra tên Discord và cấp Premium cho bạn ngay sau khi xác nhận ✅<br>
-                5. Nếu nhập sai tên Discord → tiền sẽ KHÔNG được hoàn lại<br>
-                6. Nếu quá lâu chưa nhận, liên hệ: <strong>0383292439</strong>
-            </div>
+        <div class="package" style="border-color: #5865f2; background: #f0f4ff;">
+            <div class="package-name">🚀 Premium Booster <span class="free-badge">MIỄN PHÍ</span></div>
+            <div class="price">0đ</div>
+            <div class="duration">⏳ Thời hạn: 1 tháng</div>
+            <div class="payment">🔥 Boost Server Discord</div>
+            <div class="perks">✅ Boost server Discord → nhận Premium 1 tháng miễn phí<br>✅ Áp dụng mỗi lần bạn boost server<br>✅ Tự động cấp sau khi boost thành công</div>
+        </div>
+
+        <div class="contact">
+            <h3>📩 HỖ TRỢ & LIÊN HỆ</h3>
+            <p>
+                💬 Discord: <a href="https://discord.gg/uqhEpzXy9q" target="_blank">@dobinhh12</a><br>
+                📞 SĐT/Zalo: <strong>0383292439</strong><br><br>
+                <em style="color: #777;">Cảm ơn bạn đã ủng hộ! Mỗi đồng đóng góp là động lực lớn nhất để mình có kinh phí tạo ra nhiều script tốt hơn 💛</em>
+            </p>
         </div>
     </div>
-
-<script>
-const goiData = {
-    "premium-2t-ck": { ten: "Premium — 2 tháng", gia: "10.000đ" },
-    "premium-10t-ck": { ten: "Premium — 10 tháng", gia: "40.000đ" },
-    "premium-vinhvien": { ten: "Premium VIP — Vĩnh viễn", gia: "100.000đ" }
-};
-
-const p = new URLSearchParams(window.location.search);
-const goi = p.get("goi") || "premium-2t-ck";
-const data = goiData[goi] || goiData["premium-2t-ck"];
-
-document.getElementById("goi-ten").innerText = data.ten;
-document.getElementById("goi-gia").innerText = data.gia;
-document.getElementById("so-tien").innerText = data.gia;
-
-function xacNhanChuyenKhoan(){
-    const discordName = document.getElementById("discord-name").value.trim();
-    
-    if(!discordName){
-        alert("⚠️ Vui lòng nhập Tên Discord của bạn!");
-        return;
-    }
-
-    if(!confirm(`⚠️ KIỂM TRA KỸ:\n\nTên Discord: ${discordName}\nSố tiền: ${data.gia}\n\nNếu nhập sai tên Discord hoặc không tìm thấy bạn trong server → TIỀN SẼ KHÔNG ĐƯỢC HOÀN LẠI!\n\nXác nhận đã chuyển khoản?`)){
-        return;
-    }
-
-    alert("✅ Cảm ơn bạn! Chúng tôi sẽ kiểm tra và cấp Premium cho bạn trong thời gian sớm nhất.\nCảm ơn bạn đã ủng hộ! 💖");
-    document.getElementById("discord-name").value = "";
-}
-</script>
 </body>
-                  </html>
-                  
+</html>
