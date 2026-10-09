@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>📋 Nhật Ký Thanh Toán — ATRAS | GIABÌNH</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+        body{background:#f9f6ed;min-height:100vh;padding:20px}
+        .container{max-width:480px;margin:0 auto}
+
+        .back-link{
+            display:inline-flex;align-items:center;gap:6px;color:#5865f2;
+            text-decoration:none;font-size:15px;margin-bottom:20px;
+        }
+        .back-link:hover{text-decoration:underline}
+
+        .header{text-align:center;margin-bottom:25px}
+        .header h1{font-size:24px;color:#b8860b;margin-bottom:5px}
+        .header p{color:#777;font-size:14px}
+
+        .login-box{background:#fff;border-radius:16px;padding:25px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+        .login-box h3{text-align:center;color:#333;margin-bottom:15px}
+        .login-box input{width:100%;padding:14px;border:1px solid #ddd;border-radius:10px;font-size:15px;margin-bottom:12px}
+        .login-box button{width:100%;padding:14px;background:#b8860b;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer}
+        .login-box button:hover{background:#9a6e00}
+
+        .logs-container{display:none}
+        .logs-container.show{display:block}
+        .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+        .top-bar button{padding:8px 14px;background:#22c55e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px}
+
+        .add-form{background:#fff;border-radius:12px;padding:18px;margin-bottom:20px;border:1px solid #e8d9b5}
+        .add-form h4{color:#b8860b;margin-bottom:12px}
+        .add-form input,.add-form select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px}
+        .add-form button{padding:10px 16px;background:#22c55e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px}
+
+        .log-item{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;border-left:4px solid #ffc107;box-shadow:0 2px 6px rgba(0,0,0,0.03)}
+        .log-item.pending{border-left-color:#f59e0b}
+        .log-item.done{border-left-color:#22c55e}
+        .log-item .name{font-weight:bold;font-size:15px;color:#333;margin-bottom:4px}
+        .log-item .plan{font-size:14px;color:#b8860b;margin-bottom:6px}
+        .log-item .time{font-size:12px;color:#999;margin-bottom:8px}
+        .log-item .note{font-size:13px;color:#666;font-style:italic;margin-bottom:10px}
+        .log-item .actions{display:flex;gap:8px}
+        .log-item button{padding:6px 12px;border:none;border-radius:6px;cursor:pointer;font-size:13px}
+        .btn-confirm{background:#22c55e;color:#fff}
+        .btn-delete{background:#ef4444;color:#fff}
+        .status-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:bold;margin-left:8px}
+        .status-pending{background:#fef3c7;color:#b45309}
+        .status-done{background:#d1fae5;color:#065f46}
+
+        .empty{text-align:center;padding:40px 20px;color:#999;font-size:15px}
+        .total-box{background:#fff;border-radius:10px;padding:12px;margin-bottom:15px;text-align:right}
+        .total-box span{font-weight:bold;color:#b8860b;font-size:18px}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="javascript:history.back()" class="back-link">← Quay lại trang chính</a>
+
+        <div id="loginSection">
+            <div class="header">
+                <h1>📋 NHẬT KÝ THANH TOÁN</h1>
+                <p>Chỉ quản lý mới được truy cập</p>
+            </div>
+            <div class="login-box">
+                <h3>🔐 Nhập mật khẩu quản lý</h3>
+                <input type="password" id="adminPass" placeholder="Mật khẩu">
+                <button onclick="checkPass()">🔓 Đăng nhập</button>
+            </div>
+        </div>
+
+        <div id="logsSection" class="logs-container">
+            <div class="header" style="text-align:left;margin-bottom:15px">
+                <h1 style="font-size:20px">📋 Nhật Ký Thanh Toán</h1>
+                <p id="totalText">Tổng doanh thu: 0đ</p>
+            </div>
+
+            <!-- FORM THÊM ĐƠN HÀNG -->
+            <div class="add-form">
+                <h4>➕ Thêm đơn hàng mới</h4>
+                <input type="text" id="buyerName" placeholder="Tên người mua / Discord">
+                <select id="planSelect">
+                    <option value="">-- Chọn gói Premium --</option>
+                    <option value="10.000đ - 2 tháng (MB Bank)">💰 10.000đ — 2 tháng (MB Bank)</option>
+                    <option value="20.000đ - 2 tháng (Thẻ cào)">💰 20.000đ — 2 tháng (Thẻ cào)</option>
+                    <option value="40.000đ - 10 tháng (MB Bank)">💰 40.000đ — 10 tháng (MB Bank)</option>
+                    <option value="50.000đ - 10 tháng (Thẻ cào)">💰 50.000đ — 10 tháng (Thẻ cào)</option>
+                    <option value="100.000đ - Vĩnh viễn">👑 100.000đ — Vĩnh viễn</option>
+                </select>
+                <input type="text" id="buyerNote" placeholder="Ghi chú (số điện thoại, mã giao dịch...)">
+                <button onclick="addLog()">✅ Thêm vào danh sách</button>
+            </div>
+
+            <!-- DANH SÁCH ĐƠN HÀNG -->
+            <div id="logsList"></div>
+        </div>
+    </div>
+
+<script>
+const ADMIN_PASS = "dobinhl12345";
+let logs = JSON.parse(localStorage.getItem('paymentLogs') || '[]');
+
+function checkPass(){
+    const p = document.getElementById('adminPass').value;
+    if(p === ADMIN_PASS){
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('logsSection').classList.add('show');
+        renderLogs();
+    } else {
+        alert("❌ Sai mật khẩu!");
+    }
+}
+
+function addLog(){
+    const name = document.getElementById('buyerName').value.trim();
+    const plan = document.getElementById('planSelect').value;
+    const note = document.getElementById('buyerNote').value.trim();
+    
+    if(!name || !plan){
+        alert("⚠️ Vui lòng nhập tên và chọn gói!");
+        return;
+    }
+
+    const now = new Date();
+    const timeStr = now.toLocaleString('vi-VN');
+    
+    logs.unshift({
+        id: Date.now(),
+        name: name,
+        plan: plan,
+        note: note,
+        time: timeStr,
+        confirmed: false
+    });
+    
+    saveLogs();
+    renderLogs();
+    
+    document.getElementById('buyerName').value = '';
+    document.getElementById('planSelect').value = '';
+    document.getElementById('buyerNote').value = '';
+    
+    alert("✅ Đã thêm đơn hàng!");
+}
+
+function toggleConfirm(id){
+    const idx = logs.findIndex(x => x.id === id);
+    if(idx !== -1){
+        logs[idx].confirmed = !logs[idx].confirmed;
+        saveLogs();
+        renderLogs();
+    }
+}
+
+function deleteLog(id){
+    if(confirm("❌ Xóa đơn hàng này?")){
+        logs = logs.filter(x => x.id !== id);
+        saveLogs();
+        renderLogs();
+    }
+}
+
+function saveLogs(){
+    localStorage.setItem('paymentLogs', JSON.stringify(logs));
+}
+
+function renderLogs(){
+    const container = document.getElementById('logsList');
+    
+    if(logs.length === 0){
+        container.innerHTML = '<div class="empty">📭 Chưa có đơn hàng nào</div>';
+        document.getElementById('totalText').innerText = "Tổng doanh thu: 0đ";
+        return;
+    }
+
+    let total = 0;
+    container.innerHTML = logs.map(item => {
+        const priceMatch = item.plan.match(/([\d.]+)đ/);
+        if(priceMatch && item.confirmed){
+            total += parseInt(priceMatch[1].replace(/\./g, ''));
+        }
+        
+        const statusClass = item.confirmed ? 'done' : 'pending';
+        const statusText = item.confirmed ? 'Đã xác nhận' : 'Chờ xác nhận';
+        const statusBadge = item.confirmed ? 'status-done' : 'status-pending';
+        
+        return `
+        <div class="log-item ${statusClass}">
+            <div class="name">${escapeHtml(item.name)}<span class="status-badge ${statusBadge}">${statusText}</span></div>
+            <div class="plan">${escapeHtml(item.plan)}</div>
+            <div class="time">🕐 ${escapeHtml(item.time)}</div>
+            ${item.note ? `<div class="note">📝 ${escapeHtml(item.note)}</div>` : ''}
+            <div class="actions">
+                <button class="btn-confirm" onclick="toggleConfirm(${item.id})">
+                    ${item.confirmed ? '↩️ Bỏ xác nhận' : '✅ Xác nhận thanh toán'}
+                </button>
+                <button class="btn-delete" onclick="deleteLog(${item.id})">🗑️ Xóa</button>
+            </div>
+        </div>
+        `;
+    }).join('');
+    
+    document.getElementById('totalText').innerHTML = `Tổng doanh thu: <span>${total.toLocaleString('vi-VN')}đ</span>`;
+}
+
+function escapeHtml(text){
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+</script>
+</body>
+  </html>
+                  
