@@ -216,6 +216,9 @@
     </div>
 
 <script>
+// ✅ Webhook kênh nhận chuyển khoản
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1558199951627133092/TusBBeifQO6q40ZSJF6w-Hc3Gk9LSl7KkyMGViY5ocze2udvz7-KdOqC1s9s4iS9JTXv";
+
 const goiData = {
     "premium-2t-ck": { ten: "Premium — 2 tháng", gia: "10.000đ" },
     "premium-10t-ck": { ten: "Premium — 10 tháng", gia: "40.000đ" },
@@ -230,7 +233,7 @@ document.getElementById("goi-ten").innerText = data.ten;
 document.getElementById("goi-gia").innerText = data.gia;
 document.getElementById("so-tien").innerText = data.gia;
 
-function xacNhanChuyenKhoan(){
+async function xacNhanChuyenKhoan(){
     const discordName = document.getElementById("discord-name").value.trim();
     
     if(!discordName){
@@ -239,6 +242,32 @@ function xacNhanChuyenKhoan(){
     }
 
     if(!confirm(`⚠️ KIỂM TRA KỸ:\n\nTên Discord: ${discordName}\nSố tiền: ${data.gia}\n\n📸 Đã chụp hình biên lai chuyển khoản chưa?\n📝 Đã ghi đúng nội dung: Premium + ${discordName} chưa?\n\nNếu nhập sai tên Discord hoặc không có bằng chứng → TIỀN SẼ KHÔNG ĐƯỢC HOÀN LẠI!\n\nXác nhận đã chuyển khoản?`)){
+        return;
+    }
+
+    // Gửi thông tin chuyển khoản về kênh Discord riêng
+    try {
+        await fetch(DISCORD_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                embeds: [{
+                    title: "💳 CHUYỂN KHOẢN MỚI",
+                    color: 56258,
+                    fields: [
+                        { name: "👤 Tên Discord", value: discordName, inline: false },
+                        { name: "💰 Số tiền", value: data.gia, inline: true },
+                        { name: "📦 Gói đăng ký", value: data.ten, inline: true },
+                        { name: "📝 Nội dung", value: "Premium + " + discordName, inline: false },
+                        { name: "🏦 Ngân hàng", value: "MB Bank — 0383292439", inline: false }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: { text: "ATRAS | GIABÌNH — Hệ thống tự động" }
+                }]
+            })
+        });
+    } catch (err) {
+        alert("⚠️ Lỗi kết nối! Vui lòng gửi Tên Discord cho @dobinhl12 trên Discord nhé!");
         return;
     }
 
