@@ -9,13 +9,17 @@
         .box{max-width:550px;margin:0 auto;background:#fff;padding:30px;border-radius:16px;box-shadow:0 2px 15px rgba(0,0,0,0.08)}
         h1{color:#ff4444;text-align:center;margin-bottom:25px;font-size:22px}
         
+        .pass-wrap{position:relative;margin-bottom:8px}
+        .save-pass-label{display:flex;align-items:center;gap:8px;margin:8px 0 15px;font-size:13px;color:#666;cursor:pointer}
+        .save-pass-label input{width:auto;margin:0}
+        
         .tab-wrap{display:flex;margin-bottom:20px;border-bottom:2px solid #eee}
         .tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-weight:bold;color:#888}
         .tab.active{color:#ff4444;border-bottom:2px solid #ff4444}
         .tab-content{display:none}
         .tab-content.active{display:block}
         
-        input, textarea{width:100%;padding:14px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+        input, textarea{width:100%;padding:14px;margin:0 0 8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
         textarea{min-height:180px;resize:vertical;font-family:monospace;font-size:13px;line-height:1.5}
         button{width:100%;padding:14px;background:#ff4444;color:#fff;font-weight:bold;border:none;border-radius:10px;font-size:16px;cursor:pointer;margin-top:10px}
         .result{margin-top:20px;padding:20px;background:#d4edda;border-radius:10px;display:none}
@@ -27,7 +31,15 @@
     <div class="box">
         <h1>🔐 TẠO LINK SCRIPT</h1>
 
-        <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
+        <div class="pass-wrap">
+            <input type="password" id="pass" placeholder="🔑 Mật khẩu quản lý">
+        </div>
+
+        <label class="save-pass-label">
+            <input type="checkbox" id="rememberPass">
+            💾 Lưu mật khẩu cho lần sau
+        </label>
+
         <input type="text" id="scriptName" placeholder="📝 Tên Script (vd: ATRAS | GIABÌNH)">
 
         <!-- Chọn cách nhập -->
@@ -66,6 +78,17 @@
 const PASSWORD = "dobinhl12345"; // Đổi mật khẩu ở đây
 let useContent = true;
 
+// ✅ Tự điền mật khẩu đã lưu khi mở trang
+window.onload = function(){
+    const savedPass = localStorage.getItem('savedPassword');
+    const remember = localStorage.getItem('rememberPassword') === 'true';
+    
+    if(remember && savedPass){
+        document.getElementById('pass').value = savedPass;
+        document.getElementById('rememberPass').checked = true;
+    }
+};
+
 function switchTab(n){
     useContent = (n === 1);
     document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active', i+1===n));
@@ -74,6 +97,17 @@ function switchTab(n){
 
 function createLink(){
     const pass = document.getElementById('pass').value;
+    const rememberCheck = document.getElementById('rememberPass').checked;
+    
+    // ✅ Lưu/xóa mật khẩu theo lựa chọn
+    if(rememberCheck){
+        localStorage.setItem('savedPassword', pass);
+        localStorage.setItem('rememberPassword', 'true');
+    }else{
+        localStorage.removeItem('savedPassword');
+        localStorage.setItem('rememberPassword', 'false');
+    }
+    
     if(pass !== PASSWORD) return alert("❌ Sai mật khẩu!");
     
     const name = document.getElementById('scriptName').value.trim();
@@ -85,21 +119,17 @@ function createLink(){
     const folder = path.substring(0, path.lastIndexOf('/') + 1);
 
     if(useContent){
-        // Dán thẳng nội dung → mã hóa nhúng vào link trang lấy script
         const content = document.getElementById('scriptContent').value.trim();
         if(!content) return alert("❌ Dán nội dung Script vào!");
         
-        // Tạo link trang hiển thị script riêng
         const encoded = btoa(unescape(encodeURIComponent(content)));
         finalScriptLink = origin + folder + "getscript.html?data=" + encoded + "&name=" + encodeURIComponent(name);
     }else{
-        // Dán link như cũ
         const link = document.getElementById('scriptLink').value.trim();
         if(!link) return alert("❌ Dán link Script vào!");
         finalScriptLink = link;
     }
 
-    // Tạo link trang nhiệm vụ
     const taskLink = origin + folder + "go.html?name=" + encodeURIComponent(name) + "&link=" + encodeURIComponent(finalScriptLink);
     
     document.getElementById('newLink').innerText = taskLink;
